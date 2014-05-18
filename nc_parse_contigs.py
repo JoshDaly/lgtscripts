@@ -189,11 +189,13 @@ def doWork( args ):
                      "contig_a",
                      "start_a",
                      "stop_a",
+                     "length_a"
                      "img_id_b",
                      "genome_tree_id_b",
                      "contig_b",
                      "start_b",
-                     "stop_b" 
+                     "stop_b",
+                     "length_b" 
                      ])
     """print "\t".join(["img_id_a",
                      "contig_a",
@@ -261,7 +263,7 @@ def doWork( args ):
             #length = 0
             # Nucmer parser needs to be reset to read in new nucmer coords file
             NP.reset()
-    print count
+    #print count
     
     
 
