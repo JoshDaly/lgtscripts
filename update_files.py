@@ -36,6 +36,8 @@ import sys
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 #import os
 #import errno
@@ -83,6 +85,18 @@ def doWork( args ):
             id = l.rstrip()
             interacting_genomes[id]=0
     genomes = {}
+    
+    # read in fasta file
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta,"fasta")).items():
+        print accession
+        #else:
+            #print accession
+            #genomes_dict[accession] = [len(sequence),img_id, sequence.seq]
+    
+    
+    
+    
+    
     
     # Read in input file for formatting
     with open(args.input_file, "r") as fh:
@@ -134,8 +148,8 @@ def doWork( args ):
                                  length_b
                                  ])
                 """
-        for key in genomes.keys():
-            print key +"\t"+str(genomes[key])
+        #for key in genomes.keys():
+        #    print key +"\t"+str(genomes[key])
         #for key in interacting_genomes.keys():
         #    print key + "\t"+ str(interacting_genomes[key])
             
@@ -210,6 +224,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i','--input_file', help="...")
     parser.add_argument('-g','--genome_list', help="List of interacting genomes")
+    parser.add_argument('-f','--fasta', help="File containing transferred sequences in fasta format")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
