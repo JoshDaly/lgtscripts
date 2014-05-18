@@ -92,7 +92,7 @@ def doWork( args ):
         img_id_a= lines[1].split(":")[1]
         img_id_b= lines[5].split(":")[1]
         if img_id_a in interacting_genomes and img_id_b in interacting_genomes:
-            print accession
+            print ">"+accession
             print sequence.seq
         else:
             pass
