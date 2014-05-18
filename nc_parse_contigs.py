@@ -189,7 +189,7 @@ def doWork( args ):
                      "contig_a",
                      "start_a",
                      "stop_a",
-                     "length_a"
+                     "length_a",
                      "img_id_b",
                      "genome_tree_id_b",
                      "contig_b",
