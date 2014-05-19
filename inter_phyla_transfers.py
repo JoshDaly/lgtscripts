@@ -130,6 +130,7 @@ def doWork( args ):
                 else:
                     inter_phyla+= 1
             except KeyError:
+                pass
                 #print genome_tree_a
                 #print genome_tree_b
     print "Total:"+str(hits_accumulative)
