@@ -124,10 +124,14 @@ def doWork( args ):
             genome_tree_a= tabs[1]
             genome_tree_b=  tabs[8]
             hits_accumulative+= 1
-            if phylum_dict[genome_tree_a] == phylum_dict[genome_tree_b]:
-                intra_phyla+= 1
-            else:
-                inter_phyla+= 1
+            try:
+                if phylum_dict[genome_tree_a] == phylum_dict[genome_tree_b]:
+                    intra_phyla+= 1
+                else:
+                    inter_phyla+= 1
+            except KeyError:
+                print genome_tree_a
+                print genome_tree_b
     print "Total:"+str(hits_accumulative)
     print "intra_phyla:"+str(intra_phyla)
     print "inter_phlya:"+str(inter_phyla)
