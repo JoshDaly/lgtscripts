@@ -88,35 +88,26 @@ def doWork( args ):
     #variables to store phyla lists
     intra_phyla = 0 
     hits_accumulative = 0
+    phylums = {}
     
-    firmicutes = {}
-    actinobacteria = {}
-    synergistes = {}
-    epsilon_proteobacteria = {} 
-    fusobacteria = {}
-    bacteroidetes = {}
-    gamma_proteobacteria = {} 
-
+    
     with open(args.phyla,"r") as fh:
         for l in fh:
             tabs= l.split()
             id= tabs[0].rstrip()
             phylum= tabs[1].rstrip()
             if phylum=="firmicutes":
-                firmicutes[id] = 1
+                phylums[id] = 0
             elif phylum=="actinobacteria":
-                actinobacteria[id] = 1
+                phylums[id] = 1
             elif phylum=="synergistes":
-                synergistes[id] = 1
-            elif phylum=="epsilon_proteobacteria":
-                epsilon_proteobacteria[id] = 1
+                phylums[id] = 2
+            elif phylum=="proteobacteria":
+                phylums[id] = 3
             elif phylum=="fusobacteria":
-                fusobacteria[id] = 1
+                phylums[id] = 4
             elif phylum=="bacteroidetes":
-                bacteroidetes[id] = 1
-            elif phylum=="gamma_proteobacteria":
-                gamma_proteobacteria[id] = 1
-    
+                phylums[id] = 5
     
     #-----
     with open(args.genome_tree_file,"r") as fh:
@@ -216,20 +207,18 @@ def doWork( args ):
           working_ids_list = ids_list[np.argsort(unordered_ids_list)]
           
     for i in working_ids_list:
-        if genome_tree_img_dict[i][1] in firmicutes:
+        if genome_tree_img_dict[i][1]==0: #firmicutes
             phylum_cols[i] ="blue"
-        if genome_tree_img_dict[i][1] in actinobacteria: 
+        elif genome_tree_img_dict[i][1]==1: #actinobacteria:
             phylum_cols[i]="red"
-        if genome_tree_img_dict[i][1] in synergistes:
+        elif genome_tree_img_dict[i][1]==2: #synergistes
             phylum_cols[i]="yellow"
-        if genome_tree_img_dict[i][1] in epsilon_proteobacteria:
-            phylum_cols[i]="green"
-        if genome_tree_img_dict[i][1] in fusobacteria:
-            phylum_cols[i]="purple"
-        if genome_tree_img_dict[i][1] in bacteroidetes:
-            phylum_cols[i]="orange"
-        if genome_tree_img_dict[i][1] in gamma_proteobacteria:
+        elif genome_tree_img_dict[i][1]==3: #proteobacteria
             phylum_cols[i]="grey"
+        elif genome_tree_img_dict[i][1]==4: #fusobacteria
+            phylum_cols[i]="purple"
+        elif genome_tree_img_dict[i][1]==5: #bacteroidetes
+            phylum_cols[i]="orange"
               
     #print phylum_cols   
     
