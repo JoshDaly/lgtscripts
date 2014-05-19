@@ -136,12 +136,12 @@ def doWork( args ):
                 pass
                 #print genome_tree_a
                 #print genome_tree_b
-    #print "Total:"+str(hits_accumulative)
-    #print "intra_phyla:"+str(intra_phyla)
-    #print "inter_phlya:"+str(inter_phyla)
+    print "Total:"+str(hits_accumulative)
+    print "intra_phyla:"+str(intra_phyla)
+    print "inter_phlya:"+str(inter_phyla)
     
-    for key in phylum_dict.keys():
-        print key        
+    #for key in phylum_dict.keys():
+    #    print key        
             
             
             
