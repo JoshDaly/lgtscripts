@@ -130,12 +130,12 @@ def doWork( args ):
                 else:
                     inter_phyla+= 1
             except KeyError:
-                print genome_tree_a
-                print genome_tree_b
+                #print genome_tree_a
+                #print genome_tree_b
     print "Total:"+str(hits_accumulative)
     print "intra_phyla:"+str(intra_phyla)
     print "inter_phlya:"+str(inter_phyla)
-                
+    print phylum_dict        
             
             
             
