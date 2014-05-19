@@ -101,18 +101,21 @@ def doWork( args ):
             elif phylum=="synergistes":
                 #synergistes[id] = 2
                 phylum_dict[id] = 2
-            elif phylum=="epsilon_proteobacteria":
+            elif phylum=="proteobacteria":
                 #epsilon_proteobacteria[id] = 3
                 phylum_dict[id] = 3
+            #elif phylum=="epsilon_proteobacteria":
+                #epsilon_proteobacteria[id] = 3
+                #phylum_dict[id] = 3
             elif phylum=="fusobacteria":
                 #fusobacteria[id] = 4
                 phylum_dict[id] = 4
             elif phylum=="bacteroidetes":
                 #bacteroidetes[id] = 5
                 phylum_dict[id] = 5
-            elif phylum=="gamma_proteobacteria":
+            #elif phylum=="gamma_proteobacteria":
                 #gamma_proteobacteria[id] = 6
-                phylum_dict[id] = 6
+                #phylum_dict[id] = 6
     
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
     # read in transfers file
