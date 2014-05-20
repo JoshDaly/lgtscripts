@@ -120,13 +120,14 @@ def doWork( args ):
     
     #-----
     #header
-    #print "\t".join(["genome_tree_id_a",
-    #                 "img_id_a",
-    #                 "genome_tree_id_b",
-    #                 "img_id_b",
-    #                 "hits",
-    #                 "length"])
-    
+    if args.show_hits is False:
+        print "\t".join(["genome_tree_id_a",
+                         "img_id_a",
+                         "genome_tree_id_b",
+                         "img_id_b",
+                         "hits",
+                         "length"])
+        
     
     #print transfers_dict
     for id in transfers_dict:
@@ -136,14 +137,16 @@ def doWork( args ):
             hits= str(transfers_dict[id][id_b][0])
             length= str(transfers_dict[id][id_b][1])
             hits_accumulative= int(hits) + hits_accumulative
-            #print "\t".join([genome_tree_a,
-            #                 id,
-            #                 genome_tree_b,
-            #                 id_b,
-            #                 hits,
-            #                 length
-            #                 ])
-    print hits_accumulative
+            if args.show_hits is False:
+                print "\t".join([genome_tree_a,
+                                 id,
+                                 genome_tree_b,
+                                 id_b,
+                                 hits,
+                                 length
+                                 ])
+    if args.show_hits:
+        print hits_accumulative
                 
                 
             
@@ -217,6 +220,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-i','--transfers_file', help="Transfers.csv file")
+    parser.add_argument('-show_hits','--show_hits',default=False,help="Show accumulative hits: default False")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")

@@ -100,7 +100,7 @@ def doWork( args ):
         # capture header
         header = fh.readline() 
         # print new header
-        print "\t".join(["genome_tree_a"
+        print "\t".join(["genome_tree_a",
                          "img_id_a",
                          "body_site_a",
                          "genome_tree_b",
@@ -138,10 +138,7 @@ def doWork( args ):
                 body_site_b= "both"
             if body_site_a == "BOOM" or body_site_b == "BOOM":
                 pass
-            else:
-                print img_id_a
-                print img_id_b
-                """
+            else:                
                 print "\t".join([genome_tree_a,
                                  img_id_a,
                                  body_site_a,
@@ -151,7 +148,7 @@ def doWork( args ):
                                  str(hits),
                                  str(length)
                                  ])
-                """
+                    
                 
             
            
