@@ -170,11 +170,15 @@ def doWork( args ):
         for id_b in genomes[id_a]:
             total_hits += genomes[id_a][id_b]["hits"]
             total_length += genomes[id_a][id_b]["transfer_length"]
+        print id_a+"\t"+id_b
+        print total_hits
+        print total_length
+        """
         avg_len= float(total_length/total_hits)
         print "\t".join([id_a,
                          str(avg_len)
                          ])
-    
+        """
             
             
             
