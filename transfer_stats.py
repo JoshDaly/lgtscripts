@@ -137,7 +137,7 @@ def doWork( args ):
         for hit in TP.readTrans(fh):
             # add genome to dictionary
             try:
-               genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+=[[hit[TP._LEN_1]]]
+               genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+=hit[TP._LEN_1]
             except KeyError:
                 try:
                     genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]={"transfer_length":hit[TP._LEN_1]}
