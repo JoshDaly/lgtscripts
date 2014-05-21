@@ -90,21 +90,20 @@ class TransferParser:
             # file should be prepped now
             for l in fh:
                 fields = l.split("\t")
-                print fields
-                yield (fields[0]+
-                       fields[1]+
-                       fields[2]+
-                       int(fields[3])+
-                       int(fields[4])+
-                       int(fields[5])+
-                       int(fields[6])+
-                       fields[7]+
-                       fields[8]+
-                       fields[9]+
-                       int(fields[10])+
-                       int(fields[11])+
-                       int(fields[12])+
-                       int(fields[13]))
+                yield [fields[0],
+                       fields[1],
+                       fields[2],
+                       int(fields[3]),
+                       int(fields[4]),
+                       int(fields[5]),
+                       int(fields[6]),
+                       fields[7],
+                       fields[8],
+                       fields[9],
+                       int(fields[10]),
+                       int(fields[11]),
+                       int(fields[12]),
+                       int(fields[13])]
             break # done!
                         
 ###############################################################################
