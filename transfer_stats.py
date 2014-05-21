@@ -96,7 +96,7 @@ class TransferParser:
                        int(fields[3])+
                        int(fields[4])+
                        int(fields[5])+
-                       int(fields[6])
+                       int(fields[6])+
                        fields[7]+
                        fields[8]+
                        fields[9]+
