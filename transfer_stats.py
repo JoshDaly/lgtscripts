@@ -130,7 +130,7 @@ def doWork( args ):
     TP=  TransferParser()
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
-            print hit[TP._CONTIG_1]
+            print hit
                
             
             
