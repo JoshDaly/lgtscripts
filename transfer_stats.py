@@ -138,9 +138,10 @@ def doWork( args ):
         #read through line by line
         for l in fh:
             tabs= l.split("\t")
-            id = tabs[0]
-            phylum = tabs[1].rstrip()
-            phyla[id]= phylum
+            gt_id= tabs[0]
+            img_id= tabs[1]
+            phylum= tabs[2].rstrip()
+            phyla[img_id]= phylum
     
     #parse transfer file
     TP=  TransferParser()
