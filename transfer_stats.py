@@ -164,9 +164,16 @@ def doWork( args ):
                         genomes[hit[TP._IMG_ID_2]]={hit[TP._IMG_ID_1]:{"hits": 1,"transfer_length":hit[TP._LEN_2]}}        
                         
                               
-    for key in genomes.keys():
-        print key
-        print genomes[key]                 
+    for id_a in genomes.keys():
+        total_hits = 0
+        total_length = 0
+        for id_b in genomes[id_a]:
+            total_hits += genomes[id_a][id_b]["hits"]
+            total_length += genomes[id_a][id_b]["transfer_length"]
+        avg_len= float(total_length/total_hits)
+        print "\t".join([id_a,
+                         str(avg_len)
+                         ])
     
             
             
