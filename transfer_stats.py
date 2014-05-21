@@ -89,7 +89,7 @@ class TransferParser:
                             break
             # file should be prepped now
             for l in fh:
-                fields = l.split('\t')
+                fields = l.split("\t")
                 yield (fields[0]+
                        fields[1]+
                        fields[2]+
