@@ -113,15 +113,15 @@ def doWork( args ):
     """
     #read in genomes directory
     for c_file in listing:
-        img_id = c_file.split("/")[2].split(".")[0] 
-        if count <1:
-            img_id = c_file.split("/")[-1].split(".")[0]
-            #print img_id
-            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                try: 
-                    genome_length_dir[img_id]+= len(sequence)
-                except KeyError:
-                    genome_length_dir[img_id]= len(sequence)
+        #img_id = c_file.split("/")[2].split(".")[0] 
+        #if count <1:
+        img_id = c_file.split("/")[-1].split(".")[0]
+        #print img_id
+        for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+            try: 
+                genome_length_dir[img_id]+= len(sequence)
+            except KeyError:
+                genome_length_dir[img_id]= len(sequence)
     
     #-----        
     # header
