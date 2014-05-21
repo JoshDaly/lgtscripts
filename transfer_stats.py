@@ -146,8 +146,11 @@ def doWork( args ):
                 except KeyError:
                     genomes[hit[TP._IMG_ID_1]]={hit[TP._IMG_ID_2]:{"transfer_length":hit[TP._LEN_1]}}
                     genomes[hit[TP._IMG_ID_1]]={hit[TP._IMG_ID_2]:{"hits":1}}
-                    
-    print genomes
+    
+    for key in genomes.keys():
+        print key
+        print genomes[key]                 
+    
             
             
             
