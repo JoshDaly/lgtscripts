@@ -139,8 +139,8 @@ def doWork( args ):
         for l in fh:
             tabs= l.split("\t")
             id = tabs[0]
-            phyla = tabs[1].rstrip()
-            phyla[id]=phyla
+            phylum = tabs[1].rstrip()
+            phyla[id]= phylum
     
     #parse transfer file
     TP=  TransferParser()
