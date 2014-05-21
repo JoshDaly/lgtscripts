@@ -139,19 +139,18 @@ def doWork( args ):
             genomes[hit[TP._IMG_ID_1]]={}
             genomes[hit[TP._IMG_ID_2]]={}
             try:
-               genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+=hit[TP._LEN_1]
-               genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]+= 1
+                genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+= hit[TP._LEN_1]
+                #genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]+= 1
             except KeyError:
                 try:
                     genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]= hit[TP._LEN_1]
-                    genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]= 1
+                    #genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]= 1
                 except KeyError:
-                    try:
-                        genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]={"transfer_length": hit[TP._LEN_1],"hits":1}
+                    try: 
+                        genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]={"transfer_length":hit[TP._LEN_1]}
                     except KeyError:
-                        genomes[hit[TP._IMG_ID_1]]={hit[TP._IMG_ID_2]:{"transfer_length": hit[TP._LEN_1],"hits":1}}
-                        
-    
+                        genomes[hit[TP._IMG_ID_1]]={hit[TP._IMG_ID_2]:{"transfer_length":hit[TP._LEN_1]}}
+                    
     for key in genomes.keys():
         print key
         print genomes[key]                 
