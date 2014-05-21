@@ -37,6 +37,11 @@ import sys
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
+import math
+import glob 
+from Bio import SeqIO
+from Bio.Seq import Seq
+
 #import os
 #import errno
 
@@ -75,6 +80,9 @@ def doWork( args ):
     """ Main wrapper"""
     # objects
     ids_dict = {}
+    listing = glob.glob('%s/*.fna' % args.genome_dir)
+    genome_length_dir = {}
+    bodysite_dir = {}
     
     # read in ordered ids file
     """
@@ -82,11 +90,47 @@ def doWork( args ):
     """
     with open(args.tax_file,"r") as fh:
         header = fh.readline() #capture header
-        for l in fh: # read through line by line
+        for l in fh: #line by line
             tabs= l.split("\t")
             img= tabs[1]
             gt= tabs[0]
             ids_dict[gt]=img
+    #-----
+    """
+    img -> bodysite
+    """
+    #read in bodysite file
+    with open(args.bodysite,"r") as fh:
+        # no header
+        for l in fh: #line by line
+            tabs = l.split("\t")
+            img_id= tabs[0]
+            bodysite= tabs[1].rstrip()
+            bodysite_dir[img_id]= bodysite
+    #-----
+    """ 
+    Calculate the total genome length
+    """
+    #read in genomes directory
+    for c_file in listing:
+        img_id = c_file.split("/")[2].split(".")[0] 
+        if count <1:
+            img_id = c_file.split("/")[-1].split(".")[0]
+            #print img_id
+            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+                try: 
+                    genome_length_dir[img_id]+= len(sequence)
+                except KeyError:
+                    genome_length_dir[img_id]= len(sequence)
+    
+    #-----        
+    # header
+    print "\t".join(["genome_tree_id",
+                     "img_id",
+                     "phylum",
+                     "genome_length",
+                     "bodysite"
+                     ])
     # read in phylum file
     with open(args.phyla_file,"r") as fh:
         for l in fh:
@@ -95,8 +139,11 @@ def doWork( args ):
             phyla= tabs[1].rstrip()
             print "\t".join([gt,
                              ids_dict[gt],
-                             phyla
+                             phyla,
+                             str(genome_length_dir[ids_dict[gt]]),
+                             bodysite_dir[ids_dict[gt]]
                              ])
+     
             
     """
 # run somethign external in threads
@@ -163,6 +210,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-phyla_file','--phyla_file', help="File containing phylum information")
     parser.add_argument('-tax_file','--tax_file', help="File containing img ids and genome tree ids")
+    parser.add_argument('-g','--genome_dir', help="Directory containing genomes")
+    parser.add_argument('-bodysite','--bodysite', help="File containing bodysite information")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
