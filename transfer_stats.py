@@ -136,14 +136,14 @@ def doWork( args ):
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
             # add genome to dictionary
+            genomes[hit[TP._IMG_ID_1]]={}
+            genomes[hit[TP._IMG_ID_2]]={}
             try:
                genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+=hit[TP._LEN_1]
                genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]+= 1
             except KeyError:
-                try:
-                    genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]={{"transfer_length":hit[TP._LEN_1]},{"hits":1}}
-                except KeyError:
-                    genomes[hit[TP._IMG_ID_1]]={hit[TP._IMG_ID_2]:{"transfer_length":hit[TP._LEN_1]},{"hits":1}}
+                genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]= hit[TP._LEN_1]
+                genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["hits"]= 1 
     
     for key in genomes.keys():
         print key
