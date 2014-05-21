@@ -90,6 +90,7 @@ class TransferParser:
             # file should be prepped now
             for l in fh:
                 fields = l.split("\t")
+                print fields
                 yield (fields[0]+
                        fields[1]+
                        fields[2]+
