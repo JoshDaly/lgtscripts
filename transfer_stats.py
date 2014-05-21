@@ -174,7 +174,7 @@ def doWork( args ):
         #print total_hits
         #print total_length
         
-        avg_len= float(total_length/total_hits)
+        avg_len= float(total_length)/float(total_hits)
         print "\t".join([id_a,
                          str(avg_len)
                          ])
