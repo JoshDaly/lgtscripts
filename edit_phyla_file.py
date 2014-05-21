@@ -104,9 +104,10 @@ def doWork( args ):
         # no header
         for l in fh: #line by line
             tabs = l.split("\t")
-            img_id= tabs[0]
-            bodysite= tabs[1].rstrip()
-            bodysite_dir[img_id]= bodysite
+            gt_id= tabs[0]
+            img_id= tabs[1]
+            bodysite= tabs[2].rstrip()
+            bodysite_dir[gt]= bodysite
     #-----
     """ 
     Calculate the total genome length
@@ -141,7 +142,7 @@ def doWork( args ):
                              ids_dict[gt],
                              phyla,
                              str(genome_length_dir[ids_dict[gt]]),
-                             bodysite_dir[ids_dict[gt]]
+                             bodysite_dir[gt]
                              ])
      
             
