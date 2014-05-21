@@ -84,7 +84,7 @@ class TransferParser:
             if not self.prepped:
                 # we still need to strip out the header
                     for l in fh: # search for the first record
-                        if l[0] == 'img': # next line is good
+                        if l[0:3] =="img": # next line is good
                             self.prepped = True
                             break
             # file should be prepped now
