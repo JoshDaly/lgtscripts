@@ -104,7 +104,7 @@ def doWork( args ):
         # no header
         for l in fh: #line by line
             tabs = l.split("\t")
-            print tabs
+            #print tabs
             img_id= tabs[0]
             bodysite= tabs[1].rstrip()
             bodysite_dir[img_id]= bodysite
