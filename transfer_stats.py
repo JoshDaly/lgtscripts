@@ -58,7 +58,7 @@ from subprocess import Popen, PIPE
 class TransferParser:
     """Wrapper class for parsing transfer files"""
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
-    #constants to make the code for readable
+    #constants to make the code readable
     _IMG_ID_1       = 0
     _GT_ID_1        = 1
     _CONTIG_1       = 2
@@ -105,6 +105,11 @@ class TransferParser:
                        int(fields[12]),
                        int(fields[13])]
             break # done!
+#class HitsLengthParser:
+    
+    #constants to make the code more readable
+    
+    
                         
 ###############################################################################
 ###############################################################################
@@ -123,15 +128,22 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
-    
     #objects
+    genomes = {} # dictionary to store all things genome
     
     #parse transfer file
     TP=  TransferParser()
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
-            print hit
-               
+            # add genome to dictionary
+            try:
+               genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]["transfer_length"]+=[hit[TP._LEN_1]]
+            except KeyError:
+                try:
+                    genomes[hit[TP._IMG_ID_1]][hit[TP._IMG_ID_2]]={"transfer_length":hit[TP._LEN_1]}
+                except KeyError:
+                    pass
+    print genomes
             
             
             
