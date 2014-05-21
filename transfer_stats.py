@@ -130,6 +130,17 @@ def doWork( args ):
     """ Main wrapper"""
     #objects
     genomes = {} # dictionary to store all things genome
+    phyla = {}
+    
+    # read in file containing phylum information
+    with open(args.phyla_file, "r") as fh:
+        #no header
+        #read through line by line
+        for l in fh:
+            tabs= l.split("\t")
+            id = tabs[0]
+            phyla = tabs[1].rstrip()
+            phyla[id]=phyla
     
     #parse transfer file
     TP=  TransferParser()
@@ -176,7 +187,8 @@ def doWork( args ):
         
         avg_len= float(total_length)/float(total_hits)
         print "\t".join([id_a,
-                         str(avg_len)
+                         str(avg_len),
+                         phyla[id_a]
                          ])
         
             
@@ -251,6 +263,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-transfer_file','--transfer_file', help="File containing transfer events")
+    parser.add_argument('-phyla_file','--phyla_file', help="File containing phyla information")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
