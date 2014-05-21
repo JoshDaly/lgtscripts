@@ -96,12 +96,14 @@ class TransferParser:
                        int(fields[3])+
                        int(fields[4])+
                        int(fields[5])+
-                       fields[6]+
+                       int(fields[6])
                        fields[7]+
                        fields[8]+
-                       int(fields[9])+
+                       fields[9]+
                        int(fields[10])+
-                       int(fields[1]))
+                       int(fields[11])+
+                       int(fields[12])+
+                       int(fields[13]))
             break # done!
                         
 ###############################################################################
