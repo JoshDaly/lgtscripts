@@ -90,7 +90,7 @@ def doWork( args ):
             id_b = lines[5].split(":")[1].rstrip()
             genome_tree_b = lines[6].split(":")[1].rstrip()
             unique_id = lines[7].rstrip()
-            COG= tabs[7]
+            COG= tabs[5]
             annotation = tabs[8]
             
             
