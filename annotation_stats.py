@@ -79,6 +79,7 @@ def doWork( args ):
     transfer_annotations = {}
     COG_groups= {}
     COG_categories= {}
+    total = 0
     
     # Add unknown to Cog_categories
     COG_categories["unknown"]="unknown"
@@ -133,7 +134,15 @@ def doWork( args ):
                         pass
                     else:
                         for i in COG_categories[COG]:
-                            print i
+                            try:
+                                COG_groups[COG_categories[COG]]+= 1
+                            except KeyError:
+                                COG_groups[COG_categories[COG]]= 1
+                else:
+                    try:
+                        COG_groups[COG_categories[COG]]+= 1
+                    except KeyError:
+                        COG_groups[COG_categories[COG]]= 1
                         
                 
                 #try:
