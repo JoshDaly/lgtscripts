@@ -93,7 +93,8 @@ def doWork( args ):
             unique_id = lines[7].rstrip()
             COG= tabs[5]
             annotation = tabs[8]
-            
+            if not COG:
+                COG = "unknown" 
             
             try:
                 transfer_annotations[id_a][id_b][unique_id] =  [genome_tree_a,genome_tree_b,start,stop,annotation,COG]
