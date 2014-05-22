@@ -74,59 +74,35 @@ returns (stdout, stderr)
 def doWork( args ):
     """ Main wrapper"""
     # global variables
-    parsing = False
     transfer_annotations = {}
-
-    # read in file containing annotations
-    with open(args.input_file,"r") as fh:
-        # no header
-        header_data= {}
-        for l in fh:
-            if "###" in l:
-                parsing = True
-                #parsing = not parsing
-                #continue.
-                tabs = l.split("\t")
-                #print "\t".join([tabs[0],tabs[1],tabs[2],tabs[3],tabs[4],tabs[5],tabs[6]])
-                id_a = tabs[1].rstrip()
-                contig = tabs[2].rstrip() 
-                start = tabs[3].rstrip()
-                stop = tabs[4].rstrip()
-                length = tabs[5].rstrip()
-                id_b =  tabs[6].rstrip()
-                header_data['id_a'] = id_a
-                header_data['id_b'] = id_b
-                header_data['contig'] = contig
-                
-            if parsing and "###" not in l and "@@@" not in l:
-                tabs_2 = l.split("\t")
-                start = tabs_2[0].rstrip()
-                stop = tabs_2[1].rstrip()
-                annotation = tabs_2[2].rstrip()
-                try:
-                    transfer_annotations[header_data['id_a']][header_data['id_b']][header_data['contig']] +=  [[start,stop,annotation]]
-                except KeyError:
-                    try:
-                        transfer_annotations[header_data['id_a']][header_data['id_b']] = {header_data['contig']:[[start,stop,annotation]]}
-                    except KeyError:
-                        try: 
-                            transfer_annotations[header_data['id_a']] += {header_data['id_b']:{header_data['contig']:[[start,stop,annotation]]}}
-                        except KeyError:
-                            transfer_annotations[header_data['id_a']] = {header_data['id_b']:{header_data['contig']:[[start,stop,annotation]]}}        
-            if "@@@" in l:
-                parsing = False
-                header_data = {}
-    #------
-    # objects
-    phage_trans = {}
-    plasmid_trans = {}
     
-    for id_a in transfer_annotations:
-        for id_b in transfer_annotations[id_a]:
-            for contig in transfer_annotations[id_a][id_b]:
-                for i in transfer_annotations[id_a][id_b][contig]:
-                    #case insensitive search
-                    if "phage" in i[2].lower():
+    #read in annotation file
+    with open(args.annotation_file,"r") as fh:
+        # no header 
+        for l in fh:
+            tabs = l.split("\t")
+            lines = tabs[0].split("-")
+            contig = lines[0].rstrip()
+            id_a = lines[1].split(":")[1].rstrip()
+            genome_tree_a = lines[2].split(":")[1].rstrip()
+            start = int(lines[3].split(":")[1].rstrip())
+            stop = int(lines[4].split(":")[1].rstrip())
+            id_b = lines[5].split(":")[1].rstrip()
+            genome_tree_b = lines[6].split(":")[1].rstrip()
+            unique_id = lines[7].rstrip()
+            COG= tabs[7]
+            annotation = tabs[8]
+            try:
+                transfer_annotations[id_a][id_b][contig] +=  [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
+            except KeyError:
+                try:
+                    transfer_annotations[id_a][id_b][contig] = [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
+                except KeyError:
+                    try: 
+                        transfer_annotations[id_a][id_b] = {contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}
+                    except KeyError:
+                        transfer_annotations[id_a] = {id_b:{contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}} 
+    print transfer_annotations
                         
                         
                          
