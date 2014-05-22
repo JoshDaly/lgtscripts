@@ -129,7 +129,7 @@ def doWork( args ):
             for uid in transfer_annotations[id_a][id_b]: 
                 COG= transfer_annotations[id_a][id_b][uid][-1] 
                 if re.search("..*",COG_categories[COG]):
-                    print COG
+                    print COG_categories[COG]
                 
                 #try:
                 #    COG_groups[COG_categories[COG]]+= 1
