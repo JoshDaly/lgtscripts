@@ -103,10 +103,9 @@ def doWork( args ):
                     transfer_annotations[id_a] = {id_b:{unique_id:[genome_tree_a,genome_tree_b,start,stop,annotation,COG]}} 
     for id_a in transfer_annotations.keys():
         for id_b in transfer_annotations[id_a]:
-            for uid in transfer_annotations[id_a][id_b]:
-                for i in transfer_annotations[id_a][id_b][uid]:
-                    print id_a+"\t"+id_b
-                    print i
+            for uid in transfer_annotations[id_a][id_b]: 
+                print id_a+"\t"+id_b+"\t"+uid
+                
                 
             """
             try:
