@@ -111,7 +111,7 @@ def doWork( args ):
                 except KeyError:
                     COG_groups[COG]=1
     for COG in COG_groups:
-        print COG+"\t"+COG_groups[COG]
+        print COG+"\t"+str(COG_groups[COG])
                 
                 
                 
