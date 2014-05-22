@@ -75,6 +75,7 @@ def doWork( args ):
     """ Main wrapper"""
     # global variables
     transfer_annotations = {}
+    COG_groups= {}
     
     #read in annotation file
     with open(args.annotation_file,"r") as fh:
@@ -104,8 +105,15 @@ def doWork( args ):
     for id_a in transfer_annotations.keys():
         for id_b in transfer_annotations[id_a]:
             for uid in transfer_annotations[id_a][id_b]: 
-                print id_a+"\t"+id_b+"\t"+uid
-                print transfer_annotations[id_a][id_b][uid][-1]
+                COG= transfer_annotations[id_a][id_b][uid][-1] 
+                try: 
+                    COG_groups[COG]+= 1
+                except KeyError:
+                    COG_groups[COG]=1
+    for COG in COG_groups:
+        print COG+"\t"+COG_group[COG]
+                
+                
                 
             """
             try:
