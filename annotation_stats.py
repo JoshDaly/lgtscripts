@@ -115,18 +115,18 @@ def doWork( args ):
                 
                 
                 
-            """
-            try:
-                transfer_annotations[id_a][id_b][contig] +=  [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
+    """
+    try:
+        transfer_annotations[id_a][id_b][contig] +=  [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
+    except KeyError:
+        try:
+            transfer_annotations[id_a][id_b][contig] = [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
+        except KeyError:
+            try: 
+                transfer_annotations[id_a][id_b] = {contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}
             except KeyError:
-                try:
-                    transfer_annotations[id_a][id_b][contig] = [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
-                except KeyError:
-                    try: 
-                        transfer_annotations[id_a][id_b] = {contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}
-                    except KeyError:
-                        transfer_annotations[id_a] = {id_b:{contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}}
-            """ 
+                transfer_annotations[id_a] = {id_b:{contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}}
+    """ 
   
 
     """
