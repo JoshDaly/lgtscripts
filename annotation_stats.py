@@ -78,6 +78,9 @@ def doWork( args ):
     COG_groups= {}
     COG_categories= {}
     
+    # Add unknown to Cog_categories
+    COG_categories["unknown"]="unknown"
+    
     #read in COG catergories
     """
     comma separated COG categories
@@ -118,6 +121,7 @@ def doWork( args ):
                     transfer_annotations[id_a][id_b] = {unique_id:[genome_tree_a,genome_tree_b,start,stop,annotation,COG]}
                 except KeyError:
                     transfer_annotations[id_a] = {id_b:{unique_id:[genome_tree_a,genome_tree_b,start,stop,annotation,COG]}} 
+    
     for id_a in transfer_annotations.keys():
         for id_b in transfer_annotations[id_a]:
             for uid in transfer_annotations[id_a][id_b]: 
