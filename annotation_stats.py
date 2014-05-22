@@ -129,8 +129,12 @@ def doWork( args ):
             for uid in transfer_annotations[id_a][id_b]: 
                 COG= transfer_annotations[id_a][id_b][uid][-1] 
                 if re.search("..+",COG_categories[COG]):
-                    for i in COG_categories[COG]:
-                        print i
+                    if COG_categories[COG] == "unknown":
+                        pass
+                    else:
+                        for i in COG_categories[COG]:
+                            print i
+                        
                 
                 #try:
                 #    COG_groups[COG_categories[COG]]+= 1
