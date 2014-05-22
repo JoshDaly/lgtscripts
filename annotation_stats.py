@@ -105,7 +105,7 @@ def doWork( args ):
         for id_b in transfer_annotations[id_a]:
             for uid in transfer_annotations[id_a][id_b]: 
                 print id_a+"\t"+id_b+"\t"+uid
-                
+                print transfer_annotations[id_a][id_b][uid][-1]
                 
             """
             try:
