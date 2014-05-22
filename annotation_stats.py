@@ -187,7 +187,7 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_file', help="Provide file containing transfer annotations")
+    parser.add_argument('-a','--annotation_file', help="Provide file containing transfer annotations")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
