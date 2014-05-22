@@ -37,6 +37,8 @@ import sys
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
+import re
+
 #import os
 #import errno
 
@@ -126,16 +128,19 @@ def doWork( args ):
         for id_b in transfer_annotations[id_a]:
             for uid in transfer_annotations[id_a][id_b]: 
                 COG= transfer_annotations[id_a][id_b][uid][-1] 
-                try:
-                    COG_groups[COG_categories[COG]]+= 1
-                except KeyError:
-                    COG_groups[COG_categories[COG]]= 1
+                if COG_categories[COG] == re.search("..*"):
+                    print COG
+                
+                #try:
+                #    COG_groups[COG_categories[COG]]+= 1
+                #except KeyError:
+                #    COG_groups[COG_categories[COG]]= 1
                 #try: 
                 #    COG_groups[COG]+= 1
                 #except KeyError:
                 #    COG_groups[COG]=1
-    for COG in COG_groups:
-        print COG+"\t"+str(COG_groups[COG])
+    #for COG in COG_groups:
+    #    print COG+"\t"+str(COG_groups[COG])
                 
                 
                 
