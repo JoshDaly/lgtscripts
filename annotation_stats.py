@@ -135,9 +135,9 @@ def doWork( args ):
                     else:
                         for i in COG_categories[COG]:
                             try:
-                                COG_groups[COG_categories[COG]]+= 1
+                                COG_groups[i]+= 1
                             except KeyError:
-                                COG_groups[COG_categories[COG]]= 1
+                                COG_groups[i]= 1
                 else:
                     try:
                         COG_groups[COG_categories[COG]]+= 1
