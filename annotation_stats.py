@@ -92,6 +92,23 @@ def doWork( args ):
             unique_id = lines[7].rstrip()
             COG= tabs[7]
             annotation = tabs[8]
+            
+            
+            try:
+                transfer_annotations[id_a][id_b][unique_id] =  [genome_tree_a,genome_tree_b,start,stop,annotation,COG]
+            except KeyError:
+                try:
+                    transfer_annotations[id_a][id_b] = {unique_id:[genome_tree_a,genome_tree_b,start,stop,annotation,COG]}
+                except KeyError:
+                    transfer_annotations[id_a] = {id_b:{unique_id:[genome_tree_a,genome_tree_b,start,stop,annotation,COG]}} 
+    for id_a in transfer_annotations.keys():
+        for id_b in transfer_annotations[id_a]:
+            for uid in transfer_annotations[id_a][id_b]:
+                for i in transfer_annotations[id_a][id_b][uid]:
+                    print id_a+"\t"+id_b
+                    print i[-1]
+                
+            """
             try:
                 transfer_annotations[id_a][id_b][contig] +=  [[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]
             except KeyError:
@@ -101,28 +118,9 @@ def doWork( args ):
                     try: 
                         transfer_annotations[id_a][id_b] = {contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}
                     except KeyError:
-                        transfer_annotations[id_a] = {id_b:{contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}} 
-    print transfer_annotations
-                        
-                        
-                         
-    
-            
-                
-        
-        
-                    
-                    
-                    
-                    
-                    
-            
-            
-            
-            
-            
-    
-    
+                        transfer_annotations[id_a] = {id_b:{contig:[[genome_tree_a,genome_tree_b,unique_id,start,stop,annotation,COG]]}}
+            """ 
+  
 
     """
 # run somethign external in threads
