@@ -76,6 +76,21 @@ def doWork( args ):
     # global variables
     transfer_annotations = {}
     COG_groups= {}
+    COG_categories
+    
+    #read in COG catergories
+    """
+    comma separated COG categories
+    """
+    with open(args.cog_cats,"r") as fh:
+        # no header
+        for l in fh: #line by line
+            commas= l.split(",")
+            cog_id= commas[0]
+            cog_cat= commas[1]
+            annotation= commas[2].rstrip()
+            COG_categories[cog_id]=cog_cat
+    
     
     #read in annotation file
     with open(args.annotation_file,"r") as fh:
@@ -107,10 +122,14 @@ def doWork( args ):
         for id_b in transfer_annotations[id_a]:
             for uid in transfer_annotations[id_a][id_b]: 
                 COG= transfer_annotations[id_a][id_b][uid][-1] 
-                try: 
-                    COG_groups[COG]+= 1
+                try:
+                    COG_groups[COG_categories[COG]]+= 1
                 except KeyError:
-                    COG_groups[COG]=1
+                    COG_groups[COG_categories[COG]]= 1
+                #try: 
+                #    COG_groups[COG]+= 1
+                #except KeyError:
+                #    COG_groups[COG]=1
     for COG in COG_groups:
         print COG+"\t"+str(COG_groups[COG])
                 
@@ -194,6 +213,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--annotation_file', help="Provide file containing transfer annotations")
+    parser.add_argument('-c','--cog_cats', help="File containing COG categories")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
