@@ -76,7 +76,7 @@ def doWork( args ):
     # global variables
     transfer_annotations = {}
     COG_groups= {}
-    COG_categories
+    COG_categories= {}
     
     #read in COG catergories
     """
