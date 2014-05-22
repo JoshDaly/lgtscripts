@@ -144,7 +144,7 @@ def doWork( args ):
                     except KeyError:
                         COG_groups[COG_categories[COG]]= 1
                         
-                
+    
                 #try:
                 #    COG_groups[COG_categories[COG]]+= 1
                 #except KeyError:
@@ -153,8 +153,8 @@ def doWork( args ):
                 #    COG_groups[COG]+= 1
                 #except KeyError:
                 #    COG_groups[COG]=1
-    #for COG in COG_groups:
-    #    print COG+"\t"+str(COG_groups[COG])
+    for COG in COG_groups:
+        print COG+"\t"+str(COG_groups[COG])
                 
                 
                 
