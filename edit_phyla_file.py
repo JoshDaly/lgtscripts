@@ -84,6 +84,13 @@ def doWork( args ):
     genome_length_dir = {}
     bodysite_dir = {}
     
+    # read in metadata file
+    """
+    IMG metadata file
+    """
+    
+    
+    
     # read in ordered ids file
     """
     genome_tree_id  img_id  order   tax_string
