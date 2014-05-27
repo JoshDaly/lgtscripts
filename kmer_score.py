@@ -124,7 +124,7 @@ def doWork( args ):
     with open(args.lgts, 'r') as lgt_fh:
         tmp_array = []
         (LGT_id, GID1, GID2) = (None, None, None) 
-        for line in lgt_fh:
+        for l in lgt_fh:
             fields = line.rstrip().split("\t")
             # get IDs
             if l[0:2] == "ID":
