@@ -82,12 +82,13 @@ class LGTInfoStore(object):
             dgs.append(cdist(self.genomeTmers[GID], self.lgtTmer))
         dgg = cdist(self.genomeTmers[GIDs[0]], self.genomeTmers[GIDs[1]])
         
+        
         # do magic math...
-        score = whatever
-        if score < ??:
-            return (GIDs[0], score)
-        else:
-            return (GIDs[1], score)
+        #score = whatever
+        #if score < ??:
+        #    return (GIDs[0], score)
+        #else:
+        #    return (GIDs[1], score)
 
     def __str__(self):
         """print function"""
@@ -133,11 +134,37 @@ def doWork( args ):
                 tmp_array.append([float(i) for i in fields[1:]])
             
         # get LGT tmer
-        tmer = np.mean(tmp_array, axis=0)
+        lgt_tmer = np.mean(tmp_array, axis=0)
         # we have a new LGT_id and corresponding tmer
-        LGT_dict[LGT_id] = LGTInfoStore(tmer) # Call class functions
-        LGT_dict[LGT_id].LGT.addGenome(GID1)
-        LGT_dict[LGT_id].LGT.addGenome(GID2)
+        LGT_dict[LGT_id] = LGTInfoStore(lgt_tmer) # Call class functions
+        
+        #-----
+        """genome1"""
+        with open(args.genome1,'r') as g1_fh:
+            g1_tmp_array = []
+            for l in g1_hf:
+                fields = l.rstrip().split("\t")
+                if l[0:2] == "ID":
+                    pass
+                else:
+                    g1_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
+            g1_tmer = np.mean(g1_tmp_array, axis=0)
+            LGT_dict[LGT_id].LGT.addGenome(GID1,g1_tmer)
+        
+        #-----
+        """genome2"""
+        with open(args.genome2,'r') as g2_fh:
+            g2_tmp_array = []
+            for l in g2_hf:
+                fields = l.rstrip().split("\t")
+                if l[0:2] == "ID":
+                    pass
+                else:
+                    g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
+            g2_tmer = np.mean(g1_tmp_array, axis=0)
+            LGT_dict[LGT_id].LGT.addGenome(GID2,g2_tmer)
+    
+    
     
     #with open(args.genome1,"r") as g1_fh:
     #    tmp_array = []
