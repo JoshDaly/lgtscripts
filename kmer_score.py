@@ -152,6 +152,7 @@ def doWork( args ):
                 else:
                     g1_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g1_tmer = np.mean(g1_tmp_array, axis=0)
+            print g1_tmer
             LGT_dict[LGT_id].addGenomeTmer(GID1,g1_tmer)
         
         #-----
@@ -165,9 +166,10 @@ def doWork( args ):
                 else:
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g2_tmer = np.mean(g1_tmp_array, axis=0)
+            print g2_tmer
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
         
-        LGT_dict[LGT_id].getClosestGID()
+        #LGT_dict[LGT_id].getClosestGID()
          
     
     
