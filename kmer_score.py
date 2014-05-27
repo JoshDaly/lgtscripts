@@ -113,7 +113,7 @@ def getIDs(header):
     genome_1= header.rstrip().split("-")[2].split(":")[1] 
     genome_2= header.rstrip().split("-")[6].split(":")[1]
     lgt_id= header.rstrip().split("-")[0]
-    return (lgt_id,genome1,genome2)
+    return (lgt_id,genome_1,genome_2)
 
 def doWork( args ):
     """ Main wrapper"""
