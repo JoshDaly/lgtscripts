@@ -245,7 +245,9 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i','--input_file', help="...")
+    parser.add_argument('-lgts','--lgts', help="")
+    parser.add_argument('-genome1','--genome1', help="")
+    parser.add_argument('-genome2','--genome2', help="")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
