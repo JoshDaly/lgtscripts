@@ -33,7 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
-from scipy.spatial import cdist
+from scipy.spatial.distance import cdist
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -137,6 +137,8 @@ def doWork( args ):
         lgt_tmer = np.mean(tmp_array, axis=0)
         # we have a new LGT_id and corresponding tmer
         LGT_dict[LGT_id] = LGTInfoStore(lgt_tmer) # Call class functions
+        LGT_dict[LGT_id].LGT.addGenome(GID1)
+        LGT_dict[LGT_id].LGT.addGenome(GID2)
         
         #-----
         """genome1"""
@@ -149,7 +151,7 @@ def doWork( args ):
                 else:
                     g1_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g1_tmer = np.mean(g1_tmp_array, axis=0)
-            LGT_dict[LGT_id].LGT.addGenome(GID1,g1_tmer)
+            LGT_dict[LGT_id].LGT.addGenomeTmer(GID1,g1_tmer)
         
         #-----
         """genome2"""
@@ -162,7 +164,7 @@ def doWork( args ):
                 else:
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g2_tmer = np.mean(g1_tmp_array, axis=0)
-            LGT_dict[LGT_id].LGT.addGenome(GID2,g2_tmer)
+            LGT_dict[LGT_id].LGT.addGenomeTmer(GID2,g2_tmer)
     
     
     
