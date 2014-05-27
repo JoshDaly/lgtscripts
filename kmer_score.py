@@ -81,7 +81,7 @@ class LGTInfoStore(object):
         for GID in GIDs:
             dgs.append(cdist(self.genomeTmers[GID], self.lgtTmer))
         dgg = cdist(self.genomeTmers[GIDs[0]], self.genomeTmers[GIDs[1]])
-        return dgg
+        return dgs
         
         # do magic math...
         #score = whatever
