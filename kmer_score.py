@@ -81,7 +81,7 @@ class LGTInfoStore(object):
         for GID in GIDs:
             dgs.append(cdist(self.genomeTmers[GID], self.lgtTmer))
         dgg = cdist(self.genomeTmers[GIDs[0]], self.genomeTmers[GIDs[1]])
-        
+        return dgg
         
         # do magic math...
         #score = whatever
@@ -165,7 +165,7 @@ def doWork( args ):
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g2_tmer = np.mean(g1_tmp_array, axis=0)
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
-    
+    print LGT_dict[LGT_id].getClosestGID()
     
     
     #with open(args.genome1,"r") as g1_fh:
