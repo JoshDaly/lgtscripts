@@ -125,7 +125,7 @@ def doWork( args ):
         tmp_array = []
         (LGT_id, GID1, GID2) = (None, None, None) 
         for l in lgt_fh:
-            fields = line.rstrip().split("\t")
+            fields = l.rstrip().split("\t")
             # get IDs
             if l[0:2] == "ID":
                 pass
