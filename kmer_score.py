@@ -33,7 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
-from scipy.spatial.distance import cdist
+from scipy.spatial.distance import pdist
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -167,8 +167,8 @@ def doWork( args ):
                     pass
                 else:
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
-            print np.shape(g2_tmp_array)
-            print "\n\n\n\n\n\n\n"
+            #print np.shape(g2_tmp_array)
+            #print "\n\n\n\n\n\n\n"
             g2_tmer = np.mean(g2_tmp_array, axis=0)
             #print g2_tmer
             #LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
