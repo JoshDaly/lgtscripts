@@ -144,7 +144,7 @@ def doWork( args ):
         """genome1"""
         with open(args.genome1,'r') as g1_fh:
             g1_tmp_array = []
-            for l in g1_hf:
+            for l in g1_fh:
                 fields = l.rstrip().split("\t")
                 if l[0:2] == "ID":
                     pass
@@ -157,7 +157,7 @@ def doWork( args ):
         """genome2"""
         with open(args.genome2,'r') as g2_fh:
             g2_tmp_array = []
-            for l in g2_hf:
+            for l in g2_fh:
                 fields = l.rstrip().split("\t")
                 if l[0:2] == "ID":
                     pass
