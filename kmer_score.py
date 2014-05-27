@@ -91,9 +91,9 @@ class LGTInfoStore(object):
         #else:
         #    return (GIDs[1], score)
 
-    def __str__(self):
-        """print function"""
-        return "GID1: %s GID2: %s what: %d" % (self.genomeTmers.keys(), self.what)                                              
+    #def __str__(self):
+    #    """print function"""
+    #    return "GID1: %s GID2: %s what: %d" % (self.genomeTmers.keys(), self.what)                                              
 
 ###############################################################################
 ###############################################################################
