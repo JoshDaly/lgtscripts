@@ -167,7 +167,9 @@ def doWork( args ):
                     pass
                 else:
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
-            g2_tmer = np.mean(g1_tmp_array, axis=0)
+            print np.shape(g2_tmp_array)
+            print "\n\n\n\n\n\n\n"
+            g2_tmer = np.mean(g2_tmp_array, axis=0)
             #print g2_tmer
             #LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmp_array)
