@@ -89,9 +89,10 @@ class LGTInfoStore(object):
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt][0]], self.lgtTmer ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt][1]], self.lgtTmer ]) 
         score = dg1/(dg1+dg2)
-        if score >= 0.5:
-            return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
-        return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
+        return score
+        #if score >= 0.5:
+        #    return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
+        #return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
 
 
     def __str__(self):
@@ -113,6 +114,12 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def printDict(dict):
+    for key in dict.keys():
+        print "\t".join([str(key),
+                         str(dict[key])
+                         ])
+
 def getIDs(header):
     genome_1= header.rstrip().split("-")[2].split(":")[1] 
     genome_2= header.rstrip().split("-")[6].split(":")[1]
@@ -123,6 +130,7 @@ def doWork( args ):
     """ Main wrapper"""
     LGT_dict = {}       # hash of LGTInfoStore objects
     G2L_dict = {}       # GID to LGT_dict keys
+    Dist_dict = {}      # hash of rounded dist scores
     
     with open(args.lgts, 'r') as lgt_fh:
         tmp_array = []
@@ -168,13 +176,15 @@ def doWork( args ):
             g2_tmer = np.mean(g2_tmp_array, axis=0)
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
         
-        print LGT_dict[LGT_id].getClosestGID()
-         
-    
-    
-    #with open(args.genome1,"r") as g1_fh:
-    #    tmp_array = []
-    #    for l in g1_fh:
+        """round scores and add to dict"""
+        rounded_score = np.round(LGT_dict[LGT_id].getClosestGID())
+        try:
+            Dist_dict[rounded_score]+=1
+        except KeyError:
+            Dist_dict[rounded_score]=1
+        
+        printDict(Dist_dict)
+        
             
             
     """
