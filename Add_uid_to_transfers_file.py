@@ -191,8 +191,8 @@ def doWork( args ):
         
     #-----
     # read in transfers file
-    with open(args.transfers_file,"r") as fh:
-        for line in TP.readTrans(fh): # line by line
+    #with open(args.transfers_file,"r") as fh:
+    #    for line in TP.readTrans(fh): # line by line
             
                    
             
