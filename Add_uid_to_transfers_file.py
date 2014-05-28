@@ -143,7 +143,7 @@ def doWork( args ):
     
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        print parseFastaAccession(accession)
+        print parseFastaAccession(accession)[0]
                     
             
             
