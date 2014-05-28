@@ -85,7 +85,7 @@ class LGTInfoStore(object):
         score = dg1/(dg1+dg2)
         
         
-        return score
+        return (score,dg1,dg2)
         
         # do magic math...
         #score = whatever
