@@ -136,9 +136,9 @@ def doWork( args ):
                 (LGT_id, GID1, GID2) = getIDs(fields[0])
                 tmp_array.append([float(i) for i in fields[1:]])
         
+        lgt_tmer = np.mean(tmp_array, axis=0) # get LGT tmer
         LGT_dict[LGT_id] = LGTInfoStore(lgt_tmer) # Call class functions
         LGT_dict[LGT_id].addLGT(LGT_id, GID1, GID2) # Add LGT
-        lgt_tmer = np.mean(tmp_array, axis=0) # get LGT tmer
         LGT_dict[LGT_id].addGenome(GID1) # add genome
         LGT_dict[LGT_id].addGenome(GID2) # add genome
         
