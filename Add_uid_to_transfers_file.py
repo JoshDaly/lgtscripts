@@ -166,8 +166,8 @@ def doWork( args ):
         UID = uidInfo(accession)
         UID.parseFastaAccession() # grab accession info
         UID.addUID() # add UID to dict
-        UID.printUIDs()
-    #UID.printUIDs()
+        #UID.printUIDs()
+    UID.printUIDs()
     #-----
     # read in transfers file
     #with open(args.transfers_file,"r") as fh:
