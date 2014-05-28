@@ -132,7 +132,9 @@ class uidInfo(object):
     
     def printUIDs(self):
         for uid in self.UID_dict.keys():
-            print uid
+            print "\t".join([uid,
+                             self.UID_dict[uid][0]
+                             ])
         
             
     #def matchUID(self,):
