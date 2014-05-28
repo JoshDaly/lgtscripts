@@ -140,7 +140,7 @@ def doWork( args ):
     Dist_dict = {}      # hash of rounded dist scores
     
     listing = glob.glob('%s/*' % args.kmers_directory) # list of directories
-    print listing
+    #print listing
     
     with open(args.lgts, 'r') as lgt_fh:
         tmp_array = []

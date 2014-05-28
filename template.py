@@ -37,6 +37,9 @@ import sys
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
+from Bio import SeqIO
+from Bio.Seq import Seq
+
 #import os
 #import errno
 
@@ -73,14 +76,21 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
-
+    
                 
             
             
             
             
-            
-    
+    """
+# parse fasta file using biopython
+for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+if accession in genomes_dict:
+pass
+else:
+#print accession
+genomes_dict[accession] = [len(sequence),img_id, sequence.seq
+"""  
     
 
     """
