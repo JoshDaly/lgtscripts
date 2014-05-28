@@ -178,15 +178,14 @@ def doWork( args ):
         
         """round scores and add to dict"""
         rounded_score = np.round(LGT_dict[LGT_id].getClosestGID())
+        print rounded_score
         try:
             Dist_dict[rounded_score]+=1
         except KeyError:
             Dist_dict[rounded_score]=1
         
         printDict(Dist_dict)
-        
-            
-            
+         
     """
     
     print LGT_dict[LGT_id]
