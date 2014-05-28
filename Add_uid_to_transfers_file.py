@@ -136,8 +136,7 @@ class uidInfo(object):
                 return uid
             
     def printUIDs(self):
-        for uid in self.UID_dict.keys():
-            print uid
+        return self.UID_dict
 
 ###############################################################################
 ###############################################################################
@@ -167,7 +166,7 @@ def doWork( args ):
         UID.parseFastaAccession() # grab accession info
         UID.addUID() # add UID to dict
         #UID.printUIDs()
-    UID.printUIDs()
+    print UID.printUIDs()
     #-----
     # read in transfers file
     #with open(args.transfers_file,"r") as fh:
