@@ -106,8 +106,7 @@ class TransferParser:
                        int(fields[11]),
                        int(fields[12]),
                        int(fields[13])]
-            break # done!
-
+            break # done!        
 
 ###############################################################################
 ###############################################################################
@@ -124,6 +123,19 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def parseFastaAccession(accession):
+    # constants to make code readable
+    dashes = accession.rstrip().split("-")
+    _UID        =dashes[0]
+    _CONTIG     =dashes[1]
+    _IMG_ID_1   =dashes[2].split(":")[1]
+    _GT_ID_1    =dashes[3].split(":")[1]
+    _START      =dashes[4].split(":")[1]
+    _STOP       =dashes[5].split(":")[1]
+    _IMG_ID_2   =dashes[6].split(":")[1]
+    _GT_ID_2    =dashes[7].split(":")[1]   
+    return [_UID,_CONTIG,_IMG_ID_1,_GT_ID_1,_START,_STOP,_IMG_ID_2,_GT_ID_2]
+
 def doWork( args ):
     """ Main wrapper"""
     #objects
@@ -131,7 +143,7 @@ def doWork( args ):
     
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        print accession
+        print parseFastaAccession(accession)
                     
             
             
