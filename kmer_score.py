@@ -120,11 +120,17 @@ def printDict(dict):
                          str(dict[key])
                          ])
 
+def printHeader():
+    print "\t".join(["score",
+                     "instances"
+                     ])
+
 def getIDs(header):
     genome_1= header.rstrip().split("-")[2].split(":")[1] 
     genome_2= header.rstrip().split("-")[6].split(":")[1]
     lgt_id= header.rstrip().split("-")[0]
     return (lgt_id,genome_1,genome_2)
+
 
 def doWork( args ):
     """ Main wrapper"""
@@ -178,12 +184,11 @@ def doWork( args ):
         
         """round scores and add to dict"""
         rounded_score = float(np.round(LGT_dict[LGT_id].getClosestGID(),decimals=2))
-        print rounded_score
         try:
             Dist_dict[rounded_score]+=1
         except KeyError:
             Dist_dict[rounded_score]=1
-        
+        printHeader()
         printDict(Dist_dict)
          
     """
