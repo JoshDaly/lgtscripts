@@ -34,6 +34,7 @@ __status__ = "Development"
 import argparse
 import sys
 from scipy.spatial.distance import pdist
+import glob 
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
