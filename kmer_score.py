@@ -61,38 +61,38 @@ class LGTInfoStore(object):
     def __init__(self, lgtTmerArray):
         self.lgtTmer = lgtTmerArray
         self.genomeTmers = {}
+        self.lgtGenomes = {}
         self.what = None
 
     def addWhat(self, what):
         self.what = what
-
-    def addGenome(self, GID):
+    
+    def addLGT(self,lgt_id, GID1, GID2):
+        self.lgtGenomes[lgt_id] = [GID1,GID2]
+        
+    def addGenomes(self, GID):
         """add a holder for a genome but don't worry about the the tmer yet"""
         self.genomeTmers[GID] = None
-
+        
     def addGenomeTmer(self, GID, tmer):
         """add a tmer for a genome"""
         self.genomeTmers[GID] = tmer
 
     def getClosestGID(self):
-        """Calculate the kmer score"""
-        GIDs = self.genomeTmers.keys()
+        """Calculate the kmer score
+        
+        returns (score, (closestGID, dist), (furthestGID, dist))
+        """
+        LGTs = self.lgtGenomes.keys()
         dgs = []
-        #for GID in GIDs:
-        #    dgs.append(cdist(self.genomeTmers[GID], self.lgtTmer))
-        dg1 = pdist([self.genomeTmers[GIDs[0]], self.lgtTmer ])
-        dg2 = pdist([self.genomeTmers[GIDs[1]], self.lgtTmer ])
+        for lgt in LGTs:
+            dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt][0]], self.lgtTmer ])
+            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt][1]], self.lgtTmer ]) 
         score = dg1/(dg1+dg2)
-        
-        
-        return (score,dg1,dg2)
-        
-        # do magic math...
-        #score = whatever
-        #if score < ??:
-        #    return (GIDs[0], score)
-        #else:
-        #    return (GIDs[1], score)
+        if score >= 0.5:
+            return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
+        return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
+
 
     def __str__(self):
         """print function"""
@@ -123,7 +123,6 @@ def doWork( args ):
     """ Main wrapper"""
     LGT_dict = {}       # hash of LGTInfoStore objects
     G2L_dict = {}       # GID to LGT_dict keys
-    #LGT = LGTInfoStore()
     
     with open(args.lgts, 'r') as lgt_fh:
         tmp_array = []
@@ -136,13 +135,12 @@ def doWork( args ):
             else:
                 (LGT_id, GID1, GID2) = getIDs(fields[0])
                 tmp_array.append([float(i) for i in fields[1:]])
-            
-        # get LGT tmer
-        lgt_tmer = np.mean(tmp_array, axis=0)
-        # we have a new LGT_id and corresponding tmer
+        
         LGT_dict[LGT_id] = LGTInfoStore(lgt_tmer) # Call class functions
-        LGT_dict[LGT_id].addGenome(GID1)
-        LGT_dict[LGT_id].addGenome(GID2)
+        LGT_dict[LGT_id].addLGT(LGT_id, GID1, GID2) # Add LGT
+        lgt_tmer = np.mean(tmp_array, axis=0) # get LGT tmer
+        LGT_dict[LGT_id].addGenome(GID1) # add genome
+        LGT_dict[LGT_id].addGenome(GID2) # add genome
         
         #-----
         """genome1"""
@@ -155,9 +153,6 @@ def doWork( args ):
                 else:
                     g1_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
             g1_tmer = np.mean(g1_tmp_array, axis=0)
-            #print g1_tmp_array
-            #print g1_tmer
-            #LGT_dict[LGT_id].addGenomeTmer(GID1,g1_tmer)
             LGT_dict[LGT_id].addGenomeTmer(GID1,g1_tmer)
         
         #-----
@@ -170,11 +165,7 @@ def doWork( args ):
                     pass
                 else:
                     g2_tmp_array.append([float(i) for i in fields[1:]]) # misses first element 
-            #print np.shape(g2_tmp_array)
-            #print "\n\n\n\n\n\n\n"
             g2_tmer = np.mean(g2_tmp_array, axis=0)
-            #print g2_tmer
-            #LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
         
         print LGT_dict[LGT_id].getClosestGID()
