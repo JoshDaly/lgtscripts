@@ -177,7 +177,7 @@ def doWork( args ):
             LGT_dict[LGT_id].addGenomeTmer(GID2,g2_tmer)
         
         """round scores and add to dict"""
-        rounded_score = np.round(LGT_dict[LGT_id].getClosestGID(),decimals=2)
+        rounded_score = float(np.round(LGT_dict[LGT_id].getClosestGID(),decimals=2))
         print rounded_score
         try:
             Dist_dict[rounded_score]+=1
