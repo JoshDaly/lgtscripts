@@ -188,8 +188,8 @@ def doWork( args ):
             Dist_dict[rounded_score]+=1
         except KeyError:
             Dist_dict[rounded_score]=1
-        printHeader()
-        printDict(Dist_dict)
+    printHeader()
+    printDict(Dist_dict)
          
     """
     
