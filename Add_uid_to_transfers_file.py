@@ -106,7 +106,39 @@ class TransferParser:
                        int(fields[11]),
                        int(fields[12]),
                        int(fields[13])]
-            break # done!        
+            break # done!  
+
+class uidInfo(object):
+    """wrapper class for storing fasta file information"""
+    def __init__(self, accession):
+        self.accession = accession
+        self.UID_dict = {}
+        
+    def parseFastaAccession(self):
+        # constants to make code readable
+        dashes = self.accession.rstrip().split("-")
+        _UID        =dashes[0]
+        _CONTIG     =dashes[1]
+        _IMG_ID_1   =dashes[2].split(":")[1]
+        _GT_ID_1    =dashes[3].split(":")[1]
+        _START      =dashes[4].split(":")[1]
+        _STOP       =dashes[5].split(":")[1]
+        _IMG_ID_2   =dashes[6].split(":")[1]
+        _GT_ID_2    =dashes[7].split(":")[1]   
+        return [_UID,_CONTIG,_IMG_ID_1,_GT_ID_1,_START,_STOP,_IMG_ID_2,_GT_ID_2]
+
+    def addUID(self):
+        self.UID_dict[parseFastaAccession(self)[0]] = parseFastaAccession(self)[1:]
+    
+    def printUIDs(self):
+        print self.UID_dict
+            
+    def matchUID(self,):
+        for uids in self.UID_dict:
+            
+        
+        
+    
 
 ###############################################################################
 ###############################################################################
@@ -123,27 +155,22 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def parseFastaAccession(accession):
-    # constants to make code readable
-    dashes = accession.rstrip().split("-")
-    _UID        =dashes[0]
-    _CONTIG     =dashes[1]
-    _IMG_ID_1   =dashes[2].split(":")[1]
-    _GT_ID_1    =dashes[3].split(":")[1]
-    _START      =dashes[4].split(":")[1]
-    _STOP       =dashes[5].split(":")[1]
-    _IMG_ID_2   =dashes[6].split(":")[1]
-    _GT_ID_2    =dashes[7].split(":")[1]   
-    return [_UID,_CONTIG,_IMG_ID_1,_GT_ID_1,_START,_STOP,_IMG_ID_2,_GT_ID_2]
-
 def doWork( args ):
     """ Main wrapper"""
     #objects
     fasta_ids={} # store accession information from fasta file
+    #UID = uidInfo() #call class
+    
     
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        print parseFastaAccession(accession)[0]
+        UID = uidInfo(accession)
+        UID.parseFastaAccession() # grab accession info
+        UID.addUID() # add UID to dict
+        UID.printUIDs()
+        #UID.parseFastaAccession(accession) # grab accession info
+        #UID.addUID() # add UID to dict
+        #UID.printUIDs()
                     
             
             
