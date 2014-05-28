@@ -108,35 +108,57 @@ class TransferParser:
                        int(fields[13])]
             break # done!  
 
+
 class uidInfo(object):
     """wrapper class for storing fasta file information"""
     def __init__(self, accession):
-        self.accession = accession
-        self.UID_dict = {}
+        self.parseFastaAccession(accession)
         
-    def parseFastaAccession(self):
+    def parseFastaAccession(self, accession):
         # constants to make code readable
         dashes = self.accession.rstrip().split("-")
-        _UID        =dashes[0]
-        _CONTIG     =dashes[1]
-        _IMG_ID_1   =dashes[2].split(":")[1]
-        _GT_ID_1    =dashes[3].split(":")[1]
-        _START      =dashes[4].split(":")[1]
-        _STOP       =dashes[5].split(":")[1]
-        _IMG_ID_2   =dashes[6].split(":")[1]
-        _GT_ID_2    =dashes[7].split(":")[1]   
-        return [_UID,_CONTIG,_IMG_ID_1,_GT_ID_1,_START,_STOP,_IMG_ID_2,_GT_ID_2]
+        self.uid        =dashes[0]
+        self.contig     =dashes[1]
+        self.img_id_1   =dashes[2].split(":")[1]
+        self.gt_id_1    =dashes[3].split(":")[1]
+        self.start      =dashes[4].split(":")[1]
+        self.stop       =dashes[5].split(":")[1]
+        self.img_id_2   =dashes[6].split(":")[1]
+        self.gt_id_2    =dashes[7].split(":")[1]   
+        
+            
+   # def matchUID(self,contig,id,start,stop):
+   #     for uid in self.UID_dict.keys():
+   #         if self.UID_dict(uid)[0] == contig and self.UID_dict(uid)[1] == id and self.UID_dict(uid)[3] == start and self.UID_dict(uid)[3] == stop:
+   #             return uid
+            
+   # def getData(self,uid):
+   #     return self.UID_dict[uid]
+            
+   # def printUIDs(self):
+   #     for uid in 
+   #     return self.UID_dict
 
-    def addUID(self):
-        self.UID_dict[self.parseFastaAccession()[0]] = self.parseFastaAccession()[1:]
+class uidInfoDatabase(object):
+    """wrapper class for storing fasta file information"""
+    def __init__(self):
+        self.UID_dict = {}
+                
+    def addAccession(self, accession):
+        newUidInfoObj = uidInfo(accession)
+        self.UID_dict[newUidInfoObj.uid] = newUidInfoObj
             
     def matchUID(self,contig,id,start,stop):
         for uid in self.UID_dict.keys():
-            if self.UID_dict(uid)[0] == contig and self.UID_dict(uid)[1] == id and self.UID_dict(uid)[3] == start and self.UID_dict(uid)[3] == stop:
+            if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
                 return uid
             
-    def printUIDs(self):
-        return self.UID_dict
+    def getData(self, uid):
+        return self.UID_dict[uid]
+            
+   # def printUIDs(self):
+   #     for uid in self.UID_dict
+   #     return self.UID_dict
 
 ###############################################################################
 ###############################################################################
@@ -158,19 +180,19 @@ def doWork( args ):
     #objects
     fasta_ids={} # store accession information from fasta file
     TP = TransferParser()
+    UID_db = uidInfoDatabase() # creates object db
     
     #-----
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        UID = uidInfo(accession)
-        UID.parseFastaAccession() # grab accession info
-        UID.addUID() # add UID to dict
-        #UID.printUIDs()
-    print UID.printUIDs()
+        UID_db.addAccession(accession)
+    UID.getData("asa")
+        
+        
     #-----
     # read in transfers file
-    #with open(args.transfers_file,"r") as fh:
-    #    for line in TP.readTrans(fh): # line by line
+    with open(args.transfers_file,"r") as fh:
+        for line in TP.readTrans(fh): # line by line
             
                    
             
