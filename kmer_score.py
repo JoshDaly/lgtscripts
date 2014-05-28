@@ -138,6 +138,9 @@ def doWork( args ):
     G2L_dict = {}       # GID to LGT_dict keys
     Dist_dict = {}      # hash of rounded dist scores
     
+    listing = glob.glob('%s/*' % args.kmers_directory) # list of directories
+    print listing
+    
     with open(args.lgts, 'r') as lgt_fh:
         tmp_array = []
         (LGT_id, GID1, GID2) = (None, None, None) 
@@ -266,6 +269,7 @@ if __name__ == '__main__':
     parser.add_argument('-lgts','--lgts', help="")
     parser.add_argument('-genome1','--genome1', help="")
     parser.add_argument('-genome2','--genome2', help="")
+    parser.add_argument('-kmers_directory','--kmer_directory', help="")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
