@@ -128,7 +128,7 @@ class uidInfo(object):
         return [_UID,_CONTIG,_IMG_ID_1,_GT_ID_1,_START,_STOP,_IMG_ID_2,_GT_ID_2]
 
     def addUID(self):
-        self.UID_dict[self.parseFastaAccession(self.accession)[0]] = self.parseFastaAccession(self.accession)[1:]
+        self.UID_dict[self.parseFastaAccession()[0]] = self.parseFastaAccession()[1:]
     
     def printUIDs(self):
         print self.UID_dict
