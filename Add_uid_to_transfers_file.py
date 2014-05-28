@@ -116,7 +116,7 @@ class uidInfo(object):
         
     def parseFastaAccession(self, accession):
         # constants to make code readable
-        dashes = self.accession.rstrip().split("-")
+        dashes = accession.rstrip().split("-")
         self.uid        =dashes[0]
         self.contig     =dashes[1]
         self.img_id_1   =dashes[2].split(":")[1]
