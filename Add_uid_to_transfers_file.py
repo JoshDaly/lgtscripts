@@ -129,20 +129,11 @@ class uidInfo(object):
 
     def addUID(self):
         self.UID_dict[self.parseFastaAccession()[0]] = self.parseFastaAccession()[1:]
-    
-    def printUIDs(self):
+            
+    def matchUID(self,contig,id,start,stop):
         for uid in self.UID_dict.keys():
-            print "\t".join([uid,
-                             self.UID_dict[uid][0]
-                             ])
-        
-            
-    #def matchUID(self,):
-    #    for uids in self.UID_dict:
-            
-        
-        
-    
+            if self.UID_dict(uid)[0] == contig and self.UID_dict(uid)[1] == id and self.UID_dict(uid)[3] == start and self.UID_dict(uid)[3] == stop:
+                return uid
 
 ###############################################################################
 ###############################################################################
@@ -163,19 +154,22 @@ def doWork( args ):
     """ Main wrapper"""
     #objects
     fasta_ids={} # store accession information from fasta file
-    #UID = uidInfo() #call class
+    TP = TransferParser()
     
-    
+    #-----
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID = uidInfo(accession)
         UID.parseFastaAccession() # grab accession info
         UID.addUID() # add UID to dict
-        UID.printUIDs()
-        #UID.parseFastaAccession(accession) # grab accession info
-        #UID.addUID() # add UID to dict
         #UID.printUIDs()
-                    
+    UID.printUIDs()
+    #-----
+    # read in transfers file
+    #with open(args.transfers_file,"r") as fh:
+    #    for line in TP.readTrans(fh): # line by line
+            
+                   
             
             
             
@@ -248,6 +242,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-fasta_file','--fasta_file', help="...")
+    parser.add_argument('-transfers_file','--transfers_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
