@@ -134,8 +134,9 @@ class uidInfo(object):
         for uid in self.UID_dict.keys():
             if self.UID_dict(uid)[0] == contig and self.UID_dict(uid)[1] == id and self.UID_dict(uid)[3] == start and self.UID_dict(uid)[3] == stop:
                 return uid
+            
     def printUIDs(self):
-        for uid in self.UID_dict().keys():
+        for uid in self.UID_dict.keys():
             print uid
 
 ###############################################################################
