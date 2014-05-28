@@ -131,7 +131,7 @@ class uidInfo(object):
         self.UID_dict[self.parseFastaAccession()[0]] = self.parseFastaAccession()[1:]
     
     def printUIDs(self):
-        for uid in self.UID_dict:
+        for uid in self.UID_dict.keys():
             print "\t".join([uid,
                              self.UID_dict[uid]
                              ])
