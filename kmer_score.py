@@ -70,7 +70,7 @@ class LGTInfoStore(object):
     def addLGT(self,lgt_id, GID1, GID2):
         self.lgtGenomes[lgt_id] = [GID1,GID2]
         
-    def addGenomes(self, GID):
+    def addGenome(self, GID):
         """add a holder for a genome but don't worry about the the tmer yet"""
         self.genomeTmers[GID] = None
         
