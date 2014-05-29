@@ -155,6 +155,10 @@ class uidInfoDatabase(object):
             
     def getData(self, uid):
         return self.UID_dict[uid]
+    
+    def printKeys(self):
+        for key in self.UID_dict.keys():
+            print key
             
    # def printUIDs(self):
    #     for uid in self.UID_dict
@@ -188,7 +192,7 @@ def doWork( args ):
         UID_db.addAccession(accession)
         
         
-        UID_db.getData("1")
+    UID_db.printKeys()
         
         
     #-----
