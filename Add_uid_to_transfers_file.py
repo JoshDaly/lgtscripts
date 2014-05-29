@@ -158,7 +158,7 @@ class uidInfoDatabase(object):
     
     def printKeys(self):
         for key in self.UID_dict.keys():
-            print UID_dict[key]
+            print self.UID_dict[key]
             
    # def printUIDs(self):
    #     for uid in self.UID_dict
