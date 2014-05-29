@@ -158,7 +158,7 @@ class uidInfoDatabase(object):
     
     def printKeys(self):
         for key in self.UID_dict.keys():
-            print key
+            print UID_dict[key]
             
    # def printUIDs(self):
    #     for uid in self.UID_dict
@@ -191,8 +191,8 @@ def doWork( args ):
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
         
-    print UID_db.getData("5635")    
-    #UID_db.printKeys()
+    #print UID_db.getData("5635")    
+    UID_db.printKeys()
         
         
     #-----
