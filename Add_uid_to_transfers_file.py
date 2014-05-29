@@ -137,8 +137,9 @@ class uidInfoDatabase(object):
             
     def matchUID(self,contig,img_id,start,stop):
         for uid in self.UID_dict.keys():
-            if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
-                return uid
+            return (uid,self.UID_dict[uid].contig,self.UID_dict[uid].img_id_1,self.UID_dict[uid].start,self.UID_dict[uid].stop)
+            #if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
+                
             
     def getData(self, uid):
         return self.UID_dict[uid]
