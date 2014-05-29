@@ -57,7 +57,7 @@ from Bio.Seq import Seq
 ###############################################################################
 ###############################################################################
 
-class TransferParser:
+class TransferParser(object):
     """Wrapper class for parsing transfer files"""
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
     #constants to make the code readable
@@ -125,19 +125,6 @@ class uidInfo(object):
         self.stop       =dashes[5].split(":")[1]
         self.img_id_2   =dashes[6].split(":")[1]
         self.gt_id_2    =dashes[7].split(":")[1]   
-        
-            
-   # def matchUID(self,contig,id,start,stop):
-   #     for uid in self.UID_dict.keys():
-   #         if self.UID_dict(uid)[0] == contig and self.UID_dict(uid)[1] == id and self.UID_dict(uid)[3] == start and self.UID_dict(uid)[3] == stop:
-   #             return uid
-            
-   # def getData(self,uid):
-   #     return self.UID_dict[uid]
-            
-   # def printUIDs(self):
-   #     for uid in 
-   #     return self.UID_dict
 
 class uidInfoDatabase(object):
     """wrapper class for storing fasta file information"""
@@ -148,9 +135,9 @@ class uidInfoDatabase(object):
         newUidInfoObj = uidInfo(accession)
         self.UID_dict[newUidInfoObj.uid] = newUidInfoObj
             
-    def matchUID(self,contig,id,start,stop):
+    def matchUID(self,contig,img_id,start,stop):
         for uid in self.UID_dict.keys():
-            if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
+            if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
                 return uid
             
     def getData(self, uid):
@@ -158,11 +145,7 @@ class uidInfoDatabase(object):
     
     def printKeys(self):
         for key in self.UID_dict.keys():
-            print self.UID_dict[key]
-            
-   # def printUIDs(self):
-   #     for uid in self.UID_dict
-   #     return self.UID_dict
+            print self.UID_dict[key]         
 
 ###############################################################################
 ###############################################################################
@@ -190,15 +173,17 @@ def doWork( args ):
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
+    
         
     #print UID_db.getData("5635")    
-    UID_db.printKeys()
+    #UID_db.printKeys()
         
         
     #-----
     # read in transfers file
-    #with open(args.transfers_file,"r") as fh:
-    #    for line in TP.readTrans(fh): # line by line
+    with open(args.transfers_file,"r") as fh:
+        for line in TP.readTrans(fh): # line by line
+            print UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             
                    
             
