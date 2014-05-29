@@ -177,7 +177,7 @@ def doWork( args ):
     
         
     #print UID_db.getData("5635")    
-    #UID_db.printKeys()
+    UID_db.printKeys()
         
         
     #-----
