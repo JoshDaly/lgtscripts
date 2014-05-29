@@ -137,7 +137,7 @@ class uidInfoDatabase(object):
             
     def matchUID(self,contig,img_id,start,stop):
         for uid in self.UID_dict.keys():
-            return uid
+            print uid
             #return (uid,self.UID_dict[uid].contig,self.UID_dict[uid].img_id_1,self.UID_dict[uid].start,self.UID_dict[uid].stop)
             #if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
                 
@@ -185,7 +185,7 @@ def doWork( args ):
     # read in transfers file
     with open(args.transfers_file,"r") as fh:
         for line in TP.readTrans(fh): # line by line
-            print UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
+            UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             
                    
             
