@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __script_name__.py - description!
+# __run_kmer_analysis__.py - Multiplex kmer_counter.rb
 #
 ###############################################################################
 # #
@@ -33,6 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
+import glob 
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -73,8 +74,15 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
-
-                
+    """
+    Runs these command for each lgt event
+    kmer_counter.rb -w 500 -W 504 -m 500 genome1.fasta >genome1.kmer_counts.csv
+    kmer_counter.rb -w 500 -W 504 -m 500 genome2.fasta >genome2.kmer_counts.csv
+    kmer_counter.rb -w 500 -W 504 -m 500 lgt.fasta >lgt.kmer_counts.csv
+    """
+    # list of genomes
+    
+    # list of lgt events, with interacting genomes  
             
             
             

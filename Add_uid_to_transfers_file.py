@@ -186,7 +186,9 @@ def doWork( args ):
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
-    UID_db.getData("asa")
+        
+        
+        UID_db.getData("1")
         
         
     #-----
