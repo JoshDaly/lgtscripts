@@ -107,7 +107,7 @@ class TransferParser(object):
                        int(fields[12]),
                        int(fields[13])]
             break # done!  
-
+        
 
 class uidInfo(object):
     """wrapper class for storing fasta file information"""
@@ -162,7 +162,7 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-#def printData(line,uid):
+def printTrans(line,uid):
     
 
 def doWork( args ):
@@ -188,7 +188,7 @@ def doWork( args ):
         for line in TP.readTrans(fh): # line by line
             uid = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             if uid:
-                print line.rstrip()+"\t"+uid
+                print line
                    
             
             
