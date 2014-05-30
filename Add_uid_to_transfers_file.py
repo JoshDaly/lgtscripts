@@ -162,7 +162,7 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printData(line,uid):
+#def printData(line,uid):
     
 
 def doWork( args ):
