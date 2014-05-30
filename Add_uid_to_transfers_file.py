@@ -137,11 +137,6 @@ class uidInfoDatabase(object):
             
     def matchUID(self,contig,img_id,start,stop):
         for uid in self.UID_dict.keys():
-            #print uid
-            #print self.UID_dict[uid].contig+"\t"+ contig
-            #print self.UID_dict[uid].img_id_1+"\t"+ img_id
-            #print self.UID_dict[uid].start+"\t"+ str(start)
-            #print self.UID_dict[uid].stop+"\t"+ str(stop)
             if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == str(start) and self.UID_dict[uid].stop == str(stop):
                 return uid
             
@@ -167,6 +162,9 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def printData(line,uid):
+    
+
 def doWork( args ):
     """ Main wrapper"""
     #objects
@@ -188,8 +186,9 @@ def doWork( args ):
     # read in transfers file
     with open(args.transfers_file,"r") as fh:
         for line in TP.readTrans(fh): # line by line
-            print UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
-
+            uid = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
+            if not uid:
+                print uid
                    
             
             
