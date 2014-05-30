@@ -188,7 +188,7 @@ def doWork( args ):
         for line in TP.readTrans(fh): # line by line
             uid = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             if uid:
-                print uid
+                print line.rstrip()+"\t"+uid
                    
             
             
