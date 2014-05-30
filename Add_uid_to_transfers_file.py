@@ -140,8 +140,8 @@ class uidInfoDatabase(object):
             print uid
             print self.UID_dict[uid].contig+"\t"+ contig
             print self.UID_dict[uid].img_id_1+"\t"+ img_id
-            print self.UID_dict[uid].start+"\t"+ start
-            print self.UID_dict[uid].stop+"\t"+ stop
+            print self.UID_dict[uid].start+"\t"+ str(start)
+            print self.UID_dict[uid].stop+"\t"+ str(stop)
             
             
             #if self.UID_dict[uid].contig == contig and self.UID_dict[uid].img_id_1 == img_id and self.UID_dict[uid].start == start and self.UID_dict[uid].stop == stop:
