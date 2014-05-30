@@ -162,8 +162,35 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-#def printTrans(line,uid):
+def printTrans(line,uid):
+    print "\t".join([uid,
+                     line[0],
+                     line[0],
+                     line[0],
+                     line[0],
+                     line[0],
+                     line[0],
+                     
+                     ])
     
+def printHeader():
+    print "\t".join(["uid_1",
+                     "img_id_a",
+                     "genome_tree_id_a",
+                     "contig_a",
+                     "contig_length_a",
+                     "start_a",
+                     "stop_a",
+                     "length_a",
+                     "uid_2",
+                     "img_id_b",
+                     "genome_tree_id_b",
+                     "contig_b",
+                     "contig_length_b",
+                     "start_b",
+                     "stop_b",
+                     "length_b"
+                     ])
 
 def doWork( args ):
     """ Main wrapper"""
@@ -186,9 +213,11 @@ def doWork( args ):
     # read in transfers file
     with open(args.transfers_file,"r") as fh:
         for line in TP.readTrans(fh): # line by line
-            uid = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
-            if uid:
-                print line
+            uid_1 = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
+            uid_2 = UID_db.matchUID(line[TP._CONTIG_2], line[TP._IMG_ID_2], line[TP._START_2], line[TP._STOP_2])
+            if uid_1 and uid_2:
+                print uid_1
+                print uid_2
                    
             
             
