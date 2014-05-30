@@ -162,15 +162,23 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printTrans(line,uid):
-    print "\t".join([uid,
+def printTrans(line,uid_1,uid_2):
+    print "\t".join([uid_1,
                      line[0],
-                     line[0],
-                     line[0],
-                     line[0],
-                     line[0],
-                     line[0],
-                     
+                     line[1],
+                     line[2],
+                     line[3],
+                     line[4],
+                     line[5],
+                     line[6],
+                     uid_2,
+                     line[7],
+                     line[8],
+                     line[9],
+                     line[10],
+                     line[11],
+                     line[12],
+                     line[13]
                      ])
     
 def printHeader():
@@ -198,17 +206,12 @@ def doWork( args ):
     fasta_ids={} # store accession information from fasta file
     TP = TransferParser()
     UID_db = uidInfoDatabase() # creates object db
-    
     #-----
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
-    
-        
-    #print UID_db.getData("5635")    
-    #UID_db.printKeys()
-        
-    count = 0 
+    #-----
+    printHeader() # print header containing uid
     #-----
     # read in transfers file
     with open(args.transfers_file,"r") as fh:
@@ -216,9 +219,7 @@ def doWork( args ):
             uid_1 = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             uid_2 = UID_db.matchUID(line[TP._CONTIG_2], line[TP._IMG_ID_2], line[TP._START_2], line[TP._STOP_2])
             if uid_1 and uid_2:
-                print uid_1
-                print uid_2
-                   
+                printTrans(line,uid_1,uid_2)
             
             
             
