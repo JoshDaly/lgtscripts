@@ -55,7 +55,58 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-  # classes here
+class TransferParser(object):
+    """Wrapper class for parsing transfer files"""
+    """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
+    #constants to make the code readable
+    _UID_1          = 0
+    _IMG_ID_1       = 1
+    _GT_ID_1        = 2
+    _CONTIG_1       = 3
+    _CONTIG_LEN_1   = 4
+    _START_1        = 5
+    _STOP_1         = 6
+    _LEN_1          = 7
+    _UID_2          = 8 
+    _IMG_ID_2       = 9
+    _GT_ID_2        = 10
+    _CONTIG_2       = 11
+    _CONTIG_LEN_2   = 12
+    _START_2        = 13
+    _STOP_2         = 14
+    _LEN_2          = 15
+    
+    def __init__(self):
+        self.prepped = False
+    
+    def readTrans(self,fh):
+        
+        line = None # this is a buffer keeping the last unprocessed line
+        while True: # mimic closure; is it a bad idea?
+            if not self.prepped:
+                # we still need to strip out the header
+                    for l in fh: # search for the first record
+                        if l[0:3] =="img": # next line is good
+                            self.prepped = True
+                            break
+            # file should be prepped now
+            for l in fh:
+                fields = l.split("\t")
+                yield [fields[0],
+                       fields[1],
+                       fields[2],
+                       int(fields[3]),
+                       int(fields[4]),
+                       int(fields[5]),
+                       int(fields[6]),
+                       fields[7],
+                       fields[8],
+                       fields[9],
+                       int(fields[10]),
+                       int(fields[11]),
+                       int(fields[12]),
+                       int(fields[13])]
+            break # done!  
 
 ###############################################################################
 ###############################################################################

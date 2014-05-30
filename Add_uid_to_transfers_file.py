@@ -61,6 +61,7 @@ class TransferParser(object):
     """Wrapper class for parsing transfer files"""
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
     #constants to make the code readable
+    # _UID_1        = #
     _IMG_ID_1       = 0
     _GT_ID_1        = 1
     _CONTIG_1       = 2
@@ -68,6 +69,7 @@ class TransferParser(object):
     _START_1        = 4
     _STOP_1         = 5
     _LEN_1          = 6
+    # _UID_2        = # 
     _IMG_ID_2       = 7
     _GT_ID_2        = 8
     _CONTIG_2       = 9
@@ -107,7 +109,7 @@ class TransferParser(object):
                        int(fields[12]),
                        int(fields[13])]
             break # done!  
-        
+    
 
 class uidInfo(object):
     """wrapper class for storing fasta file information"""
@@ -147,6 +149,38 @@ class uidInfoDatabase(object):
         for key in self.UID_dict.keys():
             print key     
 
+class sixteenSInfo(object):
+    """store 16S file information"""
+    """genome_a    genome_b    16S_id"""
+    def __init__(self,line):
+        self.parse_16S_file(line)
+        
+    def parse_16S_file(self,line):
+        tabs = line.rstrip().split("\t")
+        self.ida        =tabs[0]
+        self.idb        =tabs[1]
+        self.perc_id    =tabs[2]
+
+class sixteenSDB(object):
+    """capture 16S data in a dictionary"""
+    def __init__(self):
+        self.dict_16S = {}
+        
+    def addGenome16Sdist(self,line):
+        new_id = sixteenSInfo(line)
+        try:
+            self.dict_16S[new_id.ida][new_id.idb] = new_id.perc_id
+        except KeyError:
+            self.dict_16S[new_id.ida] = {new_id.idb:new_id.perc_id}
+        try:
+            self.dict_16S[new_id.idb][new_id.ida] = new_id.perc_id
+        except KeyError:
+            self.dict_16S[new_id.idb] = {new_id.ida:new_id.perc_id}
+    
+    def getGenomeDist(self,id_a,id_b):
+        return self.dict_16S[id_a][id_b]
+
+
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -162,7 +196,7 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printTrans(line,uid_1,uid_2):
+def printTrans(line,uid_1,uid_2,id_perc):
     print "\t".join([uid_1,
                      line[0],
                      line[1],
@@ -178,7 +212,8 @@ def printTrans(line,uid_1,uid_2):
                      str(line[10]),
                      str(line[11]),
                      str(line[12]),
-                     str(line[13])
+                     str(line[13]),
+                     id_perc
                      ])
     
 def printHeader():
@@ -197,8 +232,10 @@ def printHeader():
                      "contig_length_b",
                      "start_b",
                      "stop_b",
-                     "length_b"
+                     "length_b",
+                     "perc_ID"
                      ])
+
 
 def doWork( args ):
     """ Main wrapper"""
@@ -206,6 +243,13 @@ def doWork( args ):
     fasta_ids={} # store accession information from fasta file
     TP = TransferParser()
     UID_db = uidInfoDatabase() # creates object db
+    ID_perc= sixteenSDB()
+    #-----
+    # read in 16S distance file
+    with open(args.ID_file,'r') as fh:
+        header = fh.readline() #capture header
+        for l in fh:
+            ID_perc.addGenome16Sdist(l)
     #-----
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
@@ -218,8 +262,9 @@ def doWork( args ):
         for line in TP.readTrans(fh): # line by line
             uid_1 = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             uid_2 = UID_db.matchUID(line[TP._CONTIG_2], line[TP._IMG_ID_2], line[TP._START_2], line[TP._STOP_2])
+            id_perc = ID_perc.getGenomeDist(line[TP._IMG_ID_1],line[TP._IMG_ID_2])
             if uid_1 and uid_2:
-                printTrans(line,uid_1,uid_2)
+                printTrans(line,uid_1,uid_2,id_perc)
             
             
             
@@ -293,6 +338,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-fasta_file','--fasta_file', help="...")
     parser.add_argument('-transfers_file','--transfers_file', help="...")
+    parser.add_argument('-ID_file','--ID_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
