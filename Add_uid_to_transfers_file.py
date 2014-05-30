@@ -167,18 +167,18 @@ def printTrans(line,uid_1,uid_2):
                      line[0],
                      line[1],
                      line[2],
-                     line[3],
-                     line[4],
-                     line[5],
-                     line[6],
+                     str(line[3]),
+                     str(line[4]),
+                     str(line[5]),
+                     str(line[6]),
                      uid_2,
                      line[7],
                      line[8],
                      line[9],
-                     line[10],
-                     line[11],
-                     line[12],
-                     line[13]
+                     str(line[10]),
+                     str(line[11]),
+                     str(line[12]),
+                     str(ine[13])
                      ])
     
 def printHeader():
