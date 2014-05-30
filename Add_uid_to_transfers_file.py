@@ -187,8 +187,10 @@ def doWork( args ):
     with open(args.transfers_file,"r") as fh:
         for line in TP.readTrans(fh): # line by line
             uid = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
-            if not uid:
-                print uid
+            print uid
+            
+            #if not uid:
+            #    print uid
                    
             
             
