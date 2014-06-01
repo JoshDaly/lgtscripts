@@ -182,7 +182,8 @@ def doWork( args ):
                 if img_id==genome1 or img_id==genome2:
                     cmds.append(runKmerCounter(gen_dir,img_id))
             counter+=1
-    print pool.map(runCommand, cmds) # run analysis
+    print cmds
+    #print pool.map(runCommand, cmds) # run analysis
     
       
             
