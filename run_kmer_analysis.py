@@ -180,11 +180,12 @@ def doWork( args ):
             genome2 = UID_db.returnGenomes(uid)[1]
             lgt_dir = args.lgt_directory
             gen_dir = args.genomes_directory
-            cmds.append(runKmerCounter(lgt_dir,uid))
+            gen_id = False
+            cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir)
             for g_file in genome_list:
-                img_id = g_file.split("/")[2].split(".")[0]
+                gen_id = g_file.split("/")[2].split(".")[0]
                 if img_id==genome1 or img_id==genome2:
-                    cmds.append(runKmerCounter(gen_dir,img_id))
+                    cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir))
             counter+=1
     print cmds
     #print pool.map(runCommand, cmds) # run analysis
