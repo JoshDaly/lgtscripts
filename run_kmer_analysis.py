@@ -184,6 +184,8 @@ def doWork( args ):
             for g_file in genome_list:
                 gen_id = g_file.split("/")[2].split(".")[0]
                 print gen_id
+                print genome1
+                print genome2
                 if gen_id==genome1: 
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
                     #print "yep"
