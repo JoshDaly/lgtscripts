@@ -185,8 +185,10 @@ def doWork( args ):
                 gen_id = g_file.split("/")[2].split(".")[0]
                 if gen_id==genome1: 
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
+                    print "yep"
                 if gen_id==genome2:
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
+                    print "yep2"
             counter+=1
     print cmds
     #print pool.map(runCommand, cmds) # run analysis
