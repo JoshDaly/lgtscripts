@@ -166,7 +166,7 @@ def doWork( args ):
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         (uid,img_1,img_2) = readAccession(accession)
-        UID_db.addLGT(uid, img1, img2)
+        UID_db.addLGT(uid, img_1, img_2)
         
     # list of genomes
     for uid in UID_db.returnUIDs():
