@@ -189,7 +189,7 @@ def doWork( args ):
                 if gen_id==genome2:
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
                     print "yep2"
-            counter+=1
+            #counter+=1
     print cmds
     #print pool.map(runCommand, cmds) # run analysis
     
