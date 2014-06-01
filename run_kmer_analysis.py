@@ -143,8 +143,9 @@ def readAccession(accession):
     dashes = accession.rstrip().split("-")
     uid = dashes[0]
     img_1 = dashes[2].split(":")[1]
-    img_2 = dashes[7].split(":")[1]
+    img_2 = dashes[6].split(":")[1]
     return (uid,img_1,img_2)
+
 def runGenomeKmer(lgt_dir,gen_id,lgt_id,gen_dir):
     return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s.fna > %s/%s/%s.kmer_counts.csv" % (gen_dir,gen_id,lgt_dir,lgt_id,gen_id))
         
