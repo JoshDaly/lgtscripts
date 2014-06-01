@@ -103,7 +103,7 @@ def doWork( args ):
             with open(uid_file_dir, 'w') as fh:
                 #fh.write("hello world")
                 fh.write(header)
-                fh.write(sequence.seq)
+                fh.write(str(sequence.seq))
             counter +=1 
         """
         os.path.
