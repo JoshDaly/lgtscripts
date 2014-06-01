@@ -100,8 +100,9 @@ def doWork( args ):
             makeDirIfNotExist(uid_directory)
             makeFileIfNotExist(uid_file_dir)
             with open(uid_file_dir, 'w') as fh:
-                fh.write(header)
-                fh.write(sequence.seq)
+                fh.write("hello world")
+                #fh.write(header)
+                #fh.write(sequence.seq)
             counter +=1 
         """
         os.path.
