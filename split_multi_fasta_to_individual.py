@@ -76,10 +76,19 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    #objects
+    counter = 0
+    
     # parse fasta file using biopython
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         # open output file for each accession
-        print accession
+        uid = accession.split("-")[0]
+        header = ">"+accession
+        if counter <1:
+            with open("%s/lgt_%s/%s.fna" % (args.output_directory,uid,uid), 'w') as fh:
+                fh.write(header)
+                fh.write(sequence.seq)
+        counter +=1
         
         
         
@@ -152,6 +161,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--fasta_file', help="...")
+    parser.add_argument('-o','--output_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
