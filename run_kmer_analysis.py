@@ -175,6 +175,7 @@ def doWork( args ):
             genome1 = UID_db.returnGenomes(uid)[0]
             genome2 = UID_db.returnGenomes(uid)[1]
             args.lgt_directory
+            print runKmerCounter(args.lgt_directory,uid)
             cmds[-1].append(runKmerCounter(args.lgt_directory,uid))
             for g_file in genome_list:
                 img_id = c_file.split("/")[2].split(".")[0]
