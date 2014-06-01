@@ -86,7 +86,8 @@ def doWork( args ):
         #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
          #   print datetime.datetime.now()
         #count += 1 
-    print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
+    print cmds
+    #print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
     
     
     """
