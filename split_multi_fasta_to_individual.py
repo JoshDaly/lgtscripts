@@ -40,7 +40,7 @@ from subprocess import Popen, PIPE
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-#import os
+import os
 #import errno
 
 #import numpy as np
@@ -83,9 +83,12 @@ def doWork( args ):
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         # open output file for each accession
         uid = accession.split("-")[0]
+        uid_file = "%s.fna" % accession.split("-")[0]
         header = ">"+accession
+        os.path.
+        
         if counter <1:
-            with open("%s/lgt_%s/%s.fna" % (args.output_directory,uid,uid), 'w') as fh:
+            with open(os.path.join(args.output_directory,uid,uid_file), 'w') as fh:
                 fh.write(header)
                 fh.write(sequence.seq)
         counter +=1
