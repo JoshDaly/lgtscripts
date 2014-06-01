@@ -145,12 +145,11 @@ def readAccession(accession):
     img_1 = dashes[2].split(":")[1]
     img_2 = dashes[7].split(":")[1]
     return (uid,img_1,img_2)
-def runKmerCounter(lgt_dir,gen_id,lgt_id,gen_dir):
-    if gen_dir: # genomes
-        return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s.fna > %s/%s/%s.kmer_counts.csv" % (gen_dir,gen_id,lgt_dir,lgt_id,gen_id))
-    else: # lgts
-        return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,lgt_id,lgt_id,lgt_dir,lgt_id,lgt_id))
-
+def runGenomeKmer(lgt_dir,gen_id,lgt_id,gen_dir):
+    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s.fna > %s/%s/%s.kmer_counts.csv" % (gen_dir,gen_id,lgt_dir,lgt_id,gen_id))
+        
+def runLGTKmer( lgt_dir, lgt_id ):
+    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,lgt_id,lgt_id,lgt_dir,lgt_id,lgt_id))
 
 def doWork( args ):
     """ Main wrapper"""
@@ -181,11 +180,11 @@ def doWork( args ):
             lgt_dir = args.lgt_directory
             gen_dir = args.genomes_directory
             gen_id = False
-            cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir))
+            cmds.append(runLGTKmer(lgt_dir,uid))
             for g_file in genome_list:
                 gen_id = g_file.split("/")[2].split(".")[0]
                 if gen_id==genome1 or gen_id==genome2:
-                    cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir))
+                    cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
             counter+=1
     print cmds
     #print pool.map(runCommand, cmds) # run analysis
