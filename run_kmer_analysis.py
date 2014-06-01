@@ -108,6 +108,19 @@ class TransferParser(object):
                        int(fields[13])]
             break # done!  
 
+class lgtDB(object):
+    def __init__(self):
+        self.lgt_dict = {}
+        
+    def addLGT(self,uid,img1,img2):
+        self.lgt_dict[uid] = [img1,img2]
+    
+    def returnGenomes(self,uid):
+        return self.lgt_dict[uid]
+    
+    def returnUIDs(self):
+        return self.lgt_dict.keys()
+
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -123,6 +136,15 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def readAccession(accession):
+    dashes = acccession.rstrip().split("-")
+    uid = dashes[0]
+    img_1 = dashes[2].split(":")[1]
+    img_2 = dashes[7].split(":")[1]
+    return (uid,img_1,img_2)
+def runKmerCounter(lgt_dir,id):
+    return "kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,id,id,lgt_dir,id,id)
+
 def doWork( args ):
     """ Main wrapper"""
     """
@@ -131,9 +153,33 @@ def doWork( args ):
     kmer_counter.rb -w 500 -W 504 -m 500 genome2.fasta >genome2.kmer_counts.csv
     kmer_counter.rb -w 500 -W 504 -m 500 lgt.fasta >lgt.kmer_counts.csv
     """
-    # list of genomes
+    # objects
+    genome_list = glob.glob('%s/*.fna' % args.genomes_directory)
+    UID_db = lgtDB()
+    uid_list = glob.glob('%s/*/*.fna' % args.lgt_directory)
+    cmds = [] # store command line strings
+    pool = Pool(6) # 6 threads
     
-    # list of lgt events, with interacting genomes  
+    # read in fasta file
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+        (uid,img_1,img_2) = readAccession(accession)
+        UID_db.addLGT(uid, img1, img2)
+        
+    # list of genomes
+    for uid in UID_db.returnUIDs():
+        if counter < 5:
+            genome1 = UID_db.returnGenomes(uid)[0]
+            genome2 = UID_db.returnGenomes(uid)[1]
+            args.lgt_directory
+            cmds[-1].append(runKmerCounter(args.lgt_directory,uid))
+            for g_file in genome_list:
+                img_id = c_file.split("/")[2].split(".")[0]
+                if img_id==genome1 or img_id==genome2:
+                    cmds[-1].append(runKmerCounter(args.lgt_directory,img_id))
+            counter+=1
+    print pool.map(runCommand, cmds) # run analysis
+    
+      
             
             
             
@@ -205,7 +251,9 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i','--input_file', help="...")
+    parser.add_argument('-f','--fasta_file', help="...")
+    parser.add_argument('-g','--genomes_directory', help="...")
+    parser.add_argument('-lgt','--lgt_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
