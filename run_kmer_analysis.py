@@ -181,7 +181,7 @@ def doWork( args ):
             lgt_dir = args.lgt_directory
             gen_dir = args.genomes_directory
             gen_id = False
-            cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir)
+            cmds.append(runKmerCounter(lgt_dir,gen_id,uid,gen_dir))
             for g_file in genome_list:
                 gen_id = g_file.split("/")[2].split(".")[0]
                 if img_id==genome1 or img_id==genome2:
