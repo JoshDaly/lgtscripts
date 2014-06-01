@@ -96,7 +96,7 @@ def doWork( args ):
             uid_file = "%s.fna" % accession.split("-")[0]
             uid_directory = os.path.join(args.output_directory,uid)
             uid_file_dir = os.path.join(args.output_directory,uid,uid_file)
-            header = ">"+accession
+            header = ">"+accession+"\n"
             #print header
             makeDirIfNotExist(uid_directory)
             makeFileIfNotExist(uid_file_dir)
