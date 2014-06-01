@@ -140,7 +140,7 @@ returns (stdout, stderr)
     return p.communicate()
 
 def readAccession(accession):
-    dashes = acccession.rstrip().split("-")
+    dashes = accession.rstrip().split("-")
     uid = dashes[0]
     img_1 = dashes[2].split(":")[1]
     img_2 = dashes[7].split(":")[1]
