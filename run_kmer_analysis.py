@@ -112,6 +112,7 @@ class TransferParser(object):
             break # done!  
 
 class lgtDB(object):
+    """wrapper class for producing an lgt dictionary"""
     def __init__(self):
         self.lgt_dict = {}
         
