@@ -104,21 +104,7 @@ def doWork( args ):
                 #fh.write("hello world")
                 fh.write(header)
                 fh.write(str(sequence.seq))
-            counter +=1 
-        """
-        os.path.
-        
-        
-        
-        
-        
-        
-        if counter <1:
-            with open(os.path.join(args.output_directory,uid,uid_file), 'w') as fh:
-                fh.write(header)
-                fh.write(sequence.seq)
-        counter +=1
-        """
+            #counter+=1  
         
         
         
