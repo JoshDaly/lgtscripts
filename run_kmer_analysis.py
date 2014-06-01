@@ -175,7 +175,7 @@ def doWork( args ):
         
     # list of genomes
     for uid in UID_db.returnUIDs():
-        if counter < 1:
+        if counter < 5:
             genome1 = UID_db.returnGenomes(uid)[0]
             genome2 = UID_db.returnGenomes(uid)[1]
             lgt_dir = args.lgt_directory
@@ -184,15 +184,10 @@ def doWork( args ):
             cmds.append(runLGTKmer(lgt_dir,uid))
             for g_file in genome_list:
                 gen_id = g_file.split("/")[2].split(".")[0]
-                print gen_id
-                print genome1
-                print genome2
                 if gen_id==genome1: 
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-                    #print "yep"
                 elif gen_id==genome2:
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-                    #print "yep2"
             counter+=1
     print cmds
     #print pool.map(runCommand, cmds) # run analysis
