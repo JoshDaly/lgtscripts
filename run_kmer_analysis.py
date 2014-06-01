@@ -146,7 +146,7 @@ def readAccession(accession):
     img_2 = dashes[7].split(":")[1]
     return (uid,img_1,img_2)
 def runKmerCounter(lgt_dir,id):
-    return "kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,id,id,lgt_dir,id,id)
+    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,id,id,lgt_dir,id,id))
 
 def doWork( args ):
     """ Main wrapper"""
