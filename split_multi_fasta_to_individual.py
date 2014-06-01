@@ -74,6 +74,15 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def makeDirIfNotExist(path_to_directory):
+    if not os.path.exists(path_to_directory):
+        os.system("mkdir %s" % (path_to_directory))
+
+def makeFileIfNotExist(path_to_file):
+    if not os.path.exists(path_to_file):
+        os.system("touch %s" % path_to_file)
+    
+
 def doWork( args ):
     """ Main wrapper"""
     #objects
@@ -81,18 +90,30 @@ def doWork( args ):
     
     # parse fasta file using biopython
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        # open output file for each accession
-        uid = accession.split("-")[0]
-        uid_file = "%s.fna" % accession.split("-")[0]
-        header = ">"+accession
+        if counter < 5:
+            # open output file for each accession
+            uid = accession.split("-")[0]
+            uid_file = "%s.fna" % accession.split("-")[0]
+            uid_directory = os.path.join(args.output_directory,uid)
+            uid_file_dir = os.path.join(args.output_directory,uid,uid_file)
+            header = ">"+accession
+            makeDirIfNotExist(uid_directory)
+            makeFileIfNotExist(uid_file_dir)
+            counter +=1 
+        """
         os.path.
+        
+        
+        
+        
+        
         
         if counter <1:
             with open(os.path.join(args.output_directory,uid,uid_file), 'w') as fh:
                 fh.write(header)
                 fh.write(sequence.seq)
         counter +=1
-        
+        """
         
         
         
