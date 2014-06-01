@@ -162,6 +162,7 @@ def doWork( args ):
     uid_list = glob.glob('%s/*/*.fna' % args.lgt_directory)
     cmds = [] # store command line strings
     pool = Pool(6) # 6 threads
+    counter = 0
     
     # read in fasta file
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
