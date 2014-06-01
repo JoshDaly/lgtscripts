@@ -176,8 +176,8 @@ def doWork( args ):
             genome2 = UID_db.returnGenomes(uid)[1]
             lgt_dir = args.lgt_directory
             #print runKmerCounter(args.lgt_directory,uid)
-            cmds[-1].append(runKmerCounter(lgt_dir,uid))
-            #cmds[-1].append("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,id,id,lgt_dir,id,id))
+            #cmds[-1].append(runKmerCounter(lgt_dir,uid))
+            cmds[-1].append("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,uid,uid,lgt_dir,uid,uid))
             for g_file in genome_list:
                 img_id = c_file.split("/")[2].split(".")[0]
                 if img_id==genome1 or img_id==genome2:
