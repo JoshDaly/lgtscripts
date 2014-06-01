@@ -187,7 +187,7 @@ def doWork( args ):
                 if gen_id==genome1: 
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
                     #print "yep"
-                if gen_id==genome2:
+                elif gen_id==genome2:
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
                     #print "yep2"
             counter+=1
