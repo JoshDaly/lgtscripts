@@ -137,6 +137,7 @@ expects 'cmd' to be a string like "foo -b ar"
 
 returns (stdout, stderr)
 """
+    print cmd
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
@@ -190,8 +191,8 @@ def doWork( args ):
                 elif gen_id==genome2:
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
             counter+=1
-    print cmds
-    print runCommand
+    #print cmds
+    #print runCommand
     print pool.map(runCommand, cmds) # run analysis
     
       
