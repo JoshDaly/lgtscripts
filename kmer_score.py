@@ -117,14 +117,10 @@ returns (stdout, stderr)
 
 def printDict(dict):
     for key in dict.keys():
-        print "\t".join([str(key),
-                         str(dict[key])
-                         ])
+        print "\t".join([str(key),str(dict[key])])
 
 def printHeader():
-    print "\t".join(["score",
-                     "instances"
-                     ])
+    print "\t".join(["score","instances"])
 
 def getIDs(header):
     genome_1= header.rstrip().split("-")[2].split(":")[1] 
