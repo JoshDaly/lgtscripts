@@ -167,7 +167,7 @@ def doWork( args ):
     UID_db = lgtDB()
     uid_list = glob.glob('%s/*/*.fna' % args.lgt_directory)
     cmds = [] # store command line strings
-    pool = Pool(6) # 6 threads
+    pool = Pool(args.num_threads) # set number of threads
     counter = 0
     
     # read in fasta file
@@ -270,6 +270,7 @@ if __name__ == '__main__':
     parser.add_argument('-f','--fasta_file', help="...")
     parser.add_argument('-g','--genomes_directory', help="...")
     parser.add_argument('-lgt','--lgt_directory', help="...")
+    parser.add_argument('-num_threads', '--num_threads',type=int, default=6, help="Number of threads for multiplexing")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
