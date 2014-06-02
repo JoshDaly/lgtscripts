@@ -191,6 +191,7 @@ def doWork( args ):
                     cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
             counter+=1
     print cmds
+    print runCommand
     print pool.map(runCommand, cmds) # run analysis
     
       
