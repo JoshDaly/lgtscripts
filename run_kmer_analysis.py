@@ -138,7 +138,7 @@ expects 'cmd' to be a string like "foo -b ar"
 returns (stdout, stderr)
 """
     print cmd
-    p = Popen(cmd.split(' '), stdout=PIPE)
+    p = Popen(cmd, shell=True)
     return p.communicate()
 
 def readAccession(accession):
