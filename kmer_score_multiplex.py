@@ -230,6 +230,8 @@ def doWork( args ):
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
+            print hit[TP._UID_1]
+            print hit[TP._UID_2]
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
         lgt_dict.getKeys()
