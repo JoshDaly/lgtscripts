@@ -229,12 +229,31 @@ def doWork( args ):
             for kmer in kmer_files:
                 id = kmer.split("/")[-1].split(".")[0]
                 if len(id) < 5: # lgt id
+                    lgt_tmp_array = []
                     lgt_id = id
-                    
+                    with open(kmer,'r') as lgt_fh:
+                        for l in lgt_fh:
+                            fields = l.rstrip().split("\t") 
+                            if l[0:2] == "ID":
+                                pass
+                            else:
+                                lgt_tmp_array.append([float(i) for i in fields[1:]])
+                        lgt_tmer = np.mean(lgt_tmp_array, axis=0)
+                        LGT_kmers.addLGTTmer(lgt_id, lgt_tmer)         
                 else: # genome file
                     GID = id
                     LGT_kmers.addLGT(lgt_id,GID)
-            
+                    GID_tmp_array = []
+                    with open(kmer,'r') as GID_fh:
+                        for l in GID_fh:
+                            fields = l.rstrip().split("\t")
+                            if l[0:2] =="ID":
+                                pass
+                            else:
+                                GID_tmp_array.append([float(i) for i in fields[1:]])
+                        GID_tmer = np.mean(GID_tmp_array, axis=0)
+                        LGT_kmers.addGenomeTmer(GID, GID_tmer)
+                    
             
             
             count+=1 # troubleshooting           
