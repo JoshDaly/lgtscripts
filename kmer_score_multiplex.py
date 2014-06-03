@@ -33,6 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
+import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
