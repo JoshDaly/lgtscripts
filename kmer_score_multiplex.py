@@ -69,14 +69,8 @@ class LGTInfoStore( object ):
 
     def addWhat( self, what ):
         self.what = what
-    
-    def addLGT( self,lgt_id, GID):
-        try:
-            self.lgtGenomes[lgt_id] += [GID]
-        except KeyError:
-            self.lgtGenomes[lgt_id] = [GID]
             
-    def addLGT2( self,kmer_files):
+    def addLGT( self,kmer_files):
         for kmers in kmer_files:
             id = kmers.split("/")[-1].split(".")[0]
             if len(id) < 5: # id is lgt
@@ -243,29 +237,9 @@ def doWork( args ):
     for kmer_dir in kmer_directories:
         if count < 10:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
-            LGT_kmers.addLGT2(kmer_files)
-            
-            
-            
-            
-            # (LGT_id, GID1, GID2) = (None, None, None) # set values to none
-            #for kmers in kmer_files:
-            #    id = kmers.split("/")[-1].split(".")[0]
-            #    if len(id) < 5: # id is lgt
-            #        lgt_id = id                
-            #    else: # genome file
-            #        genome_id = id
-            #        LGT_kmers.addLGT(lgt_id, genome_id)
-            
-            count+=1 # troubleshooting
-            
-    
-            #if len(id) > 4: # id is lgt
-                
-            #else:  
-                
+            LGT_kmers.addLGT(kmer_files)
+            count+=1 # troubleshooting           
     LGT_kmers.printDict()
-    # 
             
             
             
