@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __run_kmer_analysis__.py - Multiplex kmer_counter.rb
+# __kmer_score_multiplex__.py - Determine the kmer scores for each LGT event!
 #
 ###############################################################################
 # #
@@ -33,7 +33,6 @@ __status__ = "Development"
 
 import argparse
 import sys
-import glob 
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -58,7 +57,54 @@ from Bio.Seq import Seq
 ###############################################################################
 ###############################################################################
 
-class TransferParser(object):
+class LGTInfoStore( object ):
+    """Helper class for storing information about directionality of LGT events"""
+    # __init__ links to object, and must be present in every Class! 
+    def __init__( self ):
+        self.lgtTmer = {}
+        self.genomeTmers = {}
+        self.lgtGenomes = {}
+        self.what = None
+
+    def addWhat( self, what ):
+        self.what = what
+    
+    def addLGT( self,lgt_id, GID1, GID2 ):
+        self.lgtGenomes[lgt_id] = [GID1,GID2]
+        
+    def addLGTTmer( self, lgt_id, tmer ):
+        self.lgtTmer[lgt_id] = tmer 
+        
+    def addGenome( self, GID ):
+        """add a holder for a genome but don't worry about the the tmer yet"""
+        self.genomeTmers[GID] = None
+        
+    def addGenomeTmer( self, GID, tmer ):
+        """add a tmer for a genome"""
+        self.genomeTmers[GID] = tmer
+
+    def getClosestGID( self ):
+        """Calculate the kmer score
+        
+        returns (score, (closestGID, dist), (furthestGID, dist))
+        """
+        LGTs = self.lgtGenomes.keys()
+        dgs = []
+        for lgt_id in LGTs:
+            dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgtTmer] ])
+            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgtTmer] ]) 
+        score = dg1/(dg1+dg2)
+        return score
+        #if score >= 0.5:
+        #    return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
+        #return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
+
+
+    def __str__( self ):
+        """print function"""
+        return "GID1: %s GID2: %s" % (i for i in self.genomeTmers.keys()) 
+            
+class TransferParser( object ):
     """Wrapper class for parsing transfer files"""
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
     #constants to make the code readable
@@ -79,10 +125,10 @@ class TransferParser(object):
     _STOP_2         = 14
     _LEN_2          = 15
     
-    def __init__(self):
+    def __init__( self ):
         self.prepped = False
     
-    def readTrans(self,fh):
+    def readTrans( self,fh ):
         
         line = None # this is a buffer keeping the last unprocessed line
         while True: # mimic closure; is it a bad idea?
@@ -110,21 +156,25 @@ class TransferParser(object):
                        int(fields[12]),
                        int(fields[13])]
             break # done!  
-
-class lgtDB(object):
-    """wrapper class for producing an lgt dictionary"""
-    def __init__(self):
-        self.lgt_dict = {}
         
-    def addLGT(self,uid,img1,img2):
-        self.lgt_dict[uid] = [img1,img2]
+class lgtTransfersDict( object ):
+    def __init__( self ):
+        self.lgtdict = {}
+        
+    def addLGT( self,lgt ):
+        self.lgtdict[lgt] = None
     
-    def returnGenomes(self,uid):
-        return self.lgt_dict[uid]
+    def getKeys( self ):
+        for uid in self.lgtdict.keys():
+            return uid
+        
+    def checkUID(self, uid):
+        if uid in self.lgtdict:
+            return True
+        
     
-    def returnUIDs(self):
-        return self.lgt_dict.keys()
-
+        
+        
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -137,71 +187,65 @@ expects 'cmd' to be a string like "foo -b ar"
 
 returns (stdout, stderr)
 """
-    print cmd
-    p = Popen(cmd, shell=True) # shell = True, bash commands ('>') will be recognised. 
+    p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def readAccession(accession):
-    dashes = accession.rstrip().split("-")
-    uid = dashes[0]
-    img_1 = dashes[2].split(":")[1]
-    img_2 = dashes[6].split(":")[1]
-    return (uid,img_1,img_2)
+def printDict( dict ):
+    for key in dict.keys():
+        print "\t".join([str(key),str(dict[key])])
 
-def runGenomeKmer(lgt_dir,gen_id,lgt_id,gen_dir):
-    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s.fna > %s/%s/%s.kmer_counts.csv" % (gen_dir,gen_id,lgt_dir,lgt_id,gen_id))
-        
-def runLGTKmer( lgt_dir, lgt_id ):
-    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,lgt_id,lgt_id,lgt_dir,lgt_id,lgt_id))
+def printHeader():
+    print "\t".join(["score","instances"])
+
+def getIDs( column ):
+    genome_1= column.rstrip().split("-")[2].split(":")[1] 
+    genome_2= column.rstrip().split("-")[6].split(":")[1]
+    lgt_id= column.rstrip().split("-")[0]
+    return (lgt_id,genome_1,genome_2)
 
 def doWork( args ):
     """ Main wrapper"""
-    """
-    Runs these command for each lgt event
-    kmer_counter.rb -w 500 -W 504 -m 500 genome1.fasta >genome1.kmer_counts.csv
-    kmer_counter.rb -w 500 -W 504 -m 500 genome2.fasta >genome2.kmer_counts.csv
-    kmer_counter.rb -w 500 -W 504 -m 500 lgt.fasta >lgt.kmer_counts.csv
-    """
     # objects
-    genome_list = glob.glob('%s/*.fna' % args.genomes_directory)
-    UID_db = lgtDB()
-    uid_list = glob.glob('%s/*/*.fna' % args.lgt_directory)
-    cmds = [] # store command line strings
-    pool = Pool(args.num_threads) # set number of threads
-    counter = 0
+    kmer_directories = glob.glob('%s/*' % args.kmers_directory)
+    LGT_kmers = LGTInfoStore()      # call class
+    lgt_dict =  lgtTransfersDict()  # dict of lgt events from transfers file
+    Dist_dict = {}                  # dict of rounded kmer scores
+    TP = TransferParser()           # call class
+    #-----
+    """read in transfers file"""
+    with open(args.transfer_file,"r") as fh:
+        for hit in TP.readTrans(fh):
+            lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
+            lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
+            
+    for kmer_dir in kmer_directories:
+        if count < 10:
+            kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
+            # (LGT_id, GID1, GID2) = (None, None, None) # set values to none
+            for kmers in kmer_files:
+                id = kmers.split("/")[-1].split(".")[0]
+                print id
+            count+=1 # troubleshooting
+            
+            #if len(id) > 4: # id is lgt
+                
+            #else:  
+                
     
-    # read in fasta file
-    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        (uid,img_1,img_2) = readAccession(accession)
-        UID_db.addLGT(uid, img_1, img_2)
-        
-    # list of genomes
-    for uid in UID_db.returnUIDs():
-        if counter < 5:
-            genome1 = UID_db.returnGenomes(uid)[0]
-            genome2 = UID_db.returnGenomes(uid)[1]
-            lgt_dir = args.lgt_directory
-            gen_dir = args.genomes_directory
-            gen_id = False
-            cmds.append(runLGTKmer(lgt_dir,uid))
-            for g_file in genome_list:
-                gen_id = g_file.split("/")[2].split(".")[0]
-                if gen_id==genome1: 
-                    cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-                elif gen_id==genome2:
-                    cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-            #counter+=1
-    #print cmds
-    #print runCommand
-    print pool.map(runCommand, cmds) # run analysis
-    
-      
+    # 
             
             
             
             
-            
-    
+    """
+# parse fasta file using biopython
+for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+if accession in genomes_dict:
+pass
+else:
+#print accession
+genomes_dict[accession] = [len(sequence),img_id, sequence.seq
+"""  
     
 
     """
@@ -267,10 +311,8 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f','--fasta_file', help="...")
-    parser.add_argument('-g','--genomes_directory', help="...")
-    parser.add_argument('-lgt','--lgt_directory', help="...")
-    parser.add_argument('-num_threads', '--num_threads',type=int, default=6, help="Number of threads for multiplexing")
+    parser.add_argument('-t','--transfer_file', help="...")
+    parser.add_argument('-k','--kmers_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
