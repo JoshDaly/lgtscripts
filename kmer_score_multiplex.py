@@ -92,7 +92,7 @@ class LGTInfoStore( object ):
         returns (score, (closestGID, dist), (furthestGID, dist))
         """
         LGTs = self.lgtGenomes.keys()
-        print LGTs
+        #print LGTs
         dgs = []
         for lgt_id in LGTs:
             #print lgt_id
@@ -268,7 +268,7 @@ def doWork( args ):
                                     GID_tmp_array.append([float(i) for i in fields[1:]])
                             GID_tmer = np.mean(GID_tmp_array, axis=0)
                             LGT_kmers.addGenomeTmer(GID, GID_tmer)
-            count+=1 # troubleshooting
+            #count+=1 # troubleshooting
             #end of for loop
     LGT_kmers.getClosestGID()
     LGT_kmers.getDistHisto()
