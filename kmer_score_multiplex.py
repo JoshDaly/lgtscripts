@@ -239,7 +239,7 @@ def doWork( args ):
                     lgt_id = id                
                 else: # genome file
                     genome_id = id
-                LGT_kmers.addLGT(lgt_id, genome_id)
+                    LGT_kmers.addLGT(lgt_id, genome_id)
             
             count+=1 # troubleshooting
             
