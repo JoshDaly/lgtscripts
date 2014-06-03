@@ -234,7 +234,7 @@ def doWork( args ):
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
             
     for kmer_dir in kmer_directories:
-        if count < 10:
+        if count < 100:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
             for kmer in kmer_files:
                 id = kmer.split("/")[-1].split(".")[0]
@@ -254,7 +254,7 @@ def doWork( args ):
                 else: # genome file
                     if lgt_dict.checkUID(lgt_id):
                         GID = id
-                        print GID
+                        #print GID
                         LGT_kmers.addLGT(lgt_id,GID)
                         GID_tmp_array = []
                         with open(kmer,'r') as GID_fh:
