@@ -95,6 +95,7 @@ class LGTInfoStore( object ):
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgtTmer] ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgtTmer] ]) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
+            print rounded_score
             try:
                 self.Dist_dict[rounded_score]+=1
             except KeyError:
