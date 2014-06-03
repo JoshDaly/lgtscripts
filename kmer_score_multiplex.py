@@ -95,9 +95,9 @@ class LGTInfoStore( object ):
         print LGTs
         dgs = []
         for lgt_id in LGTs:
-            print lgt_id
-            dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgtTmer] ])
-            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgtTmer] ]) 
+            #print lgt_id
+            dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgt_id] ])
+            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ]) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             print rounded_score
             try:
