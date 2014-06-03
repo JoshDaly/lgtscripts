@@ -80,13 +80,13 @@ class LGTInfoStore( object ):
         for kmers in kmer_files:
             id = kmers.split("/")[-1].split(".")[0]
             if len(id) < 5: # id is lgt
-                    lgt_id = id                
-                else: # genome file
-                    GID = id
-                    try:
-                        self.lgtGenomes[lgt_id] += [GID]
-                    except KeyError:
-                        self.lgtGenomes[lgt_id] = [GID] 
+                lgt_id = id                
+            else: # genome file
+                GID = id
+                try:
+                    self.lgtGenomes[lgt_id] += [GID]
+                except KeyError:
+                    self.lgtGenomes[lgt_id] = [GID] 
         
     def addLGTTmer( self, lgt_id, tmer ):
         self.lgtTmer[lgt_id] = tmer 
