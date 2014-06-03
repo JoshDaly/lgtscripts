@@ -214,6 +214,7 @@ def doWork( args ):
     lgt_dict =  lgtTransfersDict()  # dict of lgt events from transfers file
     Dist_dict = {}                  # dict of rounded kmer scores
     TP = TransferParser()           # call class
+    count = 0 
     #-----
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
