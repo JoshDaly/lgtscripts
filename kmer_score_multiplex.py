@@ -254,6 +254,7 @@ def doWork( args ):
                 else: # genome file
                     if lgt_dict.checkUID(lgt_id):
                         GID = id
+                        print GID
                         LGT_kmers.addLGT(lgt_id,GID)
                         GID_tmp_array = []
                         with open(kmer,'r') as GID_fh:
