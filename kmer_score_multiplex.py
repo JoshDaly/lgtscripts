@@ -99,7 +99,7 @@ class LGTInfoStore( object ):
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgt_id] ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ]) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
-            print rounded_score
+            #print rounded_score
             try:
                 self.Dist_dict[rounded_score]+=1
             except KeyError:
@@ -107,7 +107,7 @@ class LGTInfoStore( object ):
         
     def getDistHisto(self):
         for score in self.Dist_dict.keys():
-            print "\t".join([score,self.Dist_dict[score]])
+            print "\t".join([str(score),str(self.Dist_dict[score])])
         
     def printDict( self ):
         for uid in self.lgtGenomes:
