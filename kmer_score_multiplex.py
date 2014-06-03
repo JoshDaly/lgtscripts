@@ -117,7 +117,7 @@ class LGTInfoStore( object ):
         """print function"""
         return "GID1: %s GID2: %s" % (i for i in self.genomeTmers.keys()) 
             
-class TransferParser( object ):
+class TransferParser(object):
     """Wrapper class for parsing transfer files"""
     """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
     #constants to make the code readable
@@ -137,12 +137,11 @@ class TransferParser( object ):
     _START_2        = 13
     _STOP_2         = 14
     _LEN_2          = 15
-    _16S            = 16
     
-    def __init__( self ):
+    def __init__(self):
         self.prepped = False
     
-    def readTrans( self,fh ):
+    def readTrans(self,fh):
         
         line = None # this is a buffer keeping the last unprocessed line
         while True: # mimic closure; is it a bad idea?
@@ -168,9 +167,8 @@ class TransferParser( object ):
                        int(fields[10]),
                        int(fields[11]),
                        int(fields[12]),
-                       int(fields[13]),
-                       float(fields[14])]
-            break # done!  
+                       int(fields[13])]
+            break # done!
         
 class lgtTransfersDict( object ):
     def __init__( self ):
@@ -229,7 +227,9 @@ def doWork( args ):
     #-----
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
-        print "hello"
+        
+        
+        
         for hit in TP.readTrans(fh):
             
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
