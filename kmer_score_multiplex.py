@@ -44,8 +44,8 @@ from Bio.Seq import Seq
 #import os
 #import errno
 
-#import numpy as np
-#np.seterr(all='raise')
+import numpy as np
+np.seterr(all='raise')
 
 #import matplotlib as mpl
 #import matplotlib.pyplot as plt
