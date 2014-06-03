@@ -226,7 +226,6 @@ def doWork( args ):
     for kmer_dir in kmer_directories:
         if count < 10:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
-            LGT_kmers.addLGT(kmer_files)
             for kmer in kmer_files:
                 id = kmer.split("/")[-1].split(".")[0]
                 if len(id) < 5: # lgt id
