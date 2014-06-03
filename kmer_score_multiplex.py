@@ -233,11 +233,8 @@ def doWork( args ):
         for hit in TP.readTrans(fh):
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
-        lgt_dict.getKeys()
         
-        
-        
-    """           
+              
     for kmer_dir in kmer_directories:
         if count < 100:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
@@ -281,7 +278,7 @@ def doWork( args ):
                        
     #LGT_kmers.printDict()
             
-"""         
+         
             
             
     """
