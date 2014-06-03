@@ -177,7 +177,7 @@ class lgtTransfersDict( object ):
         self.lgtdict = {}
         
     def addLGT( self,lgt ):
-        self.lgtdict[lgt] = None
+        self.lgtdict[lgt] = 0
     
     def getKeys( self ):
         for uid in self.lgtdict.keys():
