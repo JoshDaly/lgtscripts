@@ -260,13 +260,14 @@ def doWork( args ):
                                     GID_tmp_array.append([float(i) for i in fields[1:]])
                             GID_tmer = np.mean(GID_tmp_array, axis=0)
                             LGT_kmers.addGenomeTmer(GID, GID_tmer)
+            count+=1 # troubleshooting
             #end of for loop
     LGT_kmers.getClosestGID()
     LGT_kmers.getDistHisto()
                     
             
             
-            count+=1 # troubleshooting           
+                       
     #LGT_kmers.printDict()
             
             
