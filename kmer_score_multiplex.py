@@ -41,6 +41,8 @@ from subprocess import Popen, PIPE
 from Bio import SeqIO
 from Bio.Seq import Seq
 
+from scipy.spatial.distance import pdist
+
 #import os
 #import errno
 
