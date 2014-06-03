@@ -229,6 +229,7 @@ def doWork( args ):
     #-----
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
+        print fh
         for hit in TP.readTrans(fh):
             print hit
             print hit[TP._UID_1]
