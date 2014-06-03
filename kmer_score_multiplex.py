@@ -92,6 +92,7 @@ class LGTInfoStore( object ):
         returns (score, (closestGID, dist), (furthestGID, dist))
         """
         LGTs = self.lgtGenomes.keys()
+        print LGTs
         dgs = []
         for lgt_id in LGTs:
             print lgt_id
