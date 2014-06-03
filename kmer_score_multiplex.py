@@ -105,7 +105,7 @@ class LGTInfoStore( object ):
 
     def printDict( self ):
         for uid in self.lgtGenomes:
-            for i in self.lgtGenomes[uid]
+            for i in self.lgtGenomes[uid]:
                 print "\t".join([uid,i[0],i[1]])
 
     def __str__( self ):
