@@ -181,7 +181,7 @@ class lgtTransfersDict( object ):
     
     def getKeys( self ):
         for uid in self.lgtdict.keys():
-            return uid
+            print uid
         
     def checkUID(self, uid):
         if uid in self.lgtdict:
