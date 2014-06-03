@@ -236,7 +236,7 @@ def doWork( args ):
         
         
         
- """           
+"""           
     for kmer_dir in kmer_directories:
         if count < 100:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
