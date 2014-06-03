@@ -157,17 +157,20 @@ class TransferParser(object):
                 yield [fields[0],
                        fields[1],
                        fields[2],
-                       int(fields[3]),
+                       fields[3],
                        int(fields[4]),
                        int(fields[5]),
                        int(fields[6]),
-                       fields[7],
+                       int(fields[7]),
                        fields[8],
                        fields[9],
-                       int(fields[10]),
-                       int(fields[11]),
+                       fields[10],
+                       fields[11],
                        int(fields[12]),
-                       int(fields[13])]
+                       int(fields[13]),
+                       int(fields[14]),
+                       int(fields[15])
+                       ]
             break # done!
         
 class lgtTransfersDict( object ):
