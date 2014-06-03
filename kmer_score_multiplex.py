@@ -70,27 +70,17 @@ class LGTInfoStore( object ):
     def addWhat( self, what ):
         self.what = what
             
-    def addLGT( self,kmer_files):
-        for kmers in kmer_files:
-            id = kmers.split("/")[-1].split(".")[0]
-            if len(id) < 5: # id is lgt
-                lgt_id = id                
-            else: # genome file
-                GID = id
-                try:
-                    self.lgtGenomes[lgt_id] += [GID]
-                except KeyError:
-                    self.lgtGenomes[lgt_id] = [GID] 
-        
+    def addLGT( self, lgt_id, GID ):
+        """populate lgtgenomes dictionary"""
+        try:
+            self.lgtGenomes[lgt_id] += [GID]
+        except KeyError:
+            self.lgtGenomes[lgt_id] = [GID] 
+
     def addLGTTmer( self, lgt_id, tmer ):
         self.lgtTmer[lgt_id] = tmer 
         
-    def addGenome( self, GID ):
-        """add a holder for a genome but don't worry about the the tmer yet"""
-        self.genomeTmers[GID] = None
-        
     def addGenomeTmer( self, GID, tmer ):
-        """add a tmer for a genome"""
         self.genomeTmers[GID] = tmer
 
     def getClosestGID( self ):
@@ -188,8 +178,7 @@ class lgtTransfersDict( object ):
             return True
         
     
-        
-        
+ 
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -238,6 +227,17 @@ def doWork( args ):
         if count < 10:
             kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
             LGT_kmers.addLGT(kmer_files)
+            for kmer in kmer_files:
+                id = kmer.split("/")[-1].split(".")[0]
+                if len(id) < 5: # lgt id
+                    lgt_id = id
+                    
+                else: # genome file
+                    GID = id
+                    LGT_kmers.addLGT(lgt_id,GID)
+            
+            
+            
             count+=1 # troubleshooting           
     LGT_kmers.printDict()
             
