@@ -232,6 +232,7 @@ def doWork( args ):
         for hit in TP.readTrans(fh):
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
+        lgt_dict.getKeys()
             
     for kmer_dir in kmer_directories:
         if count < 100:
