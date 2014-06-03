@@ -70,8 +70,11 @@ class LGTInfoStore( object ):
     def addWhat( self, what ):
         self.what = what
     
-    def addLGT( self,lgt_id, GID1, GID2 ):
-        self.lgtGenomes[lgt_id] = [GID1,GID2]
+    def addLGT( self,lgt_id, GID):
+        try:
+            self.lgtGenomes[lgt_id] += [GID]
+        except KeyError:
+            self.lgtGenomes[lgt_id] = [GID]
         
     def addLGTTmer( self, lgt_id, tmer ):
         self.lgtTmer[lgt_id] = tmer 
@@ -100,6 +103,10 @@ class LGTInfoStore( object ):
         #    return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
         #return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
 
+    def printDict( self ):
+        for uid in self.lgtGenomes:
+            for i in self.lgtGenomes[uid]
+                print "\t".join([uid,i[0],i[1]])
 
     def __str__( self ):
         """print function"""
@@ -229,15 +236,19 @@ def doWork( args ):
             for kmers in kmer_files:
                 id = kmers.split("/")[-1].split(".")[0]
                 if len(id) < 5: # id is lgt
-                    print id               
-                print id
+                    lgt_id = id                
+                else: # genome file
+                    genome_id = id
+                LGT_kmers.addLGT(lgt_id, genome_id)
+            
             count+=1 # troubleshooting
             
+    
             #if len(id) > 4: # id is lgt
                 
             #else:  
                 
-    
+    LGT_kmers.printDict()
     # 
             
             
