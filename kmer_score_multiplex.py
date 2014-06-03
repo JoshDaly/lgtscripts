@@ -124,6 +124,7 @@ class TransferParser( object ):
     _START_2        = 13
     _STOP_2         = 14
     _LEN_2          = 15
+    _16S            = 16
     
     def __init__( self ):
         self.prepped = False
@@ -154,7 +155,8 @@ class TransferParser( object ):
                        int(fields[10]),
                        int(fields[11]),
                        int(fields[12]),
-                       int(fields[13])]
+                       int(fields[13]),
+                       float(fields[14])]
             break # done!  
         
 class lgtTransfersDict( object ):
