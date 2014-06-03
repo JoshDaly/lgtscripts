@@ -66,6 +66,7 @@ class LGTInfoStore( object ):
         self.genomeTmers = {}
         self.lgtGenomes = {}
         self.what = None
+        self.Dist_dict = {} # store distances
 
     def addWhat( self, what ):
         self.what = what
@@ -93,12 +94,16 @@ class LGTInfoStore( object ):
         for lgt_id in LGTs:
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgtTmer] ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgtTmer] ]) 
-        score = dg1/(dg1+dg2)
-        return score
-        #if score >= 0.5:
-        #    return (score, (self.lgtGenomes[lgt][1], dg2), (self.lgtGenomes[lgt][0], dg1))
-        #return (score, (self.lgtGenomes[lgt][0], dg1), (self.lgtGenomes[lgt][1], dg2))
-
+            rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
+            try:
+                self.Dist_dict[rounded_score]+=1
+            except KeyError:
+                self.Dist_dict[rounded_score]=1
+        
+    def getDistHisto(self):
+        for score in self.Dist_dict:
+            print "\t".join([score,self.Dist_dict[score]])
+        
     def printDict( self ):
         for uid in self.lgtGenomes:
                 print "\t".join([uid,self.lgtGenomes[uid][0],self.lgtGenomes[uid][1]])
@@ -231,33 +236,38 @@ def doWork( args ):
                 if len(id) < 5: # lgt id
                     lgt_tmp_array = []
                     lgt_id = id
-                    with open(kmer,'r') as lgt_fh:
-                        for l in lgt_fh:
-                            fields = l.rstrip().split("\t") 
-                            if l[0:2] == "ID":
-                                pass
-                            else:
-                                lgt_tmp_array.append([float(i) for i in fields[1:]])
-                        lgt_tmer = np.mean(lgt_tmp_array, axis=0)
-                        LGT_kmers.addLGTTmer(lgt_id, lgt_tmer)         
+                    if lgt_dict.checkUID(lgt_id):
+                        with open(kmer,'r') as lgt_fh:
+                            for l in lgt_fh:
+                                fields = l.rstrip().split("\t") 
+                                if l[0:2] == "ID":
+                                    pass
+                                else:
+                                    lgt_tmp_array.append([float(i) for i in fields[1:]])
+                            lgt_tmer = np.mean(lgt_tmp_array, axis=0)
+                            LGT_kmers.addLGTTmer(lgt_id, lgt_tmer)         
                 else: # genome file
-                    GID = id
-                    LGT_kmers.addLGT(lgt_id,GID)
-                    GID_tmp_array = []
-                    with open(kmer,'r') as GID_fh:
-                        for l in GID_fh:
-                            fields = l.rstrip().split("\t")
-                            if l[0:2] =="ID":
-                                pass
-                            else:
-                                GID_tmp_array.append([float(i) for i in fields[1:]])
-                        GID_tmer = np.mean(GID_tmp_array, axis=0)
-                        LGT_kmers.addGenomeTmer(GID, GID_tmer)
+                    if lgt_dict.checkUID(lgt_id):
+                        GID = id
+                        LGT_kmers.addLGT(lgt_id,GID)
+                        GID_tmp_array = []
+                        with open(kmer,'r') as GID_fh:
+                            for l in GID_fh:
+                                fields = l.rstrip().split("\t")
+                                if l[0:2] =="ID":
+                                    pass
+                                else:
+                                    GID_tmp_array.append([float(i) for i in fields[1:]])
+                            GID_tmer = np.mean(GID_tmp_array, axis=0)
+                            LGT_kmers.addGenomeTmer(GID, GID_tmer)
+            #end of for loop
+    LGT_kmers.getClosestGID()
+    LGT_kmers.getDistHisto()
                     
             
             
             count+=1 # troubleshooting           
-    LGT_kmers.printDict()
+    #LGT_kmers.printDict()
             
             
             
