@@ -101,12 +101,12 @@ class LGTInfoStore( object ):
                 self.Dist_dict[rounded_score]=1
         
     def getDistHisto(self):
-        for score in self.Dist_dict:
+        for score in self.Dist_dict.keys():
             print "\t".join([score,self.Dist_dict[score]])
         
     def printDict( self ):
         for uid in self.lgtGenomes:
-                print "\t".join([uid,self.lgtGenomes[uid][0],self.lgtGenomes[uid][1]])
+            print "\t".join([uid,self.lgtGenomes[uid][0],self.lgtGenomes[uid][1]])
 
     def __str__( self ):
         """print function"""
