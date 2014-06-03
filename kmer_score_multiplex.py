@@ -228,6 +228,8 @@ def doWork( args ):
             # (LGT_id, GID1, GID2) = (None, None, None) # set values to none
             for kmers in kmer_files:
                 id = kmers.split("/")[-1].split(".")[0]
+                if len(id) < 5: # id is lgt
+                    print id               
                 print id
             count+=1 # troubleshooting
             
