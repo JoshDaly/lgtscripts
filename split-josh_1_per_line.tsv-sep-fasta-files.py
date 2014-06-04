@@ -73,9 +73,14 @@ class capture16S( object ):
             
     def printToFile(self,):
         for img_id in self.dict_16S.keys():
-            output_file = "%s/%s_16S.fna" % (img_id,img_id)
-            out_dir_file = os.path.join(args.output_directory,output_file)
-            with open(out_dir_file,"w") as fh:
+            output_file = "%s_16S.fna" % (img_id,img_id)
+            output_dir = os.path.join(args.output_directory,"%s" % img_id)
+            FULL_PATH = os.path.join(args.output_directory,output_file)
+            
+            if not os.path.exists(output_dir):
+                os.system("mkdir %s" % (output_dir))
+                
+            with open(FULL_PATH,"w") as fh:
                 fh.write(">"+img_id+"\n")
                 fh.write(self.dict_16S[img_id])
         
