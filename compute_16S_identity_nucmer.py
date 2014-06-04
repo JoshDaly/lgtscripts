@@ -39,8 +39,8 @@ import glob
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-import os
-import errno
+#import os
+#import errno
 
 #import numpy as np
 #np.seterr(all='raise')
@@ -80,9 +80,8 @@ def doWork( args ):
     count = 0   # set up a counter
     pool = Pool(6)                              # 6 threads
     cmds = []
-    fasta_files = glob.glob(os.path.join(args.fasta_directory,"/*/*.fna"))
+    fasta_files = glob.glob('%s/*.fna' % args.fasta_directory)
     print fasta_files
-    
     
     
     """
