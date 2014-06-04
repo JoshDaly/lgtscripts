@@ -133,7 +133,7 @@ def doWork( args ):
                             break 
             dict_info.addGenomeTree(img_id, genome_id)
             dict_info.addGenomeName(img_id, genome_name)
-            count+=1 
+            #count+=1 
     dict_16S.printToFile() # print out to separate fna files
                 
                 
