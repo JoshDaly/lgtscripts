@@ -89,8 +89,8 @@ def doWork( args ):
 
     for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
         for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
-            genome_1 = returnGenomeName(fasta_file[i])
-            genome_2 = returnGenomeName(fasta_file[j]) 
+            genome_1 = returnGenomeName(fasta_files[i])
+            genome_2 = returnGenomeName(fasta_files[j]) 
             cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
         #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
          #   print datetime.datetime.now()
