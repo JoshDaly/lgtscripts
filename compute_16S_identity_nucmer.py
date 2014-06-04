@@ -81,19 +81,16 @@ def doWork( args ):
     pool = Pool(6)                              # 6 threads
     cmds = []
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
-    print fasta_files
-    
-    
-    """
-    for i in range(len(fasta_urls)-1):                    # Mikes example commands for running the script
-        for j in range(i+1, len(fasta_urls)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared. 
-            cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_urls[i], fasta_urls[j], "%s_v_%s" %(fasta_urls[i],fasta_urls[j])))
+
+    for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
+        for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared. 
+            cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(fasta_files[i],fasta_files[j])))
         #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
          #   print datetime.datetime.now()
         #count += 1 
     print cmds
     #print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
-    """
+    
     
     """
 # parse a file
