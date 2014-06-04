@@ -34,12 +34,13 @@ __status__ = "Development"
 import argparse
 import sys
 import datetime
+import glob 
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#import os
-#import errno
+import os
+import errno
 
 #import numpy as np
 #np.seterr(all='raise')
@@ -79,7 +80,12 @@ def doWork( args ):
     count = 0   # set up a counter
     pool = Pool(6)                              # 6 threads
     cmds = []
-    fasta_urls = args.fasta_files
+    fasta_files = glob.glob(os.path.join(args.fasta_directory,"/*/*.fna"))
+    print fasta_files
+    
+    
+    
+    
     for i in range(len(fasta_urls)-1):                    # Mikes example commands for running the script
         for j in range(i+1, len(fasta_urls)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared. 
             cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_urls[i], fasta_urls[j], "%s_v_%s" %(fasta_urls[i],fasta_urls[j])))
@@ -146,9 +152,9 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('-f','--fasta_directory', help="Directory containing 16S fasta file directories")
     #parser.add_argument('positional_arg', help="")
     #parser.add_argument('positional_arg2', nargs='+' help="")
-    parser.add_argument('fasta_files', nargs='+', help="Multiple fasta values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
 
     # parse the arguments
