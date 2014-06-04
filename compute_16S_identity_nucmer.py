@@ -72,6 +72,11 @@ returns (stdout, stderr)
 """
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
+def returnGenomeName(fasta_file):
+    """../../img_4.1_all_lgt/16S_fasta_files/651285000/651285000_16S.fna"""
+    slashes = fasta_file.rstrip().split("/")
+    genome_name = slashes[-1].split(".")[0]
+    return genome_name
 
 def doWork( args ):
     """ Main wrapper"""
@@ -83,8 +88,10 @@ def doWork( args ):
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
 
     for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
-        for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared. 
-            cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(fasta_files[i],fasta_files[j])))
+        for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
+            genome_1 = returnGenomeName(fasta_file[i])
+            genome_2 = returnGenomeName(fasta_file[j]) 
+            cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
         #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
          #   print datetime.datetime.now()
         #count += 1 
