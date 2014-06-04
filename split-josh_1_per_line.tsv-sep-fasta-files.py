@@ -109,8 +109,8 @@ def doWork( args ):
     with open(args.tsv_file,"r") as fh:
         for l in fh:
             tabs = l.split("\t")
-            img_id = tabs[0]
-            genome_id = tabs[1]
+            genome_id = tabs[0]
+            img_id = tabs[1]
             genome_name = tabs[2]
             seq_16S = tabs[3:]
             if len(seq_16S) > 1:
