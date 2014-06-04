@@ -73,7 +73,7 @@ class capture16S( object ):
             
     def printToFile(self,):
         for img_id in self.dict_16S.keys():
-            output_file = "%s_16S.fna" % (img_id,img_id)
+            output_file = "%s_16S.fna" % img_id
             output_dir = os.path.join(args.output_directory,"%s" % img_id)
             FULL_PATH = os.path.join(args.output_directory,output_file)
             
