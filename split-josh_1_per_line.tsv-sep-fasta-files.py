@@ -115,6 +115,7 @@ def doWork( args ):
             seq_16S = tabs[3:]
             if len(seq_16S) > 1:
                 for seq in seq_16S:
+                    seq = seq.rstrip()
                     if dict_16S.checkSeqSize(seq):
                         dict_16S.addGenome16S(img_id, seq)
                         break 
