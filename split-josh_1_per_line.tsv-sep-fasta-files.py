@@ -40,8 +40,8 @@ from subprocess import Popen, PIPE
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-#import os
-#import errno
+import os
+import errno
 
 #import numpy as np
 #np.seterr(all='raise')
@@ -70,6 +70,16 @@ class capture16S( object ):
     def printDict(self):
         for img_id in self.dict_16S.keys():
             print "\t".join([img_id,self.dict_16S[img_id]])
+            
+    def printToFile(self,):
+        for img_id in self.dict_16S.keys():
+            output_file = "%s_16S.fna" % img_id
+            out_dir_file = os.path.join(args.output_directory,output_file)
+            with open(out_dir_file,"w") as fh:
+                fh.write(">"+img_id)
+                fh.write(self.dict_16S[img_id])
+        
+        
         
 class genomeInfo(object):
     def __init__(self):
@@ -104,6 +114,7 @@ def doWork( args ):
     # objects
     dict_16S = capture16S() # hold 16S sequence
     dict_info = genomeInfo() # hold additional info
+    count = 0
     
     # read in file
     with open(args.tsv_file,"r") as fh:
@@ -113,15 +124,17 @@ def doWork( args ):
             img_id = tabs[1]
             genome_name = tabs[2]
             seq_16S = tabs[3:]
-            if len(seq_16S) > 1:
-                for seq in seq_16S:
-                    seq = seq.rstrip()
-                    if dict_16S.checkSeqSize(seq):
-                        dict_16S.addGenome16S(img_id, seq)
-                        break 
+            if count < 10:
+                if len(seq_16S) > 1:
+                    for seq in seq_16S:
+                        seq = seq.rstrip()
+                        if dict_16S.checkSeqSize(seq):
+                            dict_16S.addGenome16S(img_id, seq)
+                            break 
             dict_info.addGenomeTree(img_id, genome_id)
             dict_info.addGenomeName(img_id, genome_name)
-    dict_16S.printDict() 
+            count+=1 
+    dict_16S.printToFile() # print out to separate fna files
                 
                 
             
@@ -203,6 +216,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-tsv','--tsv_file', help="...")
+    parser.add_argument('-o','--output_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
