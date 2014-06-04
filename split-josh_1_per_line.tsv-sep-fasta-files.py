@@ -76,7 +76,7 @@ class capture16S( object ):
             output_file = "%s_16S.fna" % img_id
             out_dir_file = os.path.join(args.output_directory,output_file)
             with open(out_dir_file,"w") as fh:
-                fh.write(">"+img_id)
+                fh.write(">"+img_id+"\n")
                 fh.write(self.dict_16S[img_id])
         
         
