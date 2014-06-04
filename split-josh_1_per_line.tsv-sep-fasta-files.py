@@ -67,6 +67,9 @@ class capture16S( object ):
     def checkSeqSize(self,seq_16S):
         if len(seq_16S) > 400:
             return True
+    def printDict(self):
+        for img_id in self.dict_16S.keys():
+            print "\t".join([img_id,self.dict_16S[img_id]])
         
 class genomeInfo(object):
     def __init__(self):
@@ -117,7 +120,7 @@ def doWork( args ):
                         break 
             dict_info.addGenomeTree(img_id, genome_id)
             dict_info.addGenomeName(img_id, genome_name)
-            
+    dict_16S.printDict() 
                 
                 
             
@@ -198,7 +201,7 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i','--input_file', help="...")
+    parser.add_argument('-tsv','--tsv_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
