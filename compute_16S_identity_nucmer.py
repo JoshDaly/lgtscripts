@@ -80,7 +80,7 @@ def doWork( args ):
     count = 0   # set up a counter
     pool = Pool(6)                              # 6 threads
     cmds = []
-    fasta_files = glob.glob('%s/*.fna' % args.fasta_directory)
+    fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
     print fasta_files
     
     
