@@ -75,7 +75,7 @@ class capture16S( object ):
         for img_id in self.dict_16S.keys():
             output_file = "%s_16S.fna" % img_id
             output_dir = os.path.join(args.output_directory,"%s" % img_id)
-            FULL_PATH = os.path.join(args.output_directory,output_file)
+            FULL_PATH = os.path.join(output_dir,output_file)
             
             if not os.path.exists(output_dir):
                 os.system("mkdir %s" % (output_dir))
@@ -138,7 +138,7 @@ def doWork( args ):
                             break 
             dict_info.addGenomeTree(img_id, genome_id)
             dict_info.addGenomeName(img_id, genome_name)
-            #count+=1 
+            count+=1 
     dict_16S.printToFile() # print out to separate fna files
                 
                 
