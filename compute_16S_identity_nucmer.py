@@ -101,7 +101,8 @@ def doWork( args ):
                 doesDirectoryExist(output_directory)
                 os.chdir(output_directory)
                 #os.system("touch killme")
-                os.system("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
+                cmd = "nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2))
+                os.system(cmd)
                 #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
                 break
             #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
