@@ -116,7 +116,7 @@ def doWork( args ):
                 counter = 0
     
     print "Start", datetime.datetime.now()
-    for sub_cmds in (output_directory,fasta_1,fasta_2,genome_1,genome_2):
+    for sub_cmds in jobs:
         stdouts.append(pool.map(runJobs,sub_cmds))
         print "%d done" % subgrp, datetime.datetime.now()
         
