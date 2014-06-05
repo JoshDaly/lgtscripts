@@ -114,9 +114,10 @@ def doWork( args ):
         if count <= 100:
             break
     
-    pool.map(runJobs,jobs)
-    pool.close()
-    pool.join()
+    print jobs
+    #pool.map(runJobs,jobs)
+    #pool.close()
+    #pool.join()
 
             #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
     #print cmds
