@@ -114,23 +114,19 @@ def doWork( args ):
             if counter >= subgrp:
                 jobs.append(())
                 counter = 0
+    print "Start", datetime.datetime.now()
     for sub_cmds in jobs:
-        print sub_cmds
+        stdouts.append(pool.map(runJobs,sub_cmds))
+        print "%d done" % subgrp, datetime.datetime.now()
+        
+    print "finish", datetime.datetime.now()
     
-    
-    #print "Start", datetime.datetime.now()
-    #for sub_cmds in jobs:
-    #    stdouts.append(pool.map(runJobs,sub_cmds))
-    #    print "%d done" % subgrp, datetime.datetime.now()
-    #    
-    #print "finish", datetime.datetime.now()
-    #
-    #print "writing stdouts"
-    #for (out, err) in stdouts[0]:
-    #    err_file = "%s.txt" % err.split('/')[2].split('.')[0]
-    #    with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
-    #        for line in err:
-    #            err_fh.write(line)
+    print "writing stdouts"
+    for (out, err) in stdouts[0]:
+        err_file = "%s.txt" % err.split('/')[2].split('.')[0]
+        with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
+            for line in err:
+                err_fh.write(line)
     
     #run commands
     #pool.map(runJobs,jobs)
