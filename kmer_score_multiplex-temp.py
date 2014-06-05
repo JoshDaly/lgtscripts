@@ -34,6 +34,7 @@ __status__ = "Development"
 import argparse
 import sys
 import glob
+import datetime
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -237,7 +238,7 @@ def doWork( args ):
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
         
-              
+    print "Start", datetime.datetime.now()          
     for kmer_dir in kmer_directories:
         kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
         for kmer in kmer_files:
@@ -283,7 +284,7 @@ def doWork( args ):
     LGT_kmers.getClosestGID(False)
     LGT_kmers.getDistHisto()
     LGT_kmers.printDict()
-            
+    print "Stop", datetime.datetime.now()        
          
             
             
