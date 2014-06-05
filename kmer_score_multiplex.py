@@ -86,7 +86,7 @@ class LGTInfoStore( object ):
     def addGenomeTmer( self, GID, tmer ):
         self.genomeTmers[GID] = tmer
 
-    def getClosestGID( self ):
+    def getClosestGID( self , rounded):
         """Calculate the kmer score
         
         returns (score, (closestGID, dist), (furthestGID, dist))
@@ -99,11 +99,15 @@ class LGTInfoStore( object ):
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgt_id] ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ]) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
+            score = float(dg1/(dg1+dg2))
             #print rounded_score
-            try:
-                self.Dist_dict[rounded_score]+=1
-            except KeyError:
-                self.Dist_dict[rounded_score]=1
+            if rounded:
+                try:
+                    self.Dist_dict[rounded_score]+=1
+                except KeyError:
+                    self.Dist_dict[rounded_score]=1
+            else:
+                self.Dist_dict[score]=float(np.mean(dg1,dg2))
         
     def getDistHisto(self):
         for score in self.Dist_dict.keys():
@@ -224,7 +228,6 @@ def doWork( args ):
     kmer_directories = glob.glob('%s/*' % args.kmers_directory)
     LGT_kmers = LGTInfoStore()      # call class
     lgt_dict =  lgtTransfersDict()  # dict of lgt events from transfers file
-    Dist_dict = {}                  # dict of rounded kmer scores
     TP = TransferParser()           # call class
     count = 0 
     #-----
@@ -270,7 +273,7 @@ def doWork( args ):
                             LGT_kmers.addGenomeTmer(GID, GID_tmer)
             #count+=1 # troubleshooting
             #end of for loop
-    LGT_kmers.getClosestGID()
+    LGT_kmers.getClosestGID(False)
     LGT_kmers.getDistHisto()
                     
             
