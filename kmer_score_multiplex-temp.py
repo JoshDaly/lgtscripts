@@ -100,8 +100,6 @@ class LGTInfoStore( object ):
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ]) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             score = float(dg1/(dg1+dg2))
-            print dg1
-            print dg2
             #print rounded_score
             if rounded:
                 try:
@@ -273,9 +271,9 @@ def doWork( args ):
                         GID_tmer = np.mean(GID_tmp_array, axis=0)
                         LGT_kmers.addGenomeTmer(GID, GID_tmer)
             count +=1 
-            if count >=4:
+            if count >=22:
                 break
-        if count >=4:
+        if count >=22:
                 break
         
         
