@@ -91,7 +91,7 @@ def doWork( args ):
     """ Main wrapper"""
     
     # run something external in threads
-    count = 0   # set up a counter
+    counter = 0   # set up a counter
     pool = Pool(args.num_threads, maxtasksperchild=1)                              # 6 threads
     cmds = []
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
