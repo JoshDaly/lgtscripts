@@ -97,11 +97,13 @@ def doWork( args ):
             for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
                 genome_1 = returnGenomeName(fasta_files[i])
                 genome_2 = returnGenomeName(fasta_files[j])
+                fasta_1 = os.path.join(output_directory,fasta_files[i])
+                fasta_2 = os.path.join(output_directory,fasta_files[j])
                 output_directory = "/srv/projects/lgt/img_4.1_all_lgt/16S_nucmer_97/%s_v_%s" % (genome_1,genome_2)
                 doesDirectoryExist(output_directory)
                 os.chdir(output_directory)
                 #os.system("touch killme")
-                cmd = "nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2))
+                cmd = "nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2))
                 os.system(cmd)
                 #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
                 break
