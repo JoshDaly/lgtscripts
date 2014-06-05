@@ -97,6 +97,9 @@ def doWork( args ):
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
     jobs = []
     
+    # set stdout to file
+    sys.stderr = open('nucmer.log',"w")
+    
     for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
         for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
             genome_1 = returnGenomeName(fasta_files[i])
@@ -105,6 +108,7 @@ def doWork( args ):
             fasta_1 = "../../16S_fasta_files/%s/%s.fna" % (genome_1.split("_")[0],genome_1)
             fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
             jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
+
     #run commands
     pool.map(runJobs,jobs)
     pool.close()
