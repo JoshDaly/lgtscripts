@@ -107,7 +107,7 @@ class LGTInfoStore( object ):
                 except KeyError:
                     self.Dist_dict[rounded_score]=1
             else:
-                self.Dist_dict[score]=float(np.mean(dg1,dg2))
+                self.Dist_dict[score]=float(np.mean([dg1,dg2]))
         
     def getDistHisto(self):
         for score in self.Dist_dict.keys():
@@ -239,47 +239,49 @@ def doWork( args ):
         
               
     for kmer_dir in kmer_directories:
-        if count < 100:
-            kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
-            for kmer in kmer_files:
-                id = kmer.split("/")[-1].split(".")[0]
-                if len(id) < 5: # lgt id
-                    lgt_tmp_array = []
-                    lgt_id = id
-                    if lgt_dict.checkUID(lgt_id):
-                        with open(kmer,'r') as lgt_fh:
-                            for l in lgt_fh:
-                                fields = l.rstrip().split("\t") 
-                                if l[0:2] == "ID":
-                                    pass
-                                else:
-                                    lgt_tmp_array.append([float(i) for i in fields[1:]])
-                            lgt_tmer = np.mean(lgt_tmp_array, axis=0)
-                            LGT_kmers.addLGTTmer(lgt_id, lgt_tmer)         
-                else: # genome file
-                    if lgt_dict.checkUID(lgt_id):
-                        GID = id
-                        #print GID
-                        LGT_kmers.addLGT(lgt_id,GID)
-                        GID_tmp_array = []
-                        with open(kmer,'r') as GID_fh:
-                            for l in GID_fh:
-                                fields = l.rstrip().split("\t")
-                                if l[0:2] =="ID":
-                                    pass
-                                else:
-                                    GID_tmp_array.append([float(i) for i in fields[1:]])
-                            GID_tmer = np.mean(GID_tmp_array, axis=0)
-                            LGT_kmers.addGenomeTmer(GID, GID_tmer)
-                print id
+        kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
+        for kmer in kmer_files:
+            id = kmer.split("/")[-1].split(".")[0]
+            if len(id) < 5: # lgt id
+                lgt_tmp_array = []
+                lgt_id = id
+                if lgt_dict.checkUID(lgt_id):
+                    with open(kmer,'r') as lgt_fh:
+                        for l in lgt_fh:
+                            fields = l.rstrip().split("\t") 
+                            if l[0:2] == "ID":
+                                pass
+                            else:
+                                lgt_tmp_array.append([float(i) for i in fields[1:]])
+                        lgt_tmer = np.mean(lgt_tmp_array, axis=0)
+                        LGT_kmers.addLGTTmer(lgt_id, lgt_tmer)         
+            else: # genome file
+                if lgt_dict.checkUID(lgt_id):
+                    GID = id
+                    #print GID
+                    LGT_kmers.addLGT(lgt_id,GID)
+                    GID_tmp_array = []
+                    with open(kmer,'r') as GID_fh:
+                        for l in GID_fh:
+                            fields = l.rstrip().split("\t")
+                            if l[0:2] =="ID":
+                                pass
+                            else:
+                                GID_tmp_array.append([float(i) for i in fields[1:]])
+                        GID_tmer = np.mean(GID_tmp_array, axis=0)
+                        LGT_kmers.addGenomeTmer(GID, GID_tmer)
+            count +=1 
+            if count >=4:
+                break
+        if count >=4:
+                break
+        
+        
+                #print id
             #count+=1 # troubleshooting
             #end of for loop
-    #LGT_kmers.getClosestGID(False)
-    #LGT_kmers.getDistHisto()
-                    
-            
-            
-                       
+    LGT_kmers.getClosestGID(False)
+    LGT_kmers.getDistHisto()
     LGT_kmers.printDict()
             
          
