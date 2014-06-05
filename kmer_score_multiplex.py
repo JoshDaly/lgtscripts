@@ -273,13 +273,13 @@ def doWork( args ):
                             LGT_kmers.addGenomeTmer(GID, GID_tmer)
             #count+=1 # troubleshooting
             #end of for loop
-    LGT_kmers.getClosestGID(False)
-    LGT_kmers.getDistHisto()
+    #LGT_kmers.getClosestGID(False)
+    #LGT_kmers.getDistHisto()
                     
             
             
                        
-    #LGT_kmers.printDict()
+    LGT_kmers.printDict()
             
          
             
