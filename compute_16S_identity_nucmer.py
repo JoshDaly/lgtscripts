@@ -82,15 +82,21 @@ def doesDirectoryExist(output_dir):
     if not os.path.exists(output_dir):
         os.system("mkdir %s" % (output_dir))
 
+def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
+    doesDirectoryExist(output_directory)
+    os.chdir(output_directory)
+    cmd = "nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2))
+
+
 def doWork( args ):
     """ Main wrapper"""
     
     # run something external in threads
     count = 0   # set up a counter
-    pool = Pool(6)                              # 6 threads
+    pool = Pool(args.num_threads, maxtasksperchild=1)                              # 6 threads
     cmds = []
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
-    
+    jobs = []
     
     for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
         for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
@@ -99,11 +105,7 @@ def doWork( args ):
             output_directory = "/srv/projects/lgt/img_4.1_all_lgt/16S_nucmer_97/%s_v_%s" % (genome_1,genome_2)              
             fasta_1 = "../../16S_fasta_files/%s/%s.fna" % (genome_1.split("_")[0],genome_1)
             fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
-            doesDirectoryExist(output_directory)
-            os.chdir(output_directory)
-            cmd = "nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2))
-            os.system(cmd)
-            #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
+            jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
             count += 1 
             if count <= 10:
                 break
@@ -111,6 +113,12 @@ def doWork( args ):
              #   print datetime.datetime.now()
         if count <= 10:
             break
+    
+    pool.map(runJobs,jobs)
+    pool.close()
+    pool.join()
+
+            #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
     #print cmds
     #print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
     
@@ -172,6 +180,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--fasta_directory', help="Directory containing 16S fasta file directories")
+    parser.add_argument('-num_threads','--num_threads', type=int, default=6, help="Set the number of threads for multiplexing")
     #parser.add_argument('positional_arg', help="")
     #parser.add_argument('positional_arg2', nargs='+' help="")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
