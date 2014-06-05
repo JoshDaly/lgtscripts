@@ -107,11 +107,11 @@ def doWork( args ):
             fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
             jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
             count += 1 
-            if count <= 10:
+            if count <= 100:
                 break
             #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
              #   print datetime.datetime.now()
-        if count <= 10:
+        if count <= 100:
             break
     
     pool.map(runJobs,jobs)
