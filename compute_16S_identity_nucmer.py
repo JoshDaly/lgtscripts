@@ -85,7 +85,7 @@ def doesDirectoryExist(output_dir):
 def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
     doesDirectoryExist(output_directory)
     os.chdir(output_directory)
-    print "nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2))
+    os.system("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)))
 
 def doWork( args ):
     """ Main wrapper"""
