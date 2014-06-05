@@ -112,8 +112,11 @@ def doWork( args ):
             jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
             counter += 1
             if counter >= subgrp:
-                jobs.append([])
+                jobs.append(())
                 counter = 0
+    for sub_cmds in jobs:
+        print sub_cmds
+    
     
     print "Start", datetime.datetime.now()
     for sub_cmds in jobs:
