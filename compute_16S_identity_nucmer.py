@@ -103,7 +103,7 @@ def doWork( args ):
                 cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
             #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
              #   print datetime.datetime.now()
-            count += 1 
+                count += 1 
     #print cmds
     #print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
     
