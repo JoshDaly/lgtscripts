@@ -272,15 +272,16 @@ def doWork( args ):
                         GID_tmer = np.mean(GID_tmp_array, axis=0)
                         LGT_kmers.addGenomeTmer(GID, GID_tmer)
             count +=1 
-            if count >=22:
+            if count >=100:
                 break
-        if count >=22:
+        if count >=100:
                 break
         
         
                 #print id
             #count+=1 # troubleshooting
             #end of for loop
+    printHeader() 
     LGT_kmers.getClosestGID(False)
     LGT_kmers.getDistHisto()
     LGT_kmers.printDict()
