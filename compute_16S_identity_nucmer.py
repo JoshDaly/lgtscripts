@@ -91,16 +91,19 @@ def doWork( args ):
     cmds = []
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
     
-    if count < 10:
-        for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
+    
+    for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
+        if count < 10:
             for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
                 genome_1 = returnGenomeName(fasta_files[i])
                 genome_2 = returnGenomeName(fasta_files[j])
                 output_directory = "/srv/projects/lgt/img_4.1_all_lgt/16S_nucmer_97/%s_v_%s" % (genome_1,genome_2)
                 doesDirectoryExist(output_directory)
                 os.chdir(output_directory)
-                os.system("touch killme")
-                cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
+                #os.system("touch killme")
+                os.system("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
+                #cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_files[i], fasta_files[j], "%s_v_%s" %(genome_1,genome_2)))
+                break
             #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
              #   print datetime.datetime.now()
                 count += 1 
