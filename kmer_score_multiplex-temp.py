@@ -215,7 +215,7 @@ def printDict( dict ):
         print "\t".join([str(key),str(dict[key])])
 
 def printHeader():
-    print "\t".join(["score","instances","dg1","dg2"])
+    print "\t".join(["score","mean_distance","dg1","dg2"])
 
 def getIDs( column ):
     genome_1= column.rstrip().split("-")[2].split(":")[1] 
@@ -273,9 +273,11 @@ def doWork( args ):
                         LGT_kmers.addGenomeTmer(GID, GID_tmer)
             count +=1 
             if count >=100:
-                break
+                #break
+                pass
         if count >=100:
-                break
+                #break
+                pass
         
         
                 #print id
