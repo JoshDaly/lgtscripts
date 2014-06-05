@@ -96,7 +96,9 @@ def doWork( args ):
     cmds = []
     fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
     jobs = []
-    
+    stdouts = []
+    subgrp = 1000
+
     # set stdout to file
     sys.stderr = open('nucmer.log',"w")
     
@@ -108,11 +110,29 @@ def doWork( args ):
             fasta_1 = "../../16S_fasta_files/%s/%s.fna" % (genome_1.split("_")[0],genome_1)
             fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
             jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
+            counter += 1
+            if counter >= subgrp:
+                jobs.append([])
+                counter = 0
+    
+    print "Start", datetime.datetime.now()
+    for sub_cmds in (output_directory,fasta_1,fasta_2,genome_1,genome_2):
+        stdouts.append(pool.map(runJobs,sub_cmds))
+        print "%d done" % subgrp, datetime.datetime.now()
+        
+    print "finish", datetime.datetime.now()
 
+    print "writing stdouts"
+    for (out, err) in stdouts[0]:
+        err_file = "%s.txt" % err.split('/')[2].split('.')[0]
+        with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
+            for line in err:
+                err_fh.write(line)
+    
     #run commands
-    pool.map(runJobs,jobs)
-    pool.close()
-    pool.join()
+    #pool.map(runJobs,jobs)
+    #pool.close()
+    #pool.join()
     
     
     """
@@ -172,6 +192,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--fasta_directory', help="Directory containing 16S fasta file directories")
+    parser.add_argument('-so','--std_out_dir', help="Standard out directory")
     parser.add_argument('-num_threads','--num_threads', type=int, default=6, help="Set the number of threads for multiplexing")
     #parser.add_argument('positional_arg', help="")
     #parser.add_argument('positional_arg2', nargs='+' help="")
