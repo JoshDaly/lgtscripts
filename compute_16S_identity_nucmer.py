@@ -100,7 +100,7 @@ def doWork( args ):
     subgrp = 1000
 
     # set stdout to file
-    sys.stderr = open('nucmer.log',"w")
+    #sys.stderr = open('nucmer.log',"w")
     
     for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
         for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
@@ -118,19 +118,19 @@ def doWork( args ):
         print sub_cmds
     
     
-    print "Start", datetime.datetime.now()
-    for sub_cmds in jobs:
-        stdouts.append(pool.map(runJobs,sub_cmds))
-        print "%d done" % subgrp, datetime.datetime.now()
-        
-    print "finish", datetime.datetime.now()
-
-    print "writing stdouts"
-    for (out, err) in stdouts[0]:
-        err_file = "%s.txt" % err.split('/')[2].split('.')[0]
-        with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
-            for line in err:
-                err_fh.write(line)
+    #print "Start", datetime.datetime.now()
+    #for sub_cmds in jobs:
+    #    stdouts.append(pool.map(runJobs,sub_cmds))
+    #    print "%d done" % subgrp, datetime.datetime.now()
+    #    
+    #print "finish", datetime.datetime.now()
+    #
+    #print "writing stdouts"
+    #for (out, err) in stdouts[0]:
+    #    err_file = "%s.txt" % err.split('/')[2].split('.')[0]
+    #    with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
+    #        for line in err:
+    #            err_fh.write(line)
     
     #run commands
     #pool.map(runJobs,jobs)
