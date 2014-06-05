@@ -108,11 +108,11 @@ class LGTInfoStore( object ):
                 except KeyError:
                     self.Dist_dict[rounded_score]=1
             else:
-                self.Dist_dict[score]=float(np.mean([dg1,dg2]))
+                self.Dist_dict[score]=[float(np.mean([dg1,dg2])),dg1,dg2]
         
     def getDistHisto(self):
         for score in self.Dist_dict.keys():
-            print "\t".join([str(score),str(self.Dist_dict[score])])
+            print "\t".join([str(score),str(self.Dist_dict[score][0]),str(self.Dist_dict[score][1]),str(self.Dist_dict[score][2])])
         
     def printDict( self ):
         for uid in self.lgtGenomes:
@@ -215,7 +215,7 @@ def printDict( dict ):
         print "\t".join([str(key),str(dict[key])])
 
 def printHeader():
-    print "\t".join(["score","instances"])
+    print "\t".join(["score","instances","dg1","dg2"])
 
 def getIDs( column ):
     genome_1= column.rstrip().split("-")[2].split(":")[1] 
@@ -284,7 +284,7 @@ def doWork( args ):
     printHeader() 
     LGT_kmers.getClosestGID(False)
     LGT_kmers.getDistHisto()
-    LGT_kmers.printDict()
+    #LGT_kmers.printDict()
     print "Stop", datetime.datetime.now()        
          
             
