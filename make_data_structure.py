@@ -94,8 +94,8 @@ def doWork( args ):
             count = 0
         genomes[genome] = alpha[i]
         print "\t".join([genome, genomes[genome]])
-        print str(i) 
-        count=+1
+        #print str(i) 
+        count+=1
                 
             
             
