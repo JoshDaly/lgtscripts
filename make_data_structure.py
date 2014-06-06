@@ -111,7 +111,7 @@ def doWork( args ):
         if count == 500:
             i = i + 1 
             count = 0
-        data_structure.addLevel(genome, alpha[i])
+        data_structure.addLevel("A", "B")
         #print genome +"\t"+alpha[i]
         count+=1
         
