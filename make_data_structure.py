@@ -66,18 +66,16 @@ class dataStructure(object):
     def addGenome(self,genome):
         self.dict_genome[genome] = "huh"
     
-    def addLevel(self,genome,level):
-        print genome
-        print level
-        #try:
-        #    self.dict_genome[genome]= self.dict_genome[genome] + level
-        #except AttributeError:
-        #    self.dict_genome[genome] = level
+    def addLevel(self,gen_id,level):
+        try:
+            self.dict_genome[gen_id]= self.dict_genome[gen_id] + level
+        except AttributeError:
+            self.dict_genome[gen_id] = level
             
     def printDict(self):
         for genome in self.dict_genome.keys():
-            print genome
-            #print "\t".join([genome,self.dict_genome[genome]])
+            #print genome
+            print "\t".join([genome,self.dict_genome[genome]])
 
 ###############################################################################
 ###############################################################################
@@ -107,7 +105,9 @@ def doWork( args ):
     for g_file in fasta_directories:
         genome  = g_file.rstrip().split("/")[-1].split(".")[0]
         data_structure.addGenome(genome)
-        
+        data_structure.addLevel(genome, "A")
+    
+      
     #for genome in genomes.keys():
     #    if count == 500:
     #        i = i + 1 
