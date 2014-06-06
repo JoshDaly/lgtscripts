@@ -71,6 +71,8 @@ class dataStructure(object):
             self.dict_genome[genome]= self.dict_genome[genome] + level
         except AttributeError:
             self.dict_genome[genome] = level
+        print self.dict_genome
+            
     def printDict(self):
         for genome in self.dict_genome.keys():
             print "\t".join([genome,self.dict_genome[genome]])
@@ -109,10 +111,10 @@ def doWork( args ):
             i = i + 1 
             count = 0
         data_structure.addLevel(genome, alpha[i])
-        print genome +"\t"+alpha[i]
+        #print genome +"\t"+alpha[i]
         count+=1
         
-    data_structure.printDict()         
+    #data_structure.printDict()         
             
             
             
