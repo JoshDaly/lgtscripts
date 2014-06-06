@@ -98,6 +98,7 @@ def doWork( args ):
     jobs = []
     stdouts = []
     subgrp = 1000
+    count = 0
 
     # set stdout to file
     #sys.stderr = open('nucmer.log',"w")
@@ -111,22 +112,30 @@ def doWork( args ):
             fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
             jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
             counter += 1
+            count +=1
             if counter >= subgrp:
                 jobs.append(())
                 counter = 0
+            if count >=10:
+                break
+        if count >=10:
+                break
+    
     print "Start", datetime.datetime.now()
     for sub_cmds in jobs:
-        stdouts.append(pool.map(runJobs,sub_cmds))
-        print "%d done" % subgrp, datetime.datetime.now()
+        print sub_cmds
         
-    print "finish", datetime.datetime.now()
+        #stdouts.append(pool.map(runJobs,sub_cmds))
+        #print "%d done" % subgrp, datetime.datetime.now()
+        
+    #print "finish", datetime.datetime.now()
     
-    print "writing stdouts"
-    for (out, err) in stdouts[0]:
-        err_file = "%s.txt" % err.split('/')[2].split('.')[0]
-        with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
-            for line in err:
-                err_fh.write(line)
+    #print "writing stdouts"
+    #for (out, err) in stdouts[0]:
+    #    err_file = "%s.txt" % err.split('/')[2].split('.')[0]
+    #    with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
+    #        for line in err:
+    #            err_fh.write(line)
     
     #run commands
     #pool.map(runJobs,jobs)
