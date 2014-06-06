@@ -68,7 +68,7 @@ class dataStructure(object):
     def addLevel(self,gen_id,level):
         try:
             self.dict_genome[gen_id]= self.dict_genome[gen_id] + level
-        except AttributeError:
+        except TypeError:
             self.dict_genome[gen_id] = level
             
     def printDict(self):
