@@ -34,6 +34,7 @@ __status__ = "Development"
 import argparse
 import sys
 import glob
+import string
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -58,7 +59,6 @@ from Bio.Seq import Seq
 ###############################################################################
 ###############################################################################
 
-  # classes here
 
 ###############################################################################
 ###############################################################################
@@ -77,6 +77,23 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    #objects
+    fasta_directories = glob.glob('%s/*' % args.fasta_directory)
+    alpha = string.ascii_uppercase # array containing alphabet
+    genomes = {} # dict to store genome -> data structure array
+    count = 0 
+    i = 0
+    
+    for g_file in fasta_directories:
+        genome  = g_file.rstrip().split("/")[-1].split(".")[0]
+        genomes[genome] = None
+        
+    for genome in genomes.keys():
+        if count == 500:
+            i = i + 1 
+            count = 0
+        genomes[genome] = alpha[i]
+        print "\t".join([genome, genomes[genome]])
     
                 
             

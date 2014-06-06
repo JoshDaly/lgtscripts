@@ -127,7 +127,6 @@ def doWork( args ):
     pool.map(runJobs,jobs)
     print "%d done" % subgrp, datetime.datetime.now()
     print "finish", datetime.datetime.now()
-    
     #run commands
     #pool.map(runJobs,jobs)
     #pool.close()
