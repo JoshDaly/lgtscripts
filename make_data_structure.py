@@ -59,6 +59,21 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
+class dataStructure(object):
+    def __init__(self):
+        self.dict_genome = {}
+        
+    def addGenome(self,genome):
+        self.dict_genome[genome] = None
+    
+    def addLevel(self,genome,level):
+        try:
+            self.dict_genome[genome]= self.dict_genome[genome] + level
+        except AttributeError:
+            self.dict_genome[genome] = level
+    def printDict(self):
+        for genome in self.dict_genome.keys():
+            print "\t".join([genome,self.dict_genome[genome]])
 
 ###############################################################################
 ###############################################################################
@@ -83,20 +98,21 @@ def doWork( args ):
     genomes = {} # dict to store genome -> data structure array
     count = 0 
     i = 0
+    data_structure = dataStructure()
     
     for g_file in fasta_directories:
         genome  = g_file.rstrip().split("/")[-1].split(".")[0]
-        genomes[genome] = None
+        data_structure.addGenome(genome)
         
     for genome in genomes.keys():
         if count == 500:
             i = i + 1 
             count = 0
-        genomes[genome] = alpha[i]
+        data_structure.addLevel(genome, alpha[i])
         print "\t".join([genome, genomes[genome]])
-        #print str(i) 
         count+=1
-                
+        
+    data_structure.printDict()         
             
             
             
