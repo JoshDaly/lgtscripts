@@ -104,16 +104,16 @@ def doWork( args ):
     for g_file in fasta_directories:
         genome  = g_file.rstrip().split("/")[-1].split(".")[0]
         data_structure.addGenome(genome)
-        data_structure.addLevel(genome, "A")
+        #data_structure.addLevel(genome, "A")
     
       
-    #for genome in genomes.keys():
-    #    if count == 500:
-    #        i = i + 1 
-    #        count = 0
-    #    data_structure.addLevel("A", "B")
+    for genome in genomes.keys():
+        if count == 500:
+            i = i + 1 
+            count = 0
+        data_structure.addLevel(genome, alpha[i])
         #print genome +"\t"+alpha[i]
-    #    count+=1
+        count+=1
         
     data_structure.printDict()         
             
