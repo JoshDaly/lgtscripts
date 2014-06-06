@@ -64,8 +64,7 @@ class dataStructure(object):
         self.dict_genome = {}
         
     def addGenome(self,genome):
-        self.dict_genome[genome] = "huh"
-    
+        self.dict_genome[genome] = None   
     def addLevel(self,gen_id,level):
         try:
             self.dict_genome[gen_id]= self.dict_genome[gen_id] + level
