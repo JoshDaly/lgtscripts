@@ -109,7 +109,6 @@ def doWork( args ):
             i = i + 1 
             count = 0
         data_structure.addLevel(genome, alpha[i])
-        print "\t".join([genome, genomes[genome]])
         count+=1
         
     data_structure.printDict()         
