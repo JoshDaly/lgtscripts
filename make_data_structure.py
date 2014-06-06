@@ -76,7 +76,8 @@ class dataStructure(object):
             
     def printDict(self):
         for genome in self.dict_genome.keys():
-            print "\t".join([genome,self.dict_genome[genome]])
+            print genome
+            #print "\t".join([genome,self.dict_genome[genome]])
 
 ###############################################################################
 ###############################################################################
@@ -107,15 +108,15 @@ def doWork( args ):
         genome  = g_file.rstrip().split("/")[-1].split(".")[0]
         data_structure.addGenome(genome)
         
-    for genome in genomes.keys():
-        if count == 500:
-            i = i + 1 
-            count = 0
-        data_structure.addLevel("A", "B")
+    #for genome in genomes.keys():
+    #    if count == 500:
+    #        i = i + 1 
+    #        count = 0
+    #    data_structure.addLevel("A", "B")
         #print genome +"\t"+alpha[i]
-        count+=1
+    #    count+=1
         
-    #data_structure.printDict()         
+    data_structure.printDict()         
             
             
             
