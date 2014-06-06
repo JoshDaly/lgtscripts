@@ -37,7 +37,7 @@ import datetime
 import glob 
 
 from multiprocessing import Pool
-from subprocess import Popen, PIPE, call
+from subprocess import Popen, PIPE, call,STDOUT
 
 import os
 import errno
@@ -85,7 +85,8 @@ def doesDirectoryExist(output_dir):
 def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
     doesDirectoryExist(output_directory)
     os.chdir(output_directory)
-    call("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)),stdout="/dev/null",stderr="/dev/null")
+    with open("/dev/null","w") as fh:
+        call("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)),stdout=fh,stderr=STDOUT)
 
 def doWork( args ):
     """ Main wrapper"""
