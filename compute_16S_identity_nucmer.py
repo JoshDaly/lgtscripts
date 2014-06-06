@@ -37,7 +37,7 @@ import datetime
 import glob 
 
 from multiprocessing import Pool
-from subprocess import Popen, PIPE, call
+from subprocess import Popen, PIPE, call,STDOUT
 
 import os
 import errno
