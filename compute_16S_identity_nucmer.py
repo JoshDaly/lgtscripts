@@ -87,7 +87,7 @@ def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
     os.chdir(output_directory)
     #with open("asdasd","w") as fh:
     #    fh.write("a")
-    call("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)),stdout=open("/dev/null","w"))
+    call("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)))
 
 def doWork( args ):
     """ Main wrapper"""
