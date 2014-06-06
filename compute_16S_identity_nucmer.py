@@ -37,7 +37,7 @@ import datetime
 import glob 
 
 from multiprocessing import Pool
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 
 import os
 import errno
@@ -85,7 +85,7 @@ def doesDirectoryExist(output_dir):
 def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
     doesDirectoryExist(output_directory)
     os.chdir(output_directory)
-    os.system("nucmer %s %s --mum --coords -p %s" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)))
+    call("nucmer %s %s --mum --coords -p %s 2>&1 >/dev/null" % (fasta_1, fasta_2, "%s_v_%s" %(genome_1,genome_2)),shell=True)
 
 def doWork( args ):
     """ Main wrapper"""
@@ -122,20 +122,9 @@ def doWork( args ):
                 break
     
     print "Start", datetime.datetime.now()
-    for sub_cmds in jobs:
-        print sub_cmds
-        
-        #stdouts.append(pool.map(runJobs,sub_cmds))
-        #print "%d done" % subgrp, datetime.datetime.now()
-        
-    #print "finish", datetime.datetime.now()
-    
-    #print "writing stdouts"
-    #for (out, err) in stdouts[0]:
-    #    err_file = "%s.txt" % err.split('/')[2].split('.')[0]
-    #    with open(os.path.join(args.std_out_dir, err_file), 'w') as err_fh:
-    #        for line in err:
-    #            err_fh.write(line)
+    pool.map(runJobs,jobs)
+    print "%d done" % subgrp, datetime.datetime.now()
+    print "finish", datetime.datetime.now()
     
     #run commands
     #pool.map(runJobs,jobs)
