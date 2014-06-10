@@ -118,7 +118,7 @@ class LGTInfoStore( object ):
         print "\t".join(["lgt","img_id_a","img_id_b","kmer_score","mean_dg","dg1","dg2"])
     
     def printInfo(self):
-        for lgt in lgtScores.keys():
+        for lgt in self.lgtScores.keys():
             kmer_score  = str(lgtScores[lgt][0])
             mean_dg         = str(lgtScores[lgt][1])
             dg1         = lgtScores[lgt][2]
