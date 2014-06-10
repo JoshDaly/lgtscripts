@@ -70,12 +70,14 @@ class LGTInfoStore( object ):
         self.lgtGenomes = {}
         self.what = None
         self.Dist_dict = {} # store distances
+        self.lgtScores = {}
 
     def addWhat( self, what ):
         self.what = what
             
     def addLGT( self, lgt_id, GID ):
         """populate lgtgenomes dictionary"""
+        self.lgtScores[lgt_id] = None
         try:
             self.lgtGenomes[lgt_id] += [GID]
         except KeyError:
@@ -102,6 +104,7 @@ class LGTInfoStore( object ):
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             score = float(dg1/(dg1+dg2))
             #print rounded_score
+            self.lgtScores[lgt_id] = [score,float(np.mean([dg1,dg2])),dg1,dg2]
             if rounded:
                 try:
                     self.Dist_dict[rounded_score]+=1
@@ -109,6 +112,20 @@ class LGTInfoStore( object ):
                     self.Dist_dict[rounded_score]=1
             else:
                 self.Dist_dict[score]=[float(np.mean([dg1,dg2])),dg1,dg2]
+                
+    def printInfoHeader(self):
+        print "\t".join(["lgt","img_id_a","img_id_b","kmer_score","mean_dg","dg1","dg2"])
+    
+    def printInfo(self):
+        for lgt in lgtScores.keys():
+            kmer_score  = str(lgtScores[lgt][0])
+            mean_dg         = str(lgtScores[lgt][1])
+            dg1         = lgtScores[lgt][2]
+            dg2         = lgtScores[lgt][3]
+            g1          = lgtGenomes[lgt][0]
+            g2          = lgtGenomes[lgt][1]
+            print "\t".join([lgt,g1,g2,kmer_score,mean_dg,dg1,dg2])
+        
         
     def getDistHisto(self):
         for score in self.Dist_dict.keys():
@@ -283,9 +300,11 @@ def doWork( args ):
                 #print id
             #count+=1 # troubleshooting
             #end of for loop
-    printHeader() 
+    #printHeader() 
     LGT_kmers.getClosestGID(False)
-    LGT_kmers.getDistHisto()
+    #LGT_kmers.getDistHisto()
+    LGT_kmers.printInfoHeader()
+    LGT_kmers.printInfo()
     #LGT_kmers.printDict()
     print "Stop", datetime.datetime.now()        
          
