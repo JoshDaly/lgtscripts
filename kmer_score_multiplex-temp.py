@@ -112,6 +112,7 @@ class LGTInfoStore( object ):
                     self.Dist_dict[rounded_score]=1
             else:
                 self.Dist_dict[score]=[float(np.mean([dg1,dg2])),dg1,dg2]
+            print self.lgtScores
                 
     def printInfoHeader(self):
         print "\t".join(["lgt","img_id_a","img_id_b","kmer_score","mean_dg","dg1","dg2"])
