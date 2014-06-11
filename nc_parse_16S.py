@@ -232,7 +232,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-c','--coordsdir', help="directory containing nucmer coords files")
-    parser.add_argument('-i','identity_cutoff',type=int,default=97,help="Set 16S identity cutoff default: 97%")
+    parser.add_argument('-i','--identity_cutoff',type=int,default=97,help="Set 16S identity cutoff default: 97%")
     #parser.add_argument('contigs', nargs='+', help="contigs mapped using nucmer")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
