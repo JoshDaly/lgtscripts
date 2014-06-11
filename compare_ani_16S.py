@@ -148,11 +148,13 @@ class store16S(object):
         try:
             self.dict_16S[g1][g2]+= [ani1,ani2]
         except KeyError:
-            print "\t".join([g1,g2])
+            #print "\t".join([g1,g2])
+            pass
         try:
             self.dict_16S[g2][g1]+= [ani1,ani2]
         except KeyError:
-            print "\t".join([g2,g1]) 
+            #print "\t".join([g2,g1])
+            pass 
         
     def printOUT(self):
         for g1 in self.dict_16S.keys():
@@ -219,7 +221,7 @@ def doWork( args ):
     with open(args.s16_file,"r") as fh_16S:
         for line in S16_p.read16S(fh_16S):
             S16_db.add16S(line[S16_p._img_id_a], line[S16_p._img_id_b], line[S16_p._identity])
-            if count >= 100:
+            if count >= 10000:
                 break                
             count += 1 
         
@@ -227,7 +229,7 @@ def doWork( args ):
     with open(args.ani_file,"r") as fh_ani:
         for line in ANI_p.readANI(fh_ani):
             S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
-            if counter >= 100:
+            if counter >= 10000:
                 break
             counter += 1
         
