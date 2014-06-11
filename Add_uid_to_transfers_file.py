@@ -180,6 +180,26 @@ class sixteenSDB(object):
     def getGenomeDist(self,id_a,id_b):
         return self.dict_16S[id_a][id_b]
 
+class seqMethodInfo(object):
+    def __init__(self):
+        self.parseSeqMethod(line)
+        
+    def parseSeqMethod(self,line):
+        tabs = line.rstrip().split("\t")
+        self.img_id     = tabs[0] 
+        self.seq_method = tabs[6]
+        
+class seqMethodDB(object):
+    def __init__(self):
+        self.seq_method_dict = {}
+    
+    def addGenome(self,line):
+        seq_line = seqMethodInfo(line)
+        self.seq_method_dict[seq_line.img_id] = seq_line.seq_method
+        
+    def getPlatform(self,img_id):
+        return self.seq_method_dict[img_id]
+
 
 ###############################################################################
 ###############################################################################
@@ -196,7 +216,7 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printTrans(line,uid_1,uid_2,id_perc):
+def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2):
     print "\t".join([uid_1,
                      line[0],
                      line[1],
@@ -205,6 +225,7 @@ def printTrans(line,uid_1,uid_2,id_perc):
                      str(line[4]),
                      str(line[5]),
                      str(line[6]),
+                     platform_1,
                      uid_2,
                      line[7],
                      line[8],
@@ -213,6 +234,7 @@ def printTrans(line,uid_1,uid_2,id_perc):
                      str(line[11]),
                      str(line[12]),
                      str(line[13]),
+                     platform_2,
                      id_perc
                      ])
     
@@ -244,6 +266,13 @@ def doWork( args ):
     TP = TransferParser()
     UID_db = uidInfoDatabase() # creates object db
     ID_perc= sixteenSDB()
+    seq_method = seqMethodDB() 
+    #-----
+    # read in sequencing platform metadata
+    with open(args.metadata,"r") as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            seq_method.addGenome(l)
     #-----
     # read in 16S distance file
     with open(args.ID_file,'r') as fh:
@@ -263,8 +292,10 @@ def doWork( args ):
             uid_1 = UID_db.matchUID(line[TP._CONTIG_1], line[TP._IMG_ID_1], line[TP._START_1], line[TP._STOP_1])
             uid_2 = UID_db.matchUID(line[TP._CONTIG_2], line[TP._IMG_ID_2], line[TP._START_2], line[TP._STOP_2])
             id_perc = ID_perc.getGenomeDist(line[TP._IMG_ID_1],line[TP._IMG_ID_2])
+            platform_1 = seq_method.getPlatform(line[TP._IMG_ID_1])
+            platform_2 = seq_method.getPlatform(line[TP._IMG_ID_2])
             if uid_1 and uid_2:
-                printTrans(line,uid_1,uid_2,id_perc)
+                printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2)
             
             
             
@@ -339,6 +370,7 @@ if __name__ == '__main__':
     parser.add_argument('-fasta_file','--fasta_file', help="...")
     parser.add_argument('-transfers_file','--transfers_file', help="...")
     parser.add_argument('-ID_file','--ID_file', help="...")
+    parser.add_argument('-metadata','--metadata', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
