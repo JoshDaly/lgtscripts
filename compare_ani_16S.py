@@ -223,9 +223,9 @@ def doWork( args ):
     # read in ANI file
     with open(args.ani_file,"r") as fh_ani:
         if counter <= 100:
-        for line in ANI_p.readANI(fh_ani):
-            S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
-            counter += 1
+            for line in ANI_p.readANI(fh_ani):
+                S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
+                counter += 1
         
     printHeader() # print out header
     S16_db.printOUT() # print out data
