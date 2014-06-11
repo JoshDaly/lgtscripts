@@ -305,7 +305,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-ani_file','--ani_file', help="Please provide file containing ANI scores")
-    parser.add_argument('-s16_file','--s16_file', help="Please provide file containing 16S scores"
+    parser.add_argument('-s16_file','--s16_file', help="Please provide file containing 16S scores")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
