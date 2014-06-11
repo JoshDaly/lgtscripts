@@ -250,6 +250,7 @@ def printHeader():
                      "start_a",
                      "stop_a",
                      "length_a",
+                     "sequencing_platform_a",
                      "uid_2",
                      "img_id_b",
                      "genome_tree_id_b",
@@ -258,6 +259,7 @@ def printHeader():
                      "start_b",
                      "stop_b",
                      "length_b",
+                     "sequencing_platform_2",
                      "perc_ID"
                      ])
 
