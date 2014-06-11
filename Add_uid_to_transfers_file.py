@@ -181,7 +181,7 @@ class sixteenSDB(object):
         return self.dict_16S[id_a][id_b]
 
 class seqMethodInfo(object):
-    def __init__(self):
+    def __init__(self,line):
         self.parseSeqMethod(line)
         
     def parseSeqMethod(self,line):
