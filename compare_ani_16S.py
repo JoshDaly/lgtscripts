@@ -215,17 +215,19 @@ def doWork( args ):
             
     # read in 16S file
     with open(args.s16_file,"r") as fh_16S:
-        if count <= 100:
-            for line in S16_p.read16S(fh_16S):
-                S16_db.add16S(line[S16_p._img_id_a], line[S16_p._img_id_b], line[S16_p._identity])
-                count += 1 
+        for line in S16_p.read16S(fh_16S):
+            S16_db.add16S(line[S16_p._img_id_a], line[S16_p._img_id_b], line[S16_p._identity])
+            if count <= 100:
+                break                
+            count += 1 
         
     # read in ANI file
     with open(args.ani_file,"r") as fh_ani:
-        if counter <= 100:
-            for line in ANI_p.readANI(fh_ani):
-                S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
-                counter += 1
+        for line in ANI_p.readANI(fh_ani):
+            S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
+            if counter >= 100:
+                break
+            counter += 1
         
     printHeader() # print out header
     S16_db.printOUT() # print out data
