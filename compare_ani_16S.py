@@ -145,8 +145,14 @@ class store16S(object):
             self.dict_16S[g2] = {g1:[ID]}
             
     def addANI(self,g1,g2,ani1,ani2):
-        self.dict_16S[g1][g2]+= [ani1,ani2]
-        self.dict_16S[g2][g1]+= [ani1,ani2]
+        try:
+            self.dict_16S[g1][g2]+= [ani1,ani2]
+        except KeyError:
+            pass
+        try:
+            self.dict_16S[g2][g1]+= [ani1,ani2]
+        except KeyError:
+            pass
         
     def printOUT(self):
         for g1 in self.dict_16S.keys():
