@@ -134,7 +134,7 @@ def doWork( args ):
     """ Main wrapper"""
     NP = NucMerParser()
         
-    print "ID_1", "\t", "ID_2", "\t" ,"%IDENTITY"
+    print "\t".join(["ID_1","ID_2","%IDENTITY"])
     #coords_files = args.coords
     #print len(args.coords)
     
@@ -144,7 +144,7 @@ def doWork( args ):
         with open(c_file, "r") as fh:
             for hit in NP.readNuc(fh):
                 if hit[NP._IDENTITY] < args.identity_cutoff:
-                    print hit[NP._ID_1], "\t", hit[NP._ID_2], "\t", hit[NP._IDENTITY]
+                    print "\t".join([hit[NP._ID_1],hit[NP._ID_2],hit[NP._IDENTITY]]) 
             # required for NucMer parser. Needs to reset otherwise it doesn't know there is a new file
             NP.reset()
 
