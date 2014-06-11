@@ -157,10 +157,12 @@ class store16S(object):
     def printOUT(self):
         for g1 in self.dict_16S.keys():
             for g2 in self.dict_16S[g1]:
-                ID_16S  = str(self.dict_16S[g1][g2][0])
-                ANI_1   = str(self.dict_16S[g1][g2][1])
-                ANI_2   = str(self.dict_16S[g1][g2][2])
-                print "\t".join([g1,g2,ID_16S,ANI_1,ANI2])
+                print self.dict_16S[g1][g2]
+                
+                #ID_16S  = str(self.dict_16S[g1][g2][0])
+                #ANI_1   = str(self.dict_16S[g1][g2][1])
+                #ANI_2   = str(self.dict_16S[g1][g2][2])
+                #print "\t".join([g1,g2,ID_16S,ANI_1,ANI2])
 
 class storeANI(object):
     def __init__(self):
