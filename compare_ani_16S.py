@@ -159,12 +159,15 @@ class store16S(object):
     def printOUT(self):
         for g1 in self.dict_16S.keys():
             for g2 in self.dict_16S[g1]:
-                print self.dict_16S[g1][g2]
-                
-                #ID_16S  = str(self.dict_16S[g1][g2][0])
-                #ANI_1   = str(self.dict_16S[g1][g2][1])
-                #ANI_2   = str(self.dict_16S[g1][g2][2])
-                #print "\t".join([g1,g2,ID_16S,ANI_1,ANI2])
+                #print self.dict_16S[g1][g2]
+                ID_16S  = str(self.dict_16S[g1][g2][0])
+                try: 
+                    ANI_1 = str(self.dict_16S[g1][g2][1])
+                    ANI_2 = str(self.dict_16S[g1][g2][2])
+                except IndexError:
+                    ANI_1 = "NA"  
+                    ANI_2 = "NA"
+                print "\t".join([g1,g2,ID_16S,ANI_1,ANI2])
 
 class storeANI(object):
     def __init__(self):
@@ -195,17 +198,8 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def compare16S_ANI(ani1,ani2,id_16S):
-    pass
-
 def printHeader():
     print "\t".join(["img_id_a","img_id_b","16S_ID","ANI_1","ANI_2"])
-
-def printOut(dict_ani,dict_16S):
-    for g1 in dict_16S.keys():
-        for g2 in dict_16S[g1]:
-            print 
-
 
 def doWork( args ):
     """ Main wrapper"""
