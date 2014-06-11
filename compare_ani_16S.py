@@ -221,7 +221,7 @@ def doWork( args ):
     with open(args.s16_file,"r") as fh_16S:
         for line in S16_p.read16S(fh_16S):
             S16_db.add16S(line[S16_p._img_id_a], line[S16_p._img_id_b], line[S16_p._identity])
-            if count >= 10000:
+            if count >= 100000:
                 break                
             count += 1 
         
@@ -229,7 +229,7 @@ def doWork( args ):
     with open(args.ani_file,"r") as fh_ani:
         for line in ANI_p.readANI(fh_ani):
             S16_db.addANI(line[ANI_p._img_id_a], line[ANI_p._img_id_b], line[ANI_p._ANI_1], line[ANI_p._ANI_2])
-            if counter >= 10000:
+            if counter >= 100000:
                 break
             counter += 1
         
