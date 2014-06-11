@@ -219,7 +219,7 @@ def doWork( args ):
     with open(args.s16_file,"r") as fh_16S:
         for line in S16_p.read16S(fh_16S):
             S16_db.add16S(line[S16_p._img_id_a], line[S16_p._img_id_b], line[S16_p._identity])
-            if count <= 100:
+            if count >= 100:
                 break                
             count += 1 
         
