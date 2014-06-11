@@ -198,7 +198,10 @@ class seqMethodDB(object):
         self.seq_method_dict[seq_line.img_id] = seq_line.seq_method
         
     def getPlatform(self,img_id):
-        return self.seq_method_dict[img_id]
+        try:
+            return self.seq_method_dict[img_id]
+        except KeyError:
+            return "NA"
 
 
 ###############################################################################
