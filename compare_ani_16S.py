@@ -148,11 +148,11 @@ class store16S(object):
         try:
             self.dict_16S[g1][g2]+= [ani1,ani2]
         except KeyError:
-            pass
+            print "\t".join([g1,g2])
         try:
             self.dict_16S[g2][g1]+= [ani1,ani2]
         except KeyError:
-            pass
+            print "\t".join([g2,g1]) 
         
     def printOUT(self):
         for g1 in self.dict_16S.keys():
