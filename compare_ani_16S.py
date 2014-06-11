@@ -167,7 +167,7 @@ class store16S(object):
                 except IndexError:
                     ANI_1 = "NA"  
                     ANI_2 = "NA"
-                print "\t".join([g1,g2,ID_16S,ANI_1,ANI2])
+                print "\t".join([g1,g2,ID_16S,ANI_1,ANI_2])
 
 class storeANI(object):
     def __init__(self):
