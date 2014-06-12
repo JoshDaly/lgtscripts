@@ -101,12 +101,12 @@ class TransferParser(object):
                        int(fields[3]),
                        int(fields[4]),
                        int(fields[5]),
+                       fields[6],
                        fields[7],
                        fields[8],
-                       fields[9],
+                       int(fields[9]),
                        int(fields[10]),
-                       int(fields[11]),
-                       int(fields[12])]
+                       int(fields[11])]
             break # done!  
     
 
