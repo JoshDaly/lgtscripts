@@ -66,18 +66,18 @@ class TransferParser(object):
     _IMG_ID_1       = 0
     _GT_ID_1        = 1
     _CONTIG_1       = 2
-    _CONTIG_LEN_1   = 3
-    _START_1        = 4
-    _STOP_1         = 5
-    _LEN_1          = 6
+    #_CONTIG_LEN_1   = #
+    _START_1        = 3
+    _STOP_1         = 4
+    _LEN_1          = 5
     # _UID_2        = # 
-    _IMG_ID_2       = 7
-    _GT_ID_2        = 8
-    _CONTIG_2       = 9
-    _CONTIG_LEN_2   = 10
-    _START_2        = 11
-    _STOP_2         = 12
-    _LEN_2          = 13
+    _IMG_ID_2       = 6
+    _GT_ID_2        = 7
+    _CONTIG_2       = 8
+    #_CONTIG_LEN_2   = #
+    _START_2        = 9
+    _STOP_2         = 10
+    _LEN_2          = 11
     
     def __init__(self):
         self.prepped = False
@@ -101,14 +101,12 @@ class TransferParser(object):
                        int(fields[3]),
                        int(fields[4]),
                        int(fields[5]),
-                       int(fields[6]),
                        fields[7],
                        fields[8],
                        fields[9],
                        int(fields[10]),
                        int(fields[11]),
-                       int(fields[12]),
-                       int(fields[13])]
+                       int(fields[12])]
             break # done!  
     
 
