@@ -275,7 +275,7 @@ def doWork( args ):
     ID_perc= sixteenSDB()
     seq_method = seqMethodDB() 
     genomes_dict = {}
-    listing = glob.glob('%s/*.fna' % args.genomes_directory)
+    listing = glob.glob('%s/*.fna' % args.genomes_dir)
     #-----
     # read in sequencing platform metadata
     with open(args.metadata,"r") as fh:
