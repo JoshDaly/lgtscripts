@@ -154,9 +154,9 @@ class TransferDB(object):
     def compareDicts(self):
         for id in self.dirty_transfers_dict.keys():
             try: 
-                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(self.clean_transfers_dict[id])])
+                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(self.clean_transfers_dict[id]),self.dirty_seq_platform[id]])
             except KeyError:
-                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(0)])
+                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(0),self.dirty_seq_platform[id]])
         
     def printDict(self):
         for id in self.dirty_transfers_dict.keys():
@@ -194,6 +194,9 @@ def DirtyVSClean(dirty_dict,clean_dict):
         print "\t".join([id,str(dirty_dict[id]),str(clean_dict)])
     except KeyError:
         print "\t".join([id,str(dirty_dict[id]),str(0)])
+        
+def printHeader():
+    print "\t".join(["img_id","hits_pre_clean","hits_post_clean","platform"])
 
 def doWork( args ):
     """ Main wrapper"""
