@@ -310,8 +310,8 @@ def doWork( args ):
             id_perc = ID_perc.getGenomeDist(line[TP._IMG_ID_1],line[TP._IMG_ID_2])
             platform_1 = seq_method.getPlatform(line[TP._IMG_ID_1])
             platform_2 = seq_method.getPlatform(line[TP._IMG_ID_2])
-            contig_length_1 = genomes_dict[line[TP._IMG_ID_1]]
-            contig_length_2 = genomes_dict[line[TP._IMG_ID_2]]
+            contig_length_1 = genomes_dict[line[TP._CONTIG_1]]
+            contig_length_2 = genomes_dict[line[TP._CONTIG_2]]
             if uid_1 and uid_2:
                 printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2,contig_length_1,contig_length_2)
             
