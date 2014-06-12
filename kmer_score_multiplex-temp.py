@@ -95,7 +95,7 @@ class LGTInfoStore( object ):
         returns (score, (closestGID, dist), (furthestGID, dist))
         """
         LGTs = self.lgtGenomes.keys()
-        #print LGTs
+        print LGTs
         dgs = []
         for lgt_id in LGTs:
             #print lgt_id
@@ -105,7 +105,6 @@ class LGTInfoStore( object ):
             score = float(dg1/(dg1+dg2))
             #print rounded_score
             self.lgtScores[lgt_id] = [score,float(np.mean([dg1,dg2])),dg1,dg2]
-            print "got here"
             if rounded:
                 try:
                     self.Dist_dict[rounded_score]+=1
