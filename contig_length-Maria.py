@@ -80,8 +80,8 @@ def printHeader():
 
 def printOUT(orf_len,orf_gc,contig_len):
     for orf in orf_len.keys():
-        contig = accession.split("_")[2] + accession.split("_")[3]
-        print "\t".join([orf, orf_len[orf], or_gc[orf], contig, contig_len[contig]])
+        contig = orf.split("_")[2] + orf.split("_")[3]
+        print "\t".join([orf, orf_len[orf], orf_gc[orf], contig, contig_len[contig]])
 
 def doWork( args ):
     """ Main wrapper"""
