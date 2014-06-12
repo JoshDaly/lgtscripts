@@ -37,6 +37,7 @@ import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
+from __future__ import division
 
 #from Bio import SeqIO
 #from Bio.Seq import Seq
