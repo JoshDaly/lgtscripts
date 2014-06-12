@@ -101,8 +101,8 @@ class LGTInfoStore( object ):
             #print lgt_id
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgt_id] ])
             dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ])
-            dg1_str = ''.join(dg1)
-            dg2_str = ''.join(dg2) 
+            dg1_str = ''.join(map(str,dg1))
+            dg2_str = ''.join(map(str,dg2)) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             score = float(dg1/(dg1+dg2))
             #print rounded_score
