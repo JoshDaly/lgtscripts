@@ -290,10 +290,10 @@ def doWork( args ):
                         GID_tmer = np.mean(GID_tmp_array, axis=0)
                         LGT_kmers.addGenomeTmer(GID, GID_tmer)
             count +=1 
-            if count >=100:
+            if count >=1000:
                 break
                 #pass
-        if count >=100:
+        if count >=1000:
                 break
                 #pass
         
