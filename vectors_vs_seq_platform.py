@@ -94,8 +94,8 @@ class TransferParser(object):
             if not self.prepped:
                 # we still need to strip out the header
                 for l in fh: # search for the first record
-                    print l[0:3]
                     if l[0:3] =="uid": # next line is good
+                        print l
                         self.prepped = True
                         break
             # file should be prepped now
