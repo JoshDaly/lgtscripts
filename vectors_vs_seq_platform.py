@@ -30,7 +30,6 @@ __email__ = ""
 __status__ = "Development"
 
 ###############################################################################
-from __future__ import division
 import argparse
 import sys
 import glob
@@ -155,8 +154,8 @@ class TransferDB(object):
     def compareDicts(self):
         for id in self.dirty_transfers_dict.keys():
             try: 
-                
-                diff = float(1 - float((int(self.clean_transfers_dict[id])/int(self.dirty_transfers_dict[id]))))
+                print self.dirty_transfers_dict[id]
+                diff = 1 - float((int(self.clean_transfers_dict[id])/int(self.dirty_transfers_dict[id]))))
                 print "\t".join([id,str(self.dirty_transfers_dict[id]),str(self.clean_transfers_dict[id]),str(diff),self.dirty_seq_platform[id]])
             except KeyError:
                 diff = 1
