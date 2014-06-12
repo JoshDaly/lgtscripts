@@ -154,7 +154,7 @@ class TransferDB(object):
     def compareDicts(self):
         for id in self.dirty_transfers_dict.keys():
             try: 
-                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(clean_transfers_dict)])
+                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(self.clean_transfers_dict)])
             except KeyError:
                 print "\t".join([id,str(self.dirty_transfers_dict[id]),str(0)])
         
