@@ -105,21 +105,21 @@ class TransferParser(object):
                        fields[1],
                        fields[2],
                        fields[3],
-                       int(fields[4]),
-                       int(fields[5]),
-                       int(fields[6]),
-                       int(fields[7]),
+                       fields[4],
+                       fields[5],
+                       fields[6],
+                       fields[7],
                        fields[8],
                        fields[9],
                        fields[10],
                        fields[11],
                        fields[12],
-                       int(fields[13]),
-                       int(fields[14]),
-                       int(fields[15]),
-                       int(fields[16]),
+                       fields[13],
+                       fields[14],
+                       fields[15],
+                       fields[16],
                        fields[17],
-                       float(fields[18])]
+                       fields[18]]
             break # done!  
 
 class dirtyTransferDB(object):
