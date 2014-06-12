@@ -295,7 +295,7 @@ def doWork( args ):
     #-----
     # read in genomes directory
     for g_file in listing:
-        img_id = c_file.split("/")[2].split(".")[0]
+        img_id = g_file.split("/")[2].split(".")[0]
         genome_length = 0 
         for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
             genome_length = len(sequence) + genome_length
