@@ -299,7 +299,7 @@ def doWork( args ):
         genome_length = 0 
         for accession,sequence in SeqIO.to_dict(SeqIO.parse(g_file,"fasta")).items():
             genome_length = len(sequence) + genome_length
-        genomes_dict[img_id] = genome_length
+        genomes_dict[accession] = genome_length
     
     #-----
     
