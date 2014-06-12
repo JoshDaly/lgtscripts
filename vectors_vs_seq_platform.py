@@ -122,22 +122,42 @@ class TransferParser(object):
                        fields[18]]
             break # done!  
 
-class dirtyTransferDB(object):
+class TransferDB(object):
     def __init__(self):
         self.dirty_transfers_dict = {}
         self.dirty_seq_platform = {}
+        self.clean_transfers_dict = {}
+        self.clean_seq_platform = {}
         
-    def addTRANSFER(self,img_id):
+    def addDirtyTransfer(self,img_id):
         try:
             self.dirty_transfers_dict[img_id] += 1
         except KeyError:
             self.dirty_transfers_dict[img_id] = 1
+    
+    def addCleanTransfer(self,img_id):
+        try:
+            self.clean_transfers_dict[img_id] += 1
+        except KeyError:
+            self.clean_transfers_dict[img_id] = 1
         
-    def addPLATFORM(self,img_id,platform):
+    def addDirtyPlatform(self,img_id,platform):
         if "454" in platform: # collate 454 platforms
             platform == "454"
         self.dirty_seq_platform[img_id] = platform
-    
+        
+    def addCleanPlatform(self,img_id,platform):
+        if "454" in platform: # collate 454 platforms
+            platform == "454"
+        self.clean_seq_platform[img_id] = platform
+        
+    def compareDicts(self):
+        for id in self.dirty_transfers_dict.keys():
+            try: 
+                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(clean_transfers_dict)])
+            except KeyError:
+                print "\t".join([id,str(self.dirty_transfers_dict[id]),str(0)])
+        
     def printDict(self):
         for id in self.dirty_transfers_dict.keys():
             print "\t".join([id, str(self.dirty_transfers_dict[id])])
@@ -151,28 +171,6 @@ class dirtyTransferDB(object):
     def returnIDs(self):
         for id in self.dirty_transfers_dict.keys():
             print id
-    
-class cleanTransferDB(object):
-    def __init__(self):
-        self.clean_transfers_dict = {}
-        self.clean_seq_platform = {}
-        
-    def addTRANSFER(self,img_id):
-        try:
-            self.clean_transfers_dict[img_id] += 1
-        except KeyError:
-            self.clean_transfers_dict[img_id] = 1
-            
-    def addPLATFORM(self,img_id,platform):
-        if "454" in platform: # collate 454 platforms
-            platform == "454"
-        self.clean_seq_platform[img_id] = platform
-        
-    def returnHits(self,id):
-        if id in self.clean_transfers_dict:
-            return self.clean_transfers_dict[id]
-        else:
-            return 0
         
    
 
@@ -202,27 +200,26 @@ def doWork( args ):
     """read in two transfer files, and capture information in dictionaries"""
     """compare the vector contamination with sequencing platform"""
     # objects
-    dirty_dict = dirtyTransferDB()
-    clean_dict = cleanTransferDB()
+    transfers_dict = TransferDB()
     TP = TransferParser()
     
     #-----
     # read in dirty transfers file
     with open(args.dirty,"r") as fh:
         for l in TP.readTrans(fh):
-            dirty_dict.addTRANSFER(l[TP._IMG_ID_1])
-            dirty_dict.addTRANSFER(l[TP._IMG_ID_2])
-            dirty_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
-            dirty_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
+            transfers_dict.addDirtyTransfer(l[TP._IMG_ID_1])
+            transfers_dict.addDirtyTransfer(l[TP._IMG_ID_2])
+            transfers_dict.addDirtyPlatform(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
+            transfers_dict.addDirtyPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
     #-----
     # read in clean transfers file
     with open(args.clean,"r") as fh: 
         for l in TP.readTrans(fh):
-            clean_dict.addTRANSFER(l[TP._IMG_ID_1])
-            clean_dict.addTRANSFER(l[TP._IMG_ID_2])
-            clean_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
-            clean_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    dirty_dict.returnIDs()
+            transfers_dict.addCleanTransfer(l[TP._IMG_ID_1])
+            transfers_dict.addCleanTransfer(l[TP._IMG_ID_2])
+            transfers_dict.addCleanPlatform(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
+            transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
+    transfers_dict.compareDicts()
         
             
     """
