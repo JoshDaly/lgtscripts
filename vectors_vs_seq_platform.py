@@ -222,6 +222,7 @@ def doWork( args ):
             transfers_dict.addCleanTransfer(l[TP._IMG_ID_2])
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
+    printHeader()
     transfers_dict.compareDicts()
         
             
