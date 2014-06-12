@@ -183,7 +183,7 @@ def doWork( args ):
     """read in two transfer files, and capture information in dictionaries"""
     """compare the vector contamination with sequencing platform"""
     # objects
-    dirty_dict = dirtyTransferDB
+    dirty_dict = dirtyTransferDB()
     clean_dict = cleanTransferDB()
     TP = TransferParser()
     
