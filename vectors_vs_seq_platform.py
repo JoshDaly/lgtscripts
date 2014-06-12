@@ -222,7 +222,7 @@ def doWork( args ):
             clean_dict.addTRANSFER(l[TP._IMG_ID_2])
             clean_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             clean_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    dirty_dict.returnIDs()
+    print dirty_dict.returnIDs()
         
             
     """
