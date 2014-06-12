@@ -222,8 +222,8 @@ def doWork( args ):
             clean_dict.addTRANSFER(l[TP._IMG_ID_2])
             clean_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             clean_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    for id in dirty_dict.returnIDs():
-        print id
+    dirty_dict.returnIDs()
+        
             
     """
 # parse fasta file using biopython
