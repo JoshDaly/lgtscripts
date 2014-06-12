@@ -105,7 +105,7 @@ class TransferParser(object):
                        fields[1],
                        fields[2],
                        fields[3],
-                       int(fields[4]),
+                       fields[4],
                        int(fields[5]),
                        int(fields[6]),
                        int(fields[7]),
