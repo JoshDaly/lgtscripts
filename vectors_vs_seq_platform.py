@@ -176,7 +176,7 @@ returns (stdout, stderr)
     return p.communicate()
 
 def DirtyVSClean(dirty_dict,clean_dict,dirty_platform,clean_platform):
-    
+    pass
 
 def doWork( args ):
     """ Main wrapper"""
