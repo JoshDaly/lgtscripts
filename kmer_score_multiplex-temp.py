@@ -105,6 +105,7 @@ class LGTInfoStore( object ):
             score = float(dg1/(dg1+dg2))
             #print rounded_score
             self.lgtScores[lgt_id] = [score,float(np.mean([dg1,dg2])),dg1,dg2]
+            print self.lgtScores
             if rounded:
                 try:
                     self.Dist_dict[rounded_score]+=1
@@ -255,7 +256,6 @@ def doWork( args ):
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
-            print hit
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
         
