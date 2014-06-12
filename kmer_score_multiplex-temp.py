@@ -106,7 +106,7 @@ class LGTInfoStore( object ):
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             score = float(dg1/(dg1+dg2))
             #print rounded_score
-            self.lgtScores[lgt_id] = [score,float(np.mean([dg1,dg2])),dg1,dg2]
+            self.lgtScores[lgt_id] = [score,float(np.mean([dg1,dg2])),dg1_str,dg2_str]
             print self.lgtScores
             if rounded:
                 try:
