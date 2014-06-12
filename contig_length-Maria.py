@@ -44,7 +44,7 @@ from Bio.Seq import Seq
 #import os
 #import errno
 
-import numpy as np
+#import numpy as np
 #np.seterr(all='raise')
 
 #import matplotlib as mpl
@@ -75,174 +75,53 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def printHeader():
+    print "\t".join(["ORF","ORF_length","ORF_GC_content","contig","contig_length"])
+
+def printOUT(orf_len,orf_gc,contig_len):
+    for orf in orf_len.keys():
+        contig = accession.split("_")[2] + accession.split("_")[3]
+        print "\t".join([orf, orf_len[orf], or_gc[orf], contig, contig_len[contig]])
+
 def doWork( args ):
     """ Main wrapper"""
     """Read in a directory containing multiple fna files, then file by file count the length of contigs.
     Then write this information to a file""" 
     #global variables    
-    #Parse many fna files using glob
-    #print "start", datetime.datetime.now()
-    listing = glob.glob('%s/*.fna' % args.genomes_directory)
-    genomes_dict = {} #dictionary to store index information of genomes
-    #gut_oral_contigs = {} #dictionary to store information from gut_oral_contigs.csv
-    
-    #gut_oral_contigs = {} # dictionary to store information regarding contig length
+    #listing = glob.glob('%s/*.fna' % args.genomes_directory)
+    ORF_dict = {} #dictionary to store index information of genomes
+    GC_dict = {}
+    contigs_dict = {} #store unique contig names
     count = 0
     
-    for c_file in listing:
-        img_id = c_file.split("/")[2].split(".")[0] 
-        if count <1:
-            #print c_file
-            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                if accession in genomes_dict:
-                    #print "Hello Pilgrim"
-                    pass
-                else:
-                    #print accession
-                    genomes_dict[accession] = [len(sequence),img_id, sequence.seq]
-        #for i in genomes_dict.keys():
-        #    print i + "\t" + str(genomes_dict[i][0])
+    # Read through ORF file
+    with open(args.orf_file,"r") as fh:
+        for l in fh:
+            if ">" in l:
+                # capture accession information
+                accession   = l.split()[0][1:]
+                start       = int(l.split()[2])
+                stop        = int(l.split()[4])
+                GC_cont     = l.split()[-1].split(";")[-1].split("=")[-1]
+                contig      = l.split()[0].split("_")[2] + l.split()[0].split("_")[3]
+                length = 0 
+                if stop > start:
+                    length = (stop - start) + 1
+                else: 
+                    length = (start - stop) + 1
+                contigs_dict[contig] = None # add contig to dict
+                ORF_dict[accession] = length
+                GC_dict[accession] = GC_cont
     
-    #print "end", datetime.datetime.now()        
-    #print header
-    """
-    print "\t".join(["img_id_a",
-                     "genome_tree_id_a",
-                     "contig_a",
-                     "contig_length_a",
-                     "start_a",
-                     "stop_a",
-                     "length_a",
-                     "img_id_b",
-                     "genome_tree_id_b",
-                     "contig_b",
-                     "contig_length_b",
-                     "start_b",
-                     "stop_b",
-                     "length_b"
-                     ])
-    """        
-    """   
-    for key in  gut_oral_dict:
-        print "\t".join([key, 
-                         str(len(gut_oral_dict[key][0])),
-                         gut_oral_dict[key][1]
-                         ])
-    """    
-    """img_id_a        genome_tree_id_a        contig_a        start_a stop_a    length_a img_id_b        genome_tree_id_b        contig_b        start_b stop_b    length_b"""    
-    with open(args.contig_file,"r") as fh:
-        #capture header
-        header = fh.readline()
-        #read through line by line
-        count = 0
-        uniq_id = 1
-        if count < 1:
-            for l in fh:
-                img_id_a = l.split("\t")[0].rstrip()
-                genome_tree_id_a = l.split("\t")[1].rstrip() 
-                contig_a = l.split("\t")[2].rstrip()
-                contig_length_a = l.split("\t")[3].rstrip()
-                start_a = l.split("\t")[4].rstrip()
-                stop_a = l.split("\t")[5].rstrip()
-                length_a = l.split("\t")[6].rstrip()
-                img_id_b = l.split("\t")[7].rstrip()
-                genome_tree_id_b = l.split("\t")[8].rstrip()
-                contig_b = l.split("\t")[9].rstrip()
-                contig_length_b = l.split("\t")[10].rstrip()
-                start_b = l.split("\t")[11].rstrip()
-                stop_b = l.split("\t")[12].rstrip()
-                length_b = l.split("\t")[13].rstrip()
-                
-                #print "\t".join([str(int(start_a)+1),str(int(stop_a)+1)])
-                
-                try:
-                    if int(start_a) > int(stop_a):
-                        new_start_a = stop_a
-                        new_stop_a = start_a
-                        
-                        #contig_length_a = str(genomes_dict[contig_a][0])
-                        contig_seq_a = genomes_dict[contig_a][2]
-                        #contig_length_b = str(genomes_dict[contig_b][0])
-                        print ">"+contig_a+"-img_a:"+img_id_a+"-genome_tree_a:"+genome_tree_id_a+"-"+"Start:"+str(start_a)+"-"+"Stop:"+str(stop_a)+"-id_b:"+img_id_b+"-genome_tree_b:"+genome_tree_id_b+"-"+str(uniq_id)
-                        #print contig_seq_a[(int(start_a)-1):(int(stop_a)+1)]
-                        print contig_seq_a[int(new_start_a)-1:int(new_stop_a)+1]
-                    else:
-                        contig_seq_a = genomes_dict[contig_a][2]
-                        #contig_length_b = str(genomes_dict[contig_b][0])
-                        print ">"+contig_a+"-img_a:"+img_id_a+"-genome_tree_a:"+genome_tree_id_a+"-"+"Start:"+str(start_a)+"-"+"Stop:"+str(stop_a)+"-id_b:"+img_id_b+"-genome_tree_b:"+genome_tree_id_b+"-"+str(uniq_id)
-                        #print contig_seq_a[(int(start_a)-1):(int(stop_a)+1)]
-                        print contig_seq_a[int(start_a)-1:int(stop_a)+1]
-                except KeyError:
-                    pass
-                
-                uniq_id += 1
-                
-                try:
-                    if int(start_b) > int(stop_b):
-                        new_start_b = stop_b
-                        new_stop_b = start_b
-                        
-                        contig_seq_b = genomes_dict[contig_b][2]
-                        print ">"+contig_b+"-img_a:"+img_id_b+"-genome_tree_a:"+genome_tree_id_b+"-"+"Start:"+str(start_b)+"-"+"Stop:"+str(stop_b)+"-id_b:"+img_id_a+"-genome_tree_b:"+genome_tree_id_a+"-"+str(uniq_id)
-                        #print contig_seq_b[(int(start_b)-1):(int(stop_b)+1)]
-                        print contig_seq_b[int(new_start_b)-1:int(new_stop_b)+1]
-                    else:
-                        contig_seq_b = genomes_dict[contig_b][2]
-                        print ">"+contig_b+"-img_a:"+img_id_b+"-genome_tree_a:"+genome_tree_id_b+"-"+"Start:"+str(start_b)+"-"+"Stop:"+str(stop_b) +"-id_b:"+img_id_a+"-genome_tree_b:"+genome_tree_id_a+"-"+str(uniq_id)
-                        #print contig_seq_b[(int(start_b)-1):(int(stop_b)+1)]
-                        print contig_seq_b[int(start_b)-1:int(stop_b)+1]
-                except KeyError:
-                    pass
-                uniq_id += 1
-                
-                """
-                    print "\t".join([img_id_a,
-                                     genome_tree_id_a,
-                                     contig_a,
-                                     contig_length_a,
-                                     start_a,
-                                     stop_a,
-                                     length_a,
-                                     img_id_b,
-                                     genome_tree_id_b,
-                                     contig_b,
-                                     contig_length_b,
-                                     start_b,
-                                     stop_b,
-                                     length_b
-                                     ])
-                    """
-                
-                
-                #count +=1 
-    #print "fin", datetime.datetime.now()
-            
-                
-    """
-    for key in gut_oral_dict.keys():
-        seq_record = gut_oral_dict[key]
-        print seq_record 
-       
-        print "\t".join([key,
-                        len(seq_record)
-                        ])
-    """
-    # read through the file
-    """
-    for seq_file in SeqIO.parse(listing,"fasta"):
-        print (seq_file.id)
-        print (repr(seq_file.seq))
-        print (len(seq_file))
-        break
-       """       
+    # read through contig fasta file
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.contig_file,"fasta")).items():
+        contig = accession.split("_")[2] + accession.split("_")[3]
+        if contig in contigs_dict:
+            contigs_dict[contig] = len(sequence)
     
-            
-            
-            
-            
-    
-    
-
+    printHeader()
+    printOUT(ORF_dict, GC_dict, contigs_dict)
+ 
     """
 # run somethign external in threads
 pool = Pool(6)
@@ -306,8 +185,8 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('genomes_directory', help="File containing genomes in fna format")
-    parser.add_argument('contig_file', help="gut_oral_contigs.csv")
+    parser.add_argument('-orf','--orf_file', help="File containing open reading frames in fasta format")
+    parser.add_argument('-contig','--contig_file', help="File containing contigs in fasta format")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
