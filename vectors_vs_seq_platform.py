@@ -149,7 +149,7 @@ class dirtyTransferDB(object):
             return 0
         
     def returnIDs(self):
-        for id in self.clean_transfers_dict.keys():
+        for id in self.dirty_transfers_dict.keys():
             return id
     
 class cleanTransferDB(object):
