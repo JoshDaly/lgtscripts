@@ -140,7 +140,7 @@ class dirtyTransferDB(object):
     
     def printDict(self):
         for id in self.dirty_transfers_dict.keys():
-            print "\t".join([id, self.dirty_transfers_dict[id]])
+            print "\t".join([id, str(self.dirty_transfers_dict[id])])
     
 class cleanTransferDB(object):
     def __init__(self):
