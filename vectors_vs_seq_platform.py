@@ -143,7 +143,7 @@ class TransferDB(object):
         
     def addDirtyPlatform(self,img_id,platform):
         if "454" in platform: # collate 454 platforms
-            platform == "454"
+            platform = "454"
         self.dirty_seq_platform[img_id] = platform
         
     def addCleanPlatform(self,img_id,platform):
