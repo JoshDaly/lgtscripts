@@ -100,7 +100,9 @@ class LGTInfoStore( object ):
         for lgt_id in LGTs:
             #print lgt_id
             dg1 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][0]], self.lgtTmer[lgt_id] ])
-            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ]) 
+            dg2 = pdist([self.genomeTmers[self.lgtGenomes[lgt_id][1]], self.lgtTmer[lgt_id] ])
+            dg1_str = ''.join(dg1)
+            dg2_str = ''.join(dg2) 
             rounded_score = float(np.round(dg1/(dg1+dg2),decimals=2))
             score = float(dg1/(dg1+dg2))
             #print rounded_score
@@ -112,7 +114,7 @@ class LGTInfoStore( object ):
                 except KeyError:
                     self.Dist_dict[rounded_score]=1
             else:
-                self.Dist_dict[score]=[float(np.mean([dg1,dg2])),dg1,dg2]
+                self.Dist_dict[score]=[float(np.mean([dg1,dg2])),dg1_str,dg2_str]
             #print self.lgtScores
                 
     def printInfoHeader(self):
@@ -122,8 +124,8 @@ class LGTInfoStore( object ):
         for lgt in self.lgtScores.keys():
             kmer_score  = str(self.lgtScores[lgt][0])
             mean_dg     = str(self.lgtScores[lgt][1])
-            dg1         = str(self.lgtScores[lgt][2][1:])
-            dg2         = str(self.lgtScores[lgt][3][1:])
+            dg1         = str(self.lgtScores[lgt][2])
+            dg2         = str(self.lgtScores[lgt][3])
             g1          = self.lgtGenomes[lgt][0]
             g2          = self.lgtGenomes[lgt][1]
             print "\t".join([lgt,g1,g2,kmer_score,mean_dg,dg1,dg2])
