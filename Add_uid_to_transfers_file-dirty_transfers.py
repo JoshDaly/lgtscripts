@@ -33,6 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
+import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -204,6 +205,7 @@ class seqMethodDB(object):
         except KeyError:
             return "NA"
 
+class 
 
 ###############################################################################
 ###############################################################################
@@ -220,12 +222,12 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2):
+def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2,contig_len_1,contig_length_2):
     print "\t".join([uid_1,
                      line[0],
                      line[1],
                      line[2],
-                     str(line[3]),
+                     str(contig_len_1),
                      str(line[4]),
                      str(line[5]),
                      str(line[6]),
@@ -234,7 +236,7 @@ def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2):
                      line[7],
                      line[8],
                      line[9],
-                     str(line[10]),
+                     str(contig_length_2),
                      str(line[11]),
                      str(line[12]),
                      str(line[13]),
@@ -273,6 +275,8 @@ def doWork( args ):
     UID_db = uidInfoDatabase() # creates object db
     ID_perc= sixteenSDB()
     seq_method = seqMethodDB() 
+    genomes_dict = {}
+    listing = glob.glob('%s/*.fna' % args.genomes_directory)
     #-----
     # read in sequencing platform metadata
     with open(args.metadata,"r") as fh:
@@ -290,6 +294,16 @@ def doWork( args ):
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
     #-----
+    # read in genomes directory
+    for g_file in listing:
+        img_id = c_file.split("/")[2].split(".")[0]
+        genome_length = 0 
+        for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+            genome_length = len(sequence) + genome_length
+        genomes_dict[img_id] = genome_length
+    
+    #-----
+    
     printHeader() # print header containing uid
     #-----
     # read in transfers file
@@ -300,8 +314,10 @@ def doWork( args ):
             id_perc = ID_perc.getGenomeDist(line[TP._IMG_ID_1],line[TP._IMG_ID_2])
             platform_1 = seq_method.getPlatform(line[TP._IMG_ID_1])
             platform_2 = seq_method.getPlatform(line[TP._IMG_ID_2])
+            contig_length_1 = genomes_dict[line[TP._IMG_ID_1]]
+            contig_length_2 = genomes_dict[line[TP._IMG_ID_2]]
             if uid_1 and uid_2:
-                printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2)
+                printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2,contig_length_1,contig_length_2)
             
             
             
@@ -377,6 +393,7 @@ if __name__ == '__main__':
     parser.add_argument('-transfers_file','--transfers_file', help="...")
     parser.add_argument('-ID_file','--ID_file', help="...")
     parser.add_argument('-metadata','--metadata', help="...")
+    parser.add_argument('-genomes','--genomes_dir', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
