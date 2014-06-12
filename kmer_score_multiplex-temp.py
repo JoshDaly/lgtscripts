@@ -295,11 +295,11 @@ def doWork( args ):
                         LGT_kmers.addGenomeTmer(GID, GID_tmer)
             count +=1 
             if count >=100:
-                break
-                #pass
+                #break
+                pass
         if count >=100:
-                break
-                #pass
+                #break
+                pass
         
         
                 #print id
