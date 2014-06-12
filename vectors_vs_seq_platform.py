@@ -142,6 +142,16 @@ class dirtyTransferDB(object):
         for id in self.dirty_transfers_dict.keys():
             print "\t".join([id, str(self.dirty_transfers_dict[id])])
     
+    def returnHits(self,id):
+        if id in self.dirty_transfers_dict:
+            return self.dirty_transfers_dict[id]
+        else:
+            return 0
+        
+     def returnIDs(self):
+        for id in self.clean_transfers_dict.keys():
+            return id
+    
 class cleanTransferDB(object):
     def __init__(self):
         self.clean_transfers_dict = {}
@@ -158,8 +168,13 @@ class cleanTransferDB(object):
             platform == "454"
         self.clean_seq_platform[img_id] = platform
         
-    def printDict(self):
-        pass
+    def returnHits(self,id):
+        if id in self.clean_transfers_dict:
+            return self.clean_transfers_dict[id]
+        else:
+            return 0
+        
+   
 
 ###############################################################################
 ###############################################################################
@@ -176,8 +191,11 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def DirtyVSClean(dirty_dict,clean_dict,dirty_platform,clean_platform):
-    pass
+def DirtyVSClean(dirty_dict,clean_dict):
+    try:
+        print "\t".join([id,str(dirty_dict[id]),str(clean_dict)])
+    except KeyError:
+        print "\t".join([id,str(dirty_dict[id]),str(0)])
 
 def doWork( args ):
     """ Main wrapper"""
@@ -204,7 +222,8 @@ def doWork( args ):
             clean_dict.addTRANSFER(l[TP._IMG_ID_2])
             clean_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             clean_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    dirty_dict.printDict()
+    for id in dirty_dict.returnIDs():
+        print id
             
     """
 # parse fasta file using biopython
