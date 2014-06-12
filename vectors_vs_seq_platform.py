@@ -148,7 +148,7 @@ class dirtyTransferDB(object):
         else:
             return 0
         
-     def returnIDs(self):
+    def returnIDs(self):
         for id in self.clean_transfers_dict.keys():
             return id
     
