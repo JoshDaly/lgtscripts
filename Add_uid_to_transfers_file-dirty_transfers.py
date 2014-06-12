@@ -116,32 +116,18 @@ class uidInfo(object):
     def __init__(self, accession):
         self.parseFastaAccession(accession)
         
-    def parseFastaAccession(self, accession, args.dirty_file):
+    def parseFastaAccession(self, accession):
         # constants to make code readable
         dashes = accession.rstrip().split("-")
-        if args.dirty_file == "True" or "T":
-            dirty = True
-        else: 
-            dirty = False
+        self.contig     =dashes[0]
+        self.img_id_1   =dashes[1].split(":")[1]
+        self.gt_id_1    =dashes[2].split(":")[1]
+        self.start      =dashes[3].split(":")[1]
+        self.stop       =dashes[4].split(":")[1]
+        self.img_id_2   =dashes[5].split(":")[1]
+        self.gt_id_2    =dashes[6].split(":")[1]
+        self.uid        =dashes[7]
 
-        if dirty:
-            self.contig     =dashes[0]
-            self.img_id_1   =dashes[1].split(":")[1]
-            self.gt_id_1    =dashes[2].split(":")[1]
-            self.start      =dashes[3].split(":")[1]
-            self.stop       =dashes[4].split(":")[1]
-            self.img_id_2   =dashes[5].split(":")[1]
-            self.gt_id_2    =dashes[6].split(":")[1]
-            self.uid        =dashes[7]
-        else:   
-            self.contig     =dashes[1]
-            self.img_id_1   =dashes[2].split(":")[1]
-            self.gt_id_1    =dashes[3].split(":")[1]
-            self.start      =dashes[4].split(":")[1]
-            self.stop       =dashes[5].split(":")[1]
-            self.img_id_2   =dashes[6].split(":")[1]
-            self.gt_id_2    =dashes[7].split(":")[1]
-            self.uid        =dashes[0]
 
 class uidInfoDatabase(object):
     """wrapper class for storing fasta file information"""
@@ -391,7 +377,6 @@ if __name__ == '__main__':
     parser.add_argument('-transfers_file','--transfers_file', help="...")
     parser.add_argument('-ID_file','--ID_file', help="...")
     parser.add_argument('-metadata','--metadata', help="...")
-    parser.add_argument('-dirty','--dirty_file', default=False,help="Is it a dirty contig file?")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
