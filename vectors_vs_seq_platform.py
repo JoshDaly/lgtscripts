@@ -150,7 +150,7 @@ class dirtyTransferDB(object):
         
     def returnIDs(self):
         for id in self.dirty_transfers_dict.keys():
-            return id
+            print id
     
 class cleanTransferDB(object):
     def __init__(self):
@@ -222,7 +222,7 @@ def doWork( args ):
             clean_dict.addTRANSFER(l[TP._IMG_ID_2])
             clean_dict.addPLATFORM(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             clean_dict.addPLATFORM(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    print dirty_dict.returnIDs()
+    dirty_dict.returnIDs()
         
             
     """
