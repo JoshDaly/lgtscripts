@@ -122,8 +122,8 @@ class LGTInfoStore( object ):
         for lgt in self.lgtScores.keys():
             kmer_score  = str(self.lgtScores[lgt][0])
             mean_dg     = str(self.lgtScores[lgt][1])
-            dg1         = str(self.lgtScores[lgt][2])
-            dg2         = str(self.lgtScores[lgt][3])
+            dg1         = str(self.lgtScores[lgt][2][1:-1])
+            dg2         = str(self.lgtScores[lgt][3][1:-1])
             g1          = self.lgtGenomes[lgt][0]
             g2          = self.lgtGenomes[lgt][1]
             print "\t".join([lgt,g1,g2,kmer_score,mean_dg,dg1,dg2])
