@@ -154,7 +154,7 @@ class TransferDB(object):
     def compareDicts(self):
         for id in self.dirty_transfers_dict.keys():
             try: 
-                diff = float(self.clean_transfers_dict[id]/self.dirty_transfers_dict[id])
+                diff = float(self.clean_transfers_dict[id])/self.dirty_transfers_dict[id]
                 print "\t".join([id,str(self.dirty_transfers_dict[id]),str(self.clean_transfers_dict[id]),str(diff),self.dirty_seq_platform[id]])
             except KeyError:
                 diff = 1
