@@ -249,14 +249,16 @@ def doWork( args ):
     lgt_dict =  lgtTransfersDict()  # dict of lgt events from transfers file
     TP = TransferParser()           # call class
     count = 0 
+    
+    print "Start", datetime.datetime.now()
     #-----
     """read in transfers file"""
     with open(args.transfer_file,"r") as fh:
         for hit in TP.readTrans(fh):
+            print hit
             lgt_dict.addLGT(hit[TP._UID_1]) # Add uid to dict
             lgt_dict.addLGT(hit[TP._UID_2]) # Add uid to dict
         
-    print "Start", datetime.datetime.now()          
     for kmer_dir in kmer_directories:
         kmer_files = glob.glob('%s/*.kmer_counts.csv' % kmer_dir)
         for kmer in kmer_files:
