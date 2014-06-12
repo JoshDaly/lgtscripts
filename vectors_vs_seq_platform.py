@@ -95,7 +95,7 @@ class TransferParser(object):
                 # we still need to strip out the header
                 for l in fh: # search for the first record
                     if l[0:3] =="uid": # next line is good
-                        print l
+                        #print l
                         self.prepped = True
                         break
             # file should be prepped now
