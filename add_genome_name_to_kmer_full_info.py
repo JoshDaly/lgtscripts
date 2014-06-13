@@ -99,7 +99,7 @@ class kmerdata(object):
         self.genome_db[img_id] = genome_name
         
     def addLGTkmer(self,lgt_id,id_a,id_b,kmer_score,dgg,dg1,dg2):
-        self.kmer_file_dict[lgt] = [id_a,id_b,kmer_score,dgg,dg1,dg2]
+        self.kmer_file_dict[lgt_id] = [id_a,id_b,kmer_score,dgg,dg1,dg2]
 
     def printHeader(self):
         print "\t".join(["lgt","img_id_a","genome_a","img_id_b","genome_b","kmer_score","mean_dg","dg1","dg2"])
