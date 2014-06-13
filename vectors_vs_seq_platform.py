@@ -188,9 +188,10 @@ class TransferDB(object):
             except KeyError:
                 self.platform_dirty[self.dirty_seq_platform[id]] = self.dirty_transfers_dict[id]
             try:
-                self.platform_clean[self.clean_transfers_dict[id]] += self.clean_seq_platform[id]
+                self.platform_dirty[self.clean_seq_platform[id]] += self.clean_transfers_dict[id]
             except KeyError:
-                self.platform_clean[self.clean_transfers_dict[id]] = self.clean_seq_platform[id]
+                self.platform_dirty[self.clean_seq_platform[id]] = self.clean_transfers_dict[id]
+            
         print self.platform_clean
         print self.platform_dirty
     
