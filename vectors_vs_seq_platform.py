@@ -150,7 +150,8 @@ class TransferDB(object):
         
     def addCleanPlatform(self,img_id,platform):
         if len(platform) == 0:
-            print "platform is null"
+            platform = "NA"
+            print platform
         else:
             print platform
         
