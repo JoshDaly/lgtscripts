@@ -190,9 +190,6 @@ class TransferDB(object):
                 self.platform_clean[self.clean_seq_platform[id]] += self.clean_transfers_dict[id]
             except KeyError:
                 self.platform_clean[self.clean_seq_platform[id]] = self.clean_transfers_dict[id]
-            
-        print self.platform_clean
-        print self.platform_dirty
     
     def printCollatedPlatforms(self):
         for platform in self.platform_dirty.keys():
@@ -200,6 +197,7 @@ class TransferDB(object):
                 print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
             except KeyError:
                 print platform
+                
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -248,9 +246,9 @@ def doWork( args ):
             transfers_dict.addCleanTransfer(l[TP._IMG_ID_2])
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
-    printHeader()
+    #printHeader()
     transfers_dict.collatePlatforms()
-    #transfers_dict.printCollatedPlatforms()
+    transfers_dict.printCollatedPlatforms()
     #transfers_dict.compareDicts()
         
             
