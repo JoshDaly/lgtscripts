@@ -186,14 +186,13 @@ class TransferDB(object):
                 self.platform_dirty[self.dirty_seq_platform[id]] += self.dirty_transfers_dict[id]
             except KeyError:
                 self.platform_dirty[self.dirty_seq_platform[id]] = self.dirty_transfers_dict[id]
-        print self.platform_dirty
             #try:
             #    self.platform_clean[self.clean_transfers_dict[id]] += self.clean_seq_platform[id]
             #except KeyError:
             #    self.platform_clean[self.clean_transfers_dict[id]] = self.clean_seq_platform[id]
     
     def printCollatedPlatforms(self):
-        for platform in self.platform_dirty:
+        for platform in self.platform_dirty.keys():
             try:
                 print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
             except KeyError:
