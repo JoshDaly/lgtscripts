@@ -194,7 +194,8 @@ class TransferDB(object):
     def printCollatedPlatforms(self):
         for platform in self.platform_dirty.keys():
             try:
-                print "\t".join([platform, str(self.platform_dirty[platform]),str(self.platform_clean[platform])])
+                diff = self.platform_dirty[platform/float(self.platform_clean[platform])
+                print "\t".join([platform, str(self.platform_dirty[platform]),str(self.platform_clean[platform]),str(diff)])
             except KeyError:
                 print platform
                 
