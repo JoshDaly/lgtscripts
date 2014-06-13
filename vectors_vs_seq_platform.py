@@ -178,7 +178,8 @@ class TransferDB(object):
         
     def collatePlatforms(self):
         for id in self.dirty_transfers_dict:
-            print self.dirty_transfers_dict[id]
+            print self.dirty_seq_platform[id]
+            
             try:
                 self.platform_dirty[self.dirty_seq_platform[id]] += self.dirty_transfers_dict[id]
             except KeyError:
