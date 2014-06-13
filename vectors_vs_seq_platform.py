@@ -150,8 +150,8 @@ class TransferDB(object):
         
     def addCleanPlatform(self,img_id,platform):
         if len(platform) == 0:
-            print platform
             platform == "NA"
+            print platform
         if "454" in platform: # collate 454 platforms
             platform == "454"
         self.clean_seq_platform[img_id] = platform
