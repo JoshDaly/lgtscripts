@@ -192,7 +192,7 @@ class TransferDB(object):
             try:
                 print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
             except KeyError:
-                print plaform
+                print platform
 ###############################################################################
 ###############################################################################
 ###############################################################################
