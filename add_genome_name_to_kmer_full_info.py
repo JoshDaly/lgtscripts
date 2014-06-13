@@ -106,12 +106,12 @@ class kmerdata(object):
         
     def printINFO(self):
         for lgt in self.kmer_file_dict.keys():
-            id_a        = self.kmer_file_dict[lgt][0]
-            id_b        = self.kmer_file_dict[lgt][1]
-            kmer_score  = self.kmer_file_dict[lgt][2]
-            dgg         = self.kmer_file_dict[lgt][3]
-            dg1         = self.kmer_file_dict[lgt][4]
-            dg2         = self.kmer_file_dict[lgt][5]
+            id_a        = self.kmer_file_dict[lgt][0].rstrip()
+            id_b        = self.kmer_file_dict[lgt][1].rstrip()
+            kmer_score  = self.kmer_file_dict[lgt][2].rstrip()
+            dgg         = self.kmer_file_dict[lgt][3].rstrip()
+            dg1         = self.kmer_file_dict[lgt][4].rstrip()
+            dg2         = self.kmer_file_dict[lgt][5].rstrip()
             genome_1    = self.genome_db[id_a]
             genome_2    = self.genome_db[id_b]
             print "\t".join([lgt,id_a,genome_1,id_b,genome_2,kmer_score,dgg,dg1,dg2])
