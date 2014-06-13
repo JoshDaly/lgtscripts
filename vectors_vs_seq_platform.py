@@ -189,8 +189,10 @@ class TransferDB(object):
     
     def printCollatedPlatforms(self):
         for platform in self.platform_dirty:
-            print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
-                
+            try:
+                print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
+            except KeyError:
+                print plaform
 ###############################################################################
 ###############################################################################
 ###############################################################################
