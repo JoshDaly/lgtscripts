@@ -155,7 +155,6 @@ class TransferDB(object):
             platform = "NA"
         if "454" in platform: # collate 454 platforms
             platform = "454"
-        print platform
         self.clean_seq_platform[img_id] = platform
         
     def compareDicts(self):
@@ -188,9 +187,9 @@ class TransferDB(object):
             except KeyError:
                 self.platform_dirty[self.dirty_seq_platform[id]] = self.dirty_transfers_dict[id]
             try:
-                self.platform_dirty[self.clean_seq_platform[id]] += self.clean_transfers_dict[id]
+                self.platform_clean[self.clean_seq_platform[id]] += self.clean_transfers_dict[id]
             except KeyError:
-                self.platform_dirty[self.clean_seq_platform[id]] = self.clean_transfers_dict[id]
+                self.platform_clean[self.clean_seq_platform[id]] = self.clean_transfers_dict[id]
             
         print self.platform_clean
         print self.platform_dirty
