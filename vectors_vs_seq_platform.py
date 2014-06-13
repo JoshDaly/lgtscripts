@@ -178,6 +178,7 @@ class TransferDB(object):
         
     def collatePlatforms(self):
         for id in self.dirty_transfers_dict:
+            print id
             try:
                 self.platform_dirty[self.dirty_seq_platform[id]] += self.dirty_transfers_dict[id]
             except KeyError:
@@ -243,7 +244,7 @@ def doWork( args ):
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
     printHeader()
     transfers_dict.collatePlatforms()
-    transfers_dict.printCollatedPlatforms()
+    #transfers_dict.printCollatedPlatforms()
     #transfers_dict.compareDicts()
         
             
