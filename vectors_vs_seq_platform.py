@@ -144,6 +144,8 @@ class TransferDB(object):
             self.clean_transfers_dict[img_id] = 1
         
     def addDirtyPlatform(self,img_id,platform):
+        if len(platform) == 0:
+           platform = "NA"
         if "454" in platform: # collate 454 platforms
             platform = "454"
         self.dirty_seq_platform[img_id] = platform
@@ -151,10 +153,8 @@ class TransferDB(object):
     def addCleanPlatform(self,img_id,platform):
         if len(platform) == 0:
             platform = "NA"
-        #print platform+"\t"+str(len(platform))
         if "454" in platform: # collate 454 platforms
             platform == "454"
-        print platform
         self.clean_seq_platform[img_id] = platform
         
     def compareDicts(self):
@@ -182,8 +182,6 @@ class TransferDB(object):
         
     def collatePlatforms(self):
         for id in self.dirty_transfers_dict:
-            #print self.dirty_seq_platform[id]
-            
             try:
                 self.platform_dirty[self.dirty_seq_platform[id]] += self.dirty_transfers_dict[id]
             except KeyError:
@@ -249,7 +247,7 @@ def doWork( args ):
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
     printHeader()
     transfers_dict.collatePlatforms()
-    #transfers_dict.printCollatedPlatforms()
+    transfers_dict.printCollatedPlatforms()
     #transfers_dict.compareDicts()
         
             
