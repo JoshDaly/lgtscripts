@@ -154,7 +154,7 @@ class TransferDB(object):
         else:
             print platform
         
-#        print platform+"\t"+str(len(platform))
+        #print platform+"\t"+str(len(platform))
         if "454" in platform: # collate 454 platforms
             platform == "454"
         self.clean_seq_platform[img_id] = platform
