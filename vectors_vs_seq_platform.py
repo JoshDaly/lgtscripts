@@ -128,6 +128,8 @@ class TransferDB(object):
         self.dirty_seq_platform = {}
         self.clean_transfers_dict = {}
         self.clean_seq_platform = {}
+        self.platform_dirty = {}
+        self.platform_clean = {}
         
     def addDirtyTransfer(self,img_id):
         try:
@@ -174,8 +176,21 @@ class TransferDB(object):
         for id in self.dirty_transfers_dict.keys():
             print id
         
-   
-
+    def collatePlatforms(self):
+        for id in self.dirty_transfers_dict:
+            try:
+                self.platform_dirty[self.dirty_seq_platform[id]] += self.dirty_transfers_dict[id]
+            except KeyError:
+                self.platform_dirty[self.dirty_seq_platform[id]] = self.dirty_transfers_dict[id]
+            try:
+                self.platform_clean[self.clean_transfers_dict[id]] += self.clean_seq_platform[id]
+            except KeyError:
+                self.platform_clean[self.clean_transfers_dict[id]] = self.clean_seq_platform[id]
+    
+    def printCollatedPlatforms(self):
+        for platform in self.platform_dirty:
+            print "\t".join([self.platform_dirty[platform],self.platform_clean[platform]])
+                
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -225,7 +240,9 @@ def doWork( args ):
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_1], l[TP._SEQ_PLAT_1])
             transfers_dict.addCleanPlatform(l[TP._IMG_ID_2], l[TP._SEQ_PLAT_2])
     printHeader()
-    transfers_dict.compareDicts()
+    transfers_dict.collatePlatforms()
+    transfers_dict.printCollatedPlatforms()
+    #transfers_dict.compareDicts()
         
             
     """
