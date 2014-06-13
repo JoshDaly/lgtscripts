@@ -155,6 +155,7 @@ class TransferDB(object):
             platform = "NA"
         if "454" in platform: # collate 454 platforms
             platform = "454"
+        print platform
         self.clean_seq_platform[img_id] = platform
         
     def compareDicts(self):
