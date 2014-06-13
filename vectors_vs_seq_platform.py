@@ -190,6 +190,8 @@ class TransferDB(object):
                 self.platform_clean[self.clean_transfers_dict[id]] += self.clean_seq_platform[id]
             except KeyError:
                 self.platform_clean[self.clean_transfers_dict[id]] = self.clean_seq_platform[id]
+        print self.platform_clean
+        print self.platform_dirty
     
     def printCollatedPlatforms(self):
         for platform in self.platform_dirty.keys():
