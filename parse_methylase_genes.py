@@ -69,14 +69,15 @@ class annotationParser(object):
     
     def readAnnotationFile(self,fh):
         line = None
-        if self.prepped:
-            for l in fh:
-                fields = l.split("\t")
-                yield [fields[0],
-                       fields[1],
-                       fields[2]
-                       ]
-             
+        while True:
+            if self.prepped:
+                for l in fh:
+                    fields = l.split("\t")
+                    yield [fields[0],
+                           fields[1],
+                           fields[2]
+                           ]
+             break # done! 
     
 
 ###############################################################################
