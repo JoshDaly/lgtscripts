@@ -75,7 +75,7 @@ class annotationDB(object):
     
     def addMethylaseGene(self,l):
         line = annotationParser(l)
-        if string_found("methylase",line.annotation) or string_found("methylase",line.cog_annotation) or string_found("restriction",line.annotation) or string_found("restriction",line.cog_annotation):
+        if found_string("methylase",line.annotation) or found_string("methylase",line.cog_annotation) or found_string("restriction",line.annotation) or found_string("restriction",line.cog_annotation):
             self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
     
     def returnUIDs(self):
@@ -96,6 +96,9 @@ returns (stdout, stderr)
 """
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
+
+def found_string(str1, str2):
+    return ' ' + str1 + ' ' in ' ' + str2 + ' '
 
 def string_found(string1, string2):
     string1 = " " + string1.strip() + " "
