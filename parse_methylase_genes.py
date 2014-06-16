@@ -67,7 +67,7 @@ class annotationParser(object):
         self.uid            = tabs[0].split("-")[-1] 
         self.cog_id         = tabs[5]
         self.cog_annotation = tabs[6]
-        self.annotation     = tabs[10]
+        self.annotation     = tabs[9]
         
 class annotationDB(object):
     def __init__(self):
