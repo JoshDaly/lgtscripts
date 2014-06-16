@@ -76,7 +76,7 @@ class annotationParser(object):
                        fields[1],
                        fields[2]
                        ]
-            break # done! 
+             
     
 
 ###############################################################################
