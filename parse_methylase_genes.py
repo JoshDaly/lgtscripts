@@ -99,7 +99,7 @@ returns (stdout, stderr)
 
 def string_found(string1, string2):
     string1 = " " + string1.strip() + " "
-    string2 = " " + string2.strip() + " "
+    #string2 = " " + string2.strip() + " "
     if string2.find(string1):
         return True
     return False
