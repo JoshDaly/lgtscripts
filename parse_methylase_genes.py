@@ -80,6 +80,7 @@ def doWork( args ):
     
     # parse fasta file using biopython
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+        print ">"+accession
         print sequence.seq
             
     
