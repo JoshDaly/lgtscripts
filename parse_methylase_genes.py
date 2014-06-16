@@ -58,7 +58,26 @@ from Bio.Seq import Seq
 ###############################################################################
 ###############################################################################
 
-  # classes here
+class annotationParser(object):
+    # constants
+    _1 = 0
+    _2 = 1
+    _3 = 2
+    
+    def __init__(self):
+        self.prepped = True
+    
+    def readAnnotationFile(self,fh):
+        line = None
+        if self.prepped:
+            for l in fh:
+                fields = l.split("\t")
+                yield [fields[0],
+                       fields[1],
+                       fields[2]
+                       ]
+            break # done! 
+    
 
 ###############################################################################
 ###############################################################################
@@ -77,11 +96,26 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    # 1. read in prodigalled.annoated file
+    # 2. Capture methylase gene unique names
+    # 3. read in prodigalled file and grab fastaa seqs
+    # 4. Run promer/blast of gut_oral_methylase genes vs methylase gene DB
+    
+    # objects
+    ANNO_file = annotationParser()
+    
+    # read in annotation file
+    with open(args.anno_file,"r") as fh:
+        for hit in ANNO_file.readAnnotationFile(fh):
+            print ANNO_file._1
+            print ANNO_file._2
+            print ANNO_file._3
+    
     
     # parse fasta file using biopython
-    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        print ">"+accession
-        print sequence.seq
+    #for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+    #    print ">"+accession
+    #    print sequence.seq
             
     
 
@@ -148,7 +182,7 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f','--fasta_file', help="...")
+    parser.add_argument('-a','--anno_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
