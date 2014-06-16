@@ -59,26 +59,28 @@ from Bio.Seq import Seq
 ###############################################################################
 
 class annotationParser(object):
-    # constants
-    _1 = 0
-    _2 = 1
-    _3 = 2
+    def __init__(self,l):
+        self.readAnnotationFile(l)
     
+    def readAnnotationFile(self,l):
+        tabs = l.rstrip().split("\t")
+        self.uid            = tabs[0].split("-")[-1] 
+        self.cog_id         = tabs[5]
+        self.cog_annotation = tabs[6]
+        self.annotation     = tabs[10]
+        
+class annotationDB(object):
     def __init__(self):
-        self.prepped = True
+        self.anno_db = {}
     
-    def readAnnotationFile(self,fh):
-        line = None
-        while True:
-            if self.prepped:
-                for l in fh:
-                    fields = l.split("\t")
-                    yield [fields[0],
-                           fields[1],
-                           fields[2]
-                           ]
-            break # done! 
+    def addMethylaseGene(self,l):
+        line = annotationParser(l)
+        if string_found("methylase",line.annotation) or string_found("methylase",line.cog_annotation) or string_found("restriction",line.annotation) or string_found("restriction",line.cog_annotation):
+            self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
     
+    def returnUIDs(self):
+        for uid in self.anno_db.keys():
+            print "\t".join([uid,self.anno_db[uid][0],self.anno_db[uid][1]])
 
 ###############################################################################
 ###############################################################################
@@ -95,6 +97,13 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def string_found(string1, string2):
+    string1 = " " + string1.strip() + " "
+    string2 = " " + string2.strip() + " "
+    if string2.find(string1):
+        return True
+    return False
+
 def doWork( args ):
     """ Main wrapper"""
     # 1. read in prodigalled.annoated file
@@ -103,14 +112,15 @@ def doWork( args ):
     # 4. Run promer/blast of gut_oral_methylase genes vs methylase gene DB
     
     # objects
-    ANNO_file = annotationParser()
+    ANNO = annotationDB()
     
     # read in annotation file
     with open(args.anno_file,"r") as fh:
-        for hit in ANNO_file.readAnnotationFile(fh):
-            print ANNO_file._1
-            print ANNO_file._2
-            print ANNO_file._3
+        for l in fh:
+            ANNO.addMethylaseGene(l)
+    ANNO.returnUIDs() # print uids containing methylase or restriction
+        
+
     
     
     # parse fasta file using biopython
