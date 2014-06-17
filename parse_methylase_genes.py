@@ -105,7 +105,8 @@ def string_found(string1, string2):
     #string2 = " " + string2.strip() + " "
     if string2.lower().find(string1):
         return True
-    return False
+    else:
+        return False
 
 def doWork( args ):
     """ Main wrapper"""
