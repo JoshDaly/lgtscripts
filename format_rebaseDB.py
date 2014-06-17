@@ -38,8 +38,8 @@ import glob
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#from Bio import SeqIO
-#from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 #import os
 #import errno
