@@ -101,9 +101,9 @@ def found_string(str1, str2):
     return ' ' + str1 + ' ' in ' ' + str2 + ' '
 
 def string_found(string1, string2):
-    string1 = " " + string1.strip() + " "
+    string1 = " " + string1.strip().lower() + " "
     #string2 = " " + string2.strip() + " "
-    if string2.find(string1):
+    if string2.lower().find(string1):
         return True
     return False
 
