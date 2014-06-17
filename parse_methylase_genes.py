@@ -75,12 +75,32 @@ class annotationDB(object):
     
     def addMethylaseGene(self,l):
         line = annotationParser(l)
-        #self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
-        print line.uid
+        self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
     
     def returnUIDs(self):
         for uid in self.anno_db.keys():
             print "\t".join([uid,self.anno_db[uid][0],self.anno_db[uid][1]])
+            
+class faaParser(object):
+    def __init__(self,accession):
+        self.readFAA(accession)
+    
+    def readFAA(self,accession):
+        dashes      = accessoin.rstrip().split("-")
+        self.uid    = dashes[-1]
+        
+class faaDB(object):
+    def __init__(self):
+        self.faa_seqs = {}
+    
+    def addFAA(self,accession,seq):
+        line = faaParser(accession)
+        self.faa_seqs[line.uid] = seq
+        
+    def printFaaSeqs(self):
+        for uid in self.faa_seqs.keys():
+            print ">"+uid
+            print self.faa_seqs[uid]
 
 ###############################################################################
 ###############################################################################
@@ -106,23 +126,18 @@ def doWork( args ):
     
     # objects
     ANNO = annotationDB()
+    FAA  = faaDB()
     
     # read in annotation file
     with open(args.anno_file,"r") as fh:
         for l in fh:
-            #print l.rstrip()
             ANNO.addMethylaseGene(l)
-    #ANNO.returnUIDs() # print uids containing methylase or restriction
-        
-
-    
     
     # parse fasta file using biopython
-    #for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-    #    print ">"+accession
-    #    print sequence.seq
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+        FAA.addFAA(accession, sequence.seq)
             
-    
+    FAA.printFaaSeqs()
 
     """
 # run somethign external in threads
