@@ -110,7 +110,7 @@ def doWork( args ):
     # read in annotation file
     with open(args.anno_file,"r") as fh:
         for l in fh:
-            print l
+            print l.rstrip()
             ANNO.addMethylaseGene(l)
     #ANNO.returnUIDs() # print uids containing methylase or restriction
         
