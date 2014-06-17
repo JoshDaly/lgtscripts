@@ -75,7 +75,8 @@ class annotationDB(object):
     
     def addMethylaseGene(self,l):
         line = annotationParser(l)
-        self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
+        #self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
+        print line.uid
     
     def returnUIDs(self):
         for uid in self.anno_db.keys():
@@ -109,8 +110,9 @@ def doWork( args ):
     # read in annotation file
     with open(args.anno_file,"r") as fh:
         for l in fh:
+            print l
             ANNO.addMethylaseGene(l)
-    ANNO.returnUIDs() # print uids containing methylase or restriction
+    #ANNO.returnUIDs() # print uids containing methylase or restriction
         
 
     
