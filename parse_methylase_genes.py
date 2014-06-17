@@ -131,7 +131,7 @@ def doWork( args ):
     # 4. Run promer/blast of gut_oral_methylase genes vs methylase gene DB
     
     # objects
-    METHYLASE = methylaseDB
+    METHYLASE = methylaseDB()
     
     # read in annotation file
     with open(args.anno_file,"r") as fh:
