@@ -75,10 +75,7 @@ class annotationDB(object):
     
     def addMethylaseGene(self,l):
         line = annotationParser(l)
-        #if found_string("methylase",line.annotation) or found_string("methylase",line.cog_annotation) or found_string("restriction",line.annotation) or found_string("restriction",line.cog_annotation):
-        #if found_string("methylase",line.annotation) or found_string("methylase",line.cog_annotation) or found_string("methylases",line.annotation) or found_string("methylases",line.cog_annotation) or found_string("methyltransferase",line.cog_annotation) or found_string("methyltransferase",line.annotation) or found_string("restriction",line.annotation) or found_string("restriction",line.cog_annotation):
-        if string_found("methylase",line.annotation) or string_found("methylase",line.cog_annotation) or string_found("methylases",line.annotation) or string_found("methylases",line.cog_annotation): 
-            self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
+        self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
     
     def returnUIDs(self):
         for uid in self.anno_db.keys():
@@ -98,17 +95,6 @@ returns (stdout, stderr)
 """
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
-
-def found_string(str1, str2):
-    return ' ' + str1 + ' ' in ' ' + str2 + ' '
-
-def string_found(string1, string2):
-    string1 = " " + string1.strip().lower() + " "
-    #string2 = " " + string2.strip() + " "
-    if string2.lower().find(string1) >= 0:
-        return True
-    else:
-        return False
 
 def doWork( args ):
     """ Main wrapper"""
