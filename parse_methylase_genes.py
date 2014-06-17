@@ -102,8 +102,8 @@ class methylaseDB(object):
     def outFILE(self):
         with open(args.output_file,"w") as fh:
             for uid in self.faa_seqs.keys():
-                fh.write(">"+uid)
-                fh.write(str(self.faa_seqs[uid]))
+                fh.write(">"+uid+"\n")
+                fh.write(str(self.faa_seqs[uid])+"\n")
 
 ###############################################################################
 ###############################################################################
