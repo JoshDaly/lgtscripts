@@ -99,10 +99,11 @@ class methylaseDB(object):
         if line.uid in self.anno_db:
             return True
         
-    def printFaaSeqs(self):
-        for uid in self.faa_seqs.keys():
-            print ">"+uid
-            print self.faa_seqs[uid]
+    def outFILE(self):
+        with open(args.output_file,"w") as fh:
+            for uid in self.faa_seqs.keys():
+                fh.write(">"+uid)
+                fh.write(self.faa_seqs[uid])
 
 ###############################################################################
 ###############################################################################
@@ -143,7 +144,7 @@ def doWork( args ):
         if METHYLASE.checkKEY(accession):
             METHYLASE.addFAA(accession, sequence.seq)
             
-    METHYLASE.printFaaSeqs()
+    METHYLASE.outFILE()
 
     """
 # run somethign external in threads
@@ -210,6 +211,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--anno_file', help="...")
     parser.add_argument('-faa','--faa_file', help="...")
+    parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
