@@ -86,7 +86,7 @@ class faaParser(object):
         self.readFAA(accession)
     
     def readFAA(self,accession):
-        dashes      = accessoin.rstrip().split("-")
+        dashes      = accession.rstrip().split("-")
         self.uid    = dashes[-1]
         
 class faaDB(object):
