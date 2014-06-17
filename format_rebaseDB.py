@@ -79,7 +79,7 @@ def doWork( args ):
     """ Main wrapper"""
     
     # parse fasta file using biopython
-    with open(args.output_file,'r') as fh:
+    with open(args.output_file,'w') as fh:
         for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
             fh.write(">"+accession+"\n")
             fh.write(str(sequence.seq)+"\n")
