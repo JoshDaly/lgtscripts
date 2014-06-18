@@ -140,7 +140,7 @@ def doWork( args ):
             METHYLASE.addMethylaseGene(l)
     
     # parse fasta file using biopython
-    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.faa_file,"fasta")).items():
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         if METHYLASE.checkKEY(accession):
             METHYLASE.addFAA(accession, sequence.seq)
             
@@ -210,7 +210,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--anno_file', help="...")
-    parser.add_argument('-faa','--faa_file', help="...")
+    parser.add_argument('-f','--fasta_file', help="...")
     parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
