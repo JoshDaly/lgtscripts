@@ -130,8 +130,8 @@ class methylaseGenesDB(object):
         line = faaParser(accession)
         self.lgt_dict[line.uid] = [line.img_id_a,line.img_id_b]
     
-    def transfered_methylase_genes(self,lgt_id,rebase_id):
-        self.methylase_dict[lgt_id] = rebase_id
+    def transfered_methylase_genes(self,lgt_id,rebase_id,id_per,rebase_len_1,lgt_len_):
+        self.methylase_dict[lgt_id] = [rebase_id,id_per,rebase_len_1,lgt_len_2)
        
     def addMetadata(self,l):
         line = IMGmetadata(l)
@@ -144,14 +144,17 @@ class methylaseGenesDB(object):
     def printOUT(self):
         for lgt in self.methylase_dict.keys():
             try:
-                rebase      = self.methylase_dict[lgt] 
+                rebase      = self.methylase_dict[lgt][0] 
                 img_id_a    = self.lgt_dict[lgt][0]
                 img_id_b    = self.lgt_dict[lgt][1] 
                 genome_a    = self.metadata_dict[img_id_a]
                 genome_b    = self.metadata_dict[img_id_b] 
-                print "\t".join([lgt,rebase,img_id_a,genome_a,img_id_b,genome_b])
+                id_perc     = self.methylase_dict[lgt][1]
+                rebase_len  = self.methylase_dict[lgt][2]
+                lgt_len     = self.methylase_dict[lgt][3]
+                print "\t".join([lgt,rebase,id_perc,img_id_a,genome_a,img_id_b,genome_b,rebase_len,lgt_len])
             except KeyError:
-                pas
+                pass
 
 ###############################################################################
 ###############################################################################
@@ -179,7 +182,10 @@ def doWork( args ):
         for hit in NP.readNuc(fh):
             lgt_id      = hit[NP._ID_2].split("_")[0] 
             rebase_id   = hit[NP._ID_1]
-            METHYL.transfered_methylase_genes(lgt_id, rebase_id)
+            id_perc     = hit[NP._IDENTITY]
+            lgt_len     = hit[NP._LEN_2]
+            rebase_len  = hit[NP._LEN_1]
+            METHYL.transfered_methylase_genes(lgt_id, rebase_id,id_perc,rebase_len,lgt_len)
     
     # read in fasta file containing unique id information
     # parse fasta file using biopython
