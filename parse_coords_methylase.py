@@ -143,12 +143,15 @@ class methylaseGenesDB(object):
                 
     def printOUT(self):
         for lgt in self.methylase_dict.keys():
-            rebase      = self.methylase_dict[lgt] 
-            img_id_a    = self.lgt_dict[lgt][0]
-            img_id_b    = self.lgt_dict[lgt][1] 
-            genome_a    = self.metadata_dict[img_id_a]
-            genome_b    = self.metadata_dict[img_id_b] 
-            print "\t".join([lgt,rebase,img_id_a,genome_a,img_id_b,genome_b])
+            try:
+                rebase      = self.methylase_dict[lgt] 
+                img_id_a    = self.lgt_dict[lgt][0]
+                img_id_b    = self.lgt_dict[lgt][1] 
+                genome_a    = self.metadata_dict[img_id_a]
+                genome_b    = self.metadata_dict[img_id_b] 
+                print "\t".join([lgt,rebase,img_id_a,genome_a,img_id_b,genome_b])
+            except KeyError:
+                pas
 
 ###############################################################################
 ###############################################################################
