@@ -131,7 +131,7 @@ class methylaseGenesDB(object):
         self.lgt_dict[line.uid] = [line.img_id_a,line.img_id_b]
     
     def transfered_methylase_genes(self,lgt_id,rebase_id,id_per,rebase_len_1,lgt_len_):
-        self.methylase_dict[lgt_id] = [rebase_id,id_per,rebase_len_1,lgt_len_2)
+        self.methylase_dict[lgt_id] = [rebase_id,id_per,rebase_len_1,lgt_len_2]
        
     def addMetadata(self,l):
         line = IMGmetadata(l)
