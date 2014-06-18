@@ -174,7 +174,7 @@ def doWork( args ):
     # open .coords file
     with open(args.coords_file,"r") as fh:
         for hit in NP.readNuc(fh):
-            lgt_id      = hit[NP._ID_2] 
+            lgt_id      = hit[NP._ID_2].split("_")[0] 
             rebase_id   = hit[NP._ID_1]
             METHYL.transfered_methylase_genes(lgt_id, rebase_id)
     
