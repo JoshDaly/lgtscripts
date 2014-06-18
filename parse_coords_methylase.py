@@ -140,6 +140,15 @@ class methylaseGenesDB(object):
                 self.metadata_dict[self.lgt_dict[lgt_id][0]] = line.genome_name
             if self.lgt_dict[lgt_id][1] == line.img_id:
                 self.metadata_dict[self.lgt_dict[lgt_id][1]] = line.genome_name
+                
+    def printOUT(self):
+        for lgt in self.methylase_dict.keys():
+            rebase      = self.methylase_dict[lgt] 
+            img_id_a    = self.lgt_dict[lgt][0]
+            img_id_b    = self.lgt_dict[lgt][1] 
+            genome_a    = self.metadata_dict[img_id_a]
+            genome_b    = self.metadata_dict[img_id_b] 
+            print "\t".join([lgt,rebase,img_id_a,genome_a,img_id_b,genome_b])
 
 ###############################################################################
 ###############################################################################
@@ -180,6 +189,8 @@ def doWork( args ):
         for l in fh:
             METHYL.addMetadata(l)
             
+    METHYL.printOUT()      
+    
     
     
 
