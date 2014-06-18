@@ -152,7 +152,7 @@ class methylaseGenesDB(object):
                 id_perc     = self.methylase_dict[lgt][1]
                 rebase_len  = self.methylase_dict[lgt][2]
                 lgt_len     = self.methylase_dict[lgt][3]
-                print "\t".join([lgt,rebase,id_perc,img_id_a,genome_a,img_id_b,genome_b,rebase_len,lgt_len])
+                print "\t".join([lgt,rebase,str(id_perc),img_id_a,genome_a,img_id_b,genome_b,str(rebase_len),str(lgt_len)])
             except KeyError:
                 pass
 
