@@ -139,22 +139,24 @@ class methylaseGenesDB(object):
             if self.lgt_dict[lgt_id][0] == line.img_id:
                 self.metadata_dict[self.lgt_dict[lgt_id][0]] = line.genome_name
             if self.lgt_dict[lgt_id][1] == line.img_id:
-                self.metadata_dict[self.lgt_dict[lgt_id][1]] = line.genome_name
-                
-    def printOUT(self):
-        for lgt in self.methylase_dict.keys():
-            try:
-                rebase      = self.methylase_dict[lgt][0] 
-                img_id_a    = self.lgt_dict[lgt][0]
-                img_id_b    = self.lgt_dict[lgt][1] 
-                genome_a    = self.metadata_dict[img_id_a]
-                genome_b    = self.metadata_dict[img_id_b] 
-                id_perc     = self.methylase_dict[lgt][1]
-                rebase_len  = self.methylase_dict[lgt][2]
-                lgt_len     = self.methylase_dict[lgt][3]
-                print "\t".join([lgt,rebase,str(id_perc),img_id_a,genome_a,img_id_b,genome_b,str(rebase_len),str(lgt_len)])
-            except KeyError:
-                pass
+                self.metadata_dict[self.lgt_dict[lgt_id][1]] = line.genome_name          
+    
+    def writeToFile(self):
+        with open(args.output_file,'w') as fh:
+            fh.write("\t".join(["lgt_id,rebase_id,identity,img_id_a,genome_a,img_id_b,genome_b,lgt_len, rebase_len"])+"\n")# print header
+            for lgt in self.methylase_dict.keys():
+                try:
+                    rebase      = self.methylase_dict[lgt][0] 
+                    img_id_a    = self.lgt_dict[lgt][0]
+                    img_id_b    = self.lgt_dict[lgt][1] 
+                    genome_a    = self.metadata_dict[img_id_a]
+                    genome_b    = self.metadata_dict[img_id_b] 
+                    id_perc     = self.methylase_dict[lgt][1]
+                    rebase_len  = self.methylase_dict[lgt][2]
+                    lgt_len     = self.methylase_dict[lgt][3]
+                    fh.write("\t".join([lgt,rebase,str(id_perc),img_id_a,genome_a,img_id_b,genome_b,str(lgt_len,str(rebase_len))])+"\n")
+                except KeyError:
+                    pass
 
 ###############################################################################
 ###############################################################################
@@ -196,9 +198,8 @@ def doWork( args ):
     with open(args.metadata,"r") as fh:
         header = fh.readline() # capture header
         for l in fh:
-            METHYL.addMetadata(l)
-            
-    METHYL.printOUT()      
+            METHYL.addMetadata(l)    
+    METHYL.writeToFile()      
     
     
     
@@ -269,6 +270,7 @@ if __name__ == '__main__':
     parser.add_argument('-c','--coords_file', help="...")
     parser.add_argument('-f','--fasta_file', help="...")
     parser.add_argument('-m','--metadata', help="...")
+    parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
