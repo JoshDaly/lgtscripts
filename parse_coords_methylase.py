@@ -171,7 +171,7 @@ def doWork( args ):
     
     # read in fasta file containing unique id information
     # parse fasta file using biopython
-    for accession,sequence in SeqIO.to_dict(SeqIO.parse(fasta_file,"fasta")).items():
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         METHYL.addLGTdata(accession)
     
     # read in metadata file
