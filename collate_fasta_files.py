@@ -130,8 +130,12 @@ def doWork( args ):
         #print img_id
         # parse fasta file using biopython
         print img_id
-        for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-            pass
+        if META.checkIDplasmid(img_id):
+            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+                pass
+        if META.checkIDvirus(img_id):
+            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+                pass
         #    print accession
             #if META.checkIDplasmid(img_id):
             #    print img_id
