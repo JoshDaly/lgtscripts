@@ -129,11 +129,13 @@ def doWork( args ):
         img_id = c_file.split("/")[-1].split(".")[0]
         #print img_id
         # parse fasta file using biopython
-        print img_id
+        
         if META.checkIDplasmid(img_id):
+            print img_id
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
                 pass
         if META.checkIDvirus(img_id):
+            print img_id
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
                 pass
         #    print accession
