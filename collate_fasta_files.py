@@ -127,22 +127,21 @@ def doWork( args ):
 
     for c_file in listing:
         img_id = c_file.split("/")[-1].split(".")[0]
-        #print img_id
-        # parse fasta file using biopython
-        
         if META.checkIDplasmid(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                pass
+                print ">"+accession+"_"+img_id+"\n"
+                print str(sequence.seq)+"\n"
+                with open(args.output_plasmid,"w") as fh:
+                    pass
+                    #fh.write(">"+accession+"_"+img_id+"\n")
+                    #fh.write(str(sequence.seq)+"\n")
         if META.checkIDvirus(img_id):
-            print img_id
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                pass
-        #    print accession
-            #if META.checkIDplasmid(img_id):
-            #    print img_id
-            #if META.checkIDvirus(img_id):
-            #    print img_id
-        
+                with open(args.output_virus,"w") as fh:
+                    pass
+                    #fh.write(">"+accession+"_"+img_id+"\n")
+                    #fh.write(str(sequence.seq)+"\n")
+                    
             
 
     """
@@ -211,7 +210,8 @@ if __name__ == '__main__':
     parser.add_argument('-g','--genomes_directory', help="...")
     parser.add_argument('-p','--plasmid_metadata', help="...")
     parser.add_argument('-v','--virus_metadata', help="...")
-    parser.add_argument('-o','--output_file', help="...")
+    parser.add_argument('-op','--output_plasmid', help="...")
+    parser.add_argument('-ov','--output_virus', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
