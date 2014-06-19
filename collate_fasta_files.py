@@ -129,18 +129,14 @@ def doWork( args ):
         img_id = c_file.split("/")[-1].split(".")[0]
         if META.checkIDplasmid(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                print ">"+accession+"_"+img_id
-                print str(sequence.seq)
                 with open(args.output_plasmid,"w") as fh:
-                    pass
-                    #fh.write(">"+accession+"_"+img_id+"\n")
-                    #fh.write(str(sequence.seq)+"\n")
+                    fh.write(">"+accession+"_"+img_id+"\n")
+                    fh.write(str(sequence.seq)+"\n")
         if META.checkIDvirus(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
                 with open(args.output_virus,"w") as fh:
-                    pass
-                    #fh.write(">"+accession+"_"+img_id+"\n")
-                    #fh.write(str(sequence.seq)+"\n")
+                    fh.write(">"+accession+"_"+img_id+"\n")
+                    fh.write(str(sequence.seq)+"\n")
                     
             
 
