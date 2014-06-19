@@ -124,10 +124,11 @@ def doWork( args ):
         header = fh.readline() # capture header
         for l in fh:
             META.addVirus(l)
-    META.printDict()
+    #META.printDict()
 
     for c_file in listing:
         img_id = c_file.split("/")[-1].split(".")[0]
+        print img_id
         # parse fasta file using biopython
         for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
             if META.checkIDplasmid(img_id):
