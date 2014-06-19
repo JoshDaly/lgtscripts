@@ -135,7 +135,6 @@ def doWork( args ):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
                 pass
         if META.checkIDvirus(img_id):
-            print img_id
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
                 pass
         #    print accession
