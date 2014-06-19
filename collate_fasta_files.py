@@ -112,6 +112,7 @@ def doWork( args ):
     """ Main wrapper"""
     # objects
     listing = glob.glob('%s/*.fna' % args.genomes_directory)
+    print listing
     META    = metadataDB() # call class
     
     # read in viral/plasmid metadata files
