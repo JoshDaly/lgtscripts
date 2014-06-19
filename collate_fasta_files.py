@@ -112,7 +112,6 @@ def doWork( args ):
     """ Main wrapper"""
     # objects
     listing = glob.glob('%s/*/*[0-9].fna' % args.genomes_directory)
-    print listing
     META    = metadataDB() # call class
     
     # read in viral/plasmid metadata files
@@ -125,19 +124,20 @@ def doWork( args ):
         header = fh.readline() # capture header
         for l in fh:
             META.addVirus(l)
-    #META.printDict()
 
     for c_file in listing:
         img_id = c_file.split("/")[-1].split(".")[0]
-        print img_id
+        #print img_id
         # parse fasta file using biopython
+        
         for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-            if META.checkIDplasmid(img_id):
-                print img_id
-            if META.checkIDvirus(img_id):
-                print img_id
-  
-    
+            print accession
+            #if META.checkIDplasmid(img_id):
+            #    print img_id
+            #if META.checkIDvirus(img_id):
+            #    print img_id
+        
+            
 
     """
 # run somethign external in threads
