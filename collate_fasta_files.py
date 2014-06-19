@@ -116,10 +116,12 @@ def doWork( args ):
     
     # read in viral/plasmid metadata files
     with open(args.plasmid_metadata,"r") as fh:
+        header = fh.readline() # capture header
         for l in fh:
             META.addPlasmid(l)
         
     with open(args.virus_metadata,"r") as fh:
+        header = fh.readline() # capture header
         for l in fh:
             META.addVirus(l)
     META.printDict()
