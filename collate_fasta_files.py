@@ -124,21 +124,22 @@ def doWork( args ):
         header = fh.readline() # capture header
         for l in fh:
             META.addVirus(l)
+    p = open(args.output_plasmid, 'w')
+    v = open(args.output_virus, 'w')
 
     for c_file in listing:
         img_id = c_file.split("/")[-1].split(".")[0]
         if META.checkIDplasmid(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                with open(args.output_plasmid,"w") as fh:
-                    fh.write(">"+accession+"_"+img_id+"\n")
-                    fh.write(str(sequence.seq)+"\n")
+                p.write(">"+accession+"_"+img_id+"\n")
+                p.write(str(sequence.seq)+"\n")
         if META.checkIDvirus(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                with open(args.output_virus,"w") as fh:
-                    fh.write(">"+accession+"_"+img_id+"\n")
-                    fh.write(str(sequence.seq)+"\n")
+                v.write(">"+accession+"_"+img_id+"\n")
+                v.write(str(sequence.seq)+"\n")
                     
-            
+    p.close()
+    v.close()
 
     """
 # run somethign external in threads
