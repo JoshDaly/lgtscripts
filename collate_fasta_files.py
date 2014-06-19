@@ -129,8 +129,8 @@ def doWork( args ):
         img_id = c_file.split("/")[-1].split(".")[0]
         if META.checkIDplasmid(img_id):
             for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-                print ">"+accession+"_"+img_id+"\n"
-                print str(sequence.seq)+"\n"
+                print ">"+accession+"_"+img_id
+                print str(sequence.seq)
                 with open(args.output_plasmid,"w") as fh:
                     pass
                     #fh.write(">"+accession+"_"+img_id+"\n")
