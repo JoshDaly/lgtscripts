@@ -88,6 +88,9 @@ class metadataDB(object):
         if id in self.plasmid_db:
             return True
     
+    def printDict(self):
+        for id in self.virus_db.keys():
+            print id
     
 
 ###############################################################################
@@ -119,6 +122,7 @@ def doWork( args ):
     with open(args.virus_metadata,"r") as fh:
         for l in fh:
             META.addVirus(l)
+    META.printDict()
 
     for c_file in listing:
         img_id = c_file.split("/")[-1].split(".")[0]
