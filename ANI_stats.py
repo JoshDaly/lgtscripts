@@ -96,7 +96,7 @@ class ANIDB(object):
 
     def addScores(self,l,uid):
         line = ANIparser(l)
-        self.ANI_scores[uid] =  (line._ANI_1 + line._ANI_2) / float(2) 
+        self.ANI_scores[uid] =  (float(line._ANI_1) + float(line._ANI_2)) / float(2) 
         
         
     
