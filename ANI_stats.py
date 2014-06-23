@@ -128,6 +128,7 @@ def doWork( args ):
     # objects
     uid = 1
     ANI = ANIDB()
+    count_break = 0
     
     # open ANI file
     with open(args.ANI_file,"r") as fh:
@@ -136,7 +137,10 @@ def doWork( args ):
             if ANI.checkPAIR(l):
                 ANI.addPAIR(l, uid)
                 ANI.addScores(l, uid)
-                uid +=1 
+                uid +=1
+            if count_break >= 100:
+                break
+            count_break +=1  
     ANI.getAverageDIFF() 
                         
             
