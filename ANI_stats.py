@@ -105,8 +105,7 @@ class ANIDB(object):
         for key in  self.ANI_scores.keys():
             total = total + math.fabs(float(self.ANI_scores[key][0]) - float(self.ANI_scores[key][1]))
             counter+=1
-        print str(counter)
-        #print str(total/float(counter))     
+        print str(total/float(counter))     
     
 
 ###############################################################################
