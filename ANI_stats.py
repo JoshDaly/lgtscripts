@@ -135,6 +135,7 @@ def doWork( args ):
     with open(args.ANI_file,"r") as fh:
         header = fh.readline()  # capture header
         for l in fh:
+            print l 
             if ANI.checkPAIR(l):
                 ANI.addPAIR(l, uid)
                 ANI.addScores(l, uid)
