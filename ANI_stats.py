@@ -96,7 +96,7 @@ class ANIDB(object):
 
     def addScores(self,l,uid):
         line = ANIparser(l)
-        self.ANI_scores[uid] = [line._ANI_1_, line._ANI_2]
+        self.ANI_scores[uid] = [line._ANI_1, line._ANI_2]
     
     def getAverageDIFF(self):
         # difference between ANI scores
