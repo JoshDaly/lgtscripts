@@ -139,6 +139,7 @@ def doWork( args ):
                 ANI.addPAIR(l, uid)
                 ANI.addScores(l, uid)
                 uid +=1
+                print "yo"
             if count_break >= 100:
                 break
             count_break +=1  
