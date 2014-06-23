@@ -114,9 +114,9 @@ class ANIDB(object):
         for key in self.ANI_scores.keys():
             total += 1
             if  self.ANI_scores[key] >= set_value:
-                count+=1
+                count_above+=1
         print str(total)
-        print str(count)
+        print str(count_above)
 
 ###############################################################################
 ###############################################################################
