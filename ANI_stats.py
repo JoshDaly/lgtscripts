@@ -116,8 +116,8 @@ class ANIDB(object):
             if  self.ANI_scores[key] >= set_value:
                 print "\t".join([str(key),self.pairs_db[key][0],self.pairs_db[key][1],str(self.ANI_scores[key])])
                 count_above+=1
-        print str(total)
-        print str(count_above)
+        print "\t".join("total:",[str(total)])
+        print "\t".join("count_above:",[str(count_above)])
 
 ###############################################################################
 ###############################################################################
@@ -148,7 +148,7 @@ def doWork( args ):
             ANI.addPAIR(l, uid)
             ANI.addScores(l, uid)
             uid +=1
-            if count_break >= 1000:
+            if count_break >= 10000:
                 break
             count_break +=1  
             
