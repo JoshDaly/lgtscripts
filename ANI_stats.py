@@ -113,7 +113,7 @@ class ANIDB(object):
         count_above = 0
         for key in self.ANI_scores.keys():
             total += 1
-            if  self.ANI_scores[key] >= set_value and self.ANI_scores[key]:
+            if  self.ANI_scores[key] >= set_value and len(self.ANI_scores[key]) > 0:
                 print "\t".join([str(key),self.pairs_db[key][0],self.pairs_db[key][1],str(self.ANI_scores[key])])
                 count_above+=1
         print "\t".join(["total:",str(total)])
