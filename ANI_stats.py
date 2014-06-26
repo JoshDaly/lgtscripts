@@ -114,6 +114,7 @@ class ANIDB(object):
         for key in self.ANI_scores.keys():
             total += 1
             if  self.ANI_scores[key] >= set_value:
+                print "\t".join([key,str(self.ANI_scores[key])])
                 count_above+=1
         print str(total)
         print str(count_above)
@@ -147,11 +148,11 @@ def doWork( args ):
             ANI.addPAIR(l, uid)
             ANI.addScores(l, uid)
             uid +=1
-            if count_break >= 1000000000:
+            if count_break >= 100:
                 break
             count_break +=1  
             
-    ANI.aboveSetValue(60)      
+    ANI.aboveSetValue(94)      
     
             
             
