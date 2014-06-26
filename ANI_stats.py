@@ -97,8 +97,6 @@ class ANIDB(object):
     def addScores(self,l,uid):
         line = ANIparser(l)
         self.ANI_scores[uid] =  (float(line._ANI_1) + float(line._ANI_2)) / float(2) 
-        
-        
     
     def getAverageDIFF(self):
         # difference between ANI scores
@@ -114,7 +112,7 @@ class ANIDB(object):
         for key in self.ANI_scores.keys():
             total += 1
             if  self.ANI_scores[key] >= set_value and len(str(self.ANI_scores[key])) > 0:
-                print "\t".join([str(key),self.pairs_db[key][0],self.pairs_db[key][1],str(self.ANI_scores[key])])
+                #print "\t".join([str(key),self.pairs_db[key][0],self.pairs_db[key][1],str(self.ANI_scores[key])])
                 count_above+=1
         print "\t".join(["total:",str(total)])
         print "\t".join(["count_above:",str(count_above)])
@@ -148,8 +146,8 @@ def doWork( args ):
             ANI.addPAIR(l, uid)
             ANI.addScores(l, uid)
             uid +=1
-            if count_break >= 100000:
-                break
+            #if count_break >= 100000:
+            #    break
             count_break +=1  
             
     ANI.aboveSetValue(94)      
