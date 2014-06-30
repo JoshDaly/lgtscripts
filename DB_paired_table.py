@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __ANI_stats__.py - Description!
+# __DB_paired_table__.py - DATABASE FILE: create paired genome table for database!
 #
 ###############################################################################
 # #
@@ -34,7 +34,6 @@ __status__ = "Development"
 import argparse
 import sys
 import glob
-import math
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -59,72 +58,7 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-class ANIparser(object):
-    def __init__(self,l):
-        self.readANI(l)
-        
-    def readANI(self,l):
-        tabs = l.rstrip().split("\t")
-        self._img_id_1  = tabs[0]
-        self._img_id_2  = tabs[2]
-        self._species_1 = tabs[1]
-        self._species_2 = tabs[3]
-        self._ANI_1     = tabs[4]
-        self._ANI_2     = tabs[5]
-        self._AFI_1     = tabs[6]
-        self._AFI_2     = tabs[7]
-
-class METAparser(object):
-    def __init__(self,l):
-        self.readMETA(l)
-        
-    def readMETA(self,l):
-        tabs = l.rstrip().split("\t")
-        self._img_id            = 
-        self._isolation_site    = 
-
-class ANIDB(object):
-    def __init__(self):
-        self.pairs_db = {}
-        self.ANI_scores = {}
-
-    def addPAIR(self,l,id):
-        line = ANIparser(l)
-        self.pairs_db[id] = [line._img_id_1, line._img_id_2]
-        
-    def checkPAIR(self,l):
-        line = ANIparser(l)
-        try:
-            for key in self.pairs_db.keys():
-                if self.pairs_db[key][0] == line._img_id_1 and self.pairs_db[key][1] == line._img_id_2:
-                    return False
-                else: 
-                    return True
-        except KeyError:
-            pass
-
-    def addScores(self,l,uid):
-        line = ANIparser(l)
-        self.ANI_scores[uid] =  (float(line._ANI_1) + float(line._ANI_2)) / float(2) 
-    
-    def getAverageDIFF(self):
-        # difference between ANI scores
-        counter = 0 
-        total = 0
-        for key in  self.ANI_scores.keys():
-            total = total + math.fabs(float(self.ANI_scores[key][0]) - float(self.ANI_scores[key][1]))
-            counter+=1
-    
-    def aboveSetValue(self,set_value):
-        total = 0
-        count_above = 0
-        for key in self.ANI_scores.keys():
-            total += 1
-            if  self.ANI_scores[key] >= set_value and len(str(self.ANI_scores[key])) > 0:
-                #print "\t".join([str(key),self.pairs_db[key][0],self.pairs_db[key][1],str(self.ANI_scores[key])])
-                count_above+=1
-        print "\t".join(["total:",str(total)])
-        print "\t".join(["count_above:",str(count_above)])
+  # classes here
 
 ###############################################################################
 ###############################################################################
@@ -143,24 +77,9 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
-    # objects
-    uid = 1
-    ANI = ANIDB()
-    count_break = 0
     
-    # open ANI file
-    with open(args.ANI_file,"r") as fh:
-        header = fh.readline()  # capture header
-        for l in fh:
-            ANI.addPAIR(l, uid)
-            ANI.addScores(l, uid)
-            uid +=1
-            #if count_break >= 100000:
-            #    break
-            count_break +=1  
+                
             
-    ANI.aboveSetValue(94)      
-    
             
             
             
@@ -238,7 +157,7 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ani','--ANI_file', help="...")
+    parser.add_argument('-fasta_dir','--fasta_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
