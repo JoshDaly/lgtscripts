@@ -57,8 +57,69 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 ###############################################################################
+        
+class METAparser(object):
+    def __init__(self,l):
+        self.readMetadata(l)
+        
+    def readMetadata(self,l):
+        """ taxon  = 0, genome_name = 4"""
+        tabs = l.rstrip().split("\t")
+        self._img_id        = tabs[0]
+        self._genome_name   = tabs[4]
+        self._body_site     = tabs[27]
+        
+class ANIparser(object):
+    def __init__(self,l):
+        self.readANI(l)
+        
+    def readANI(self,l):
+        """IMG_Taxon1      Species IMG_taxon2      Species2        ANI1    ANI2    AF1     AF2"""
+        tabs = l.rstrip().split("\t")
+        self._img_id_1  = tabs[0]
+        self._img_id_2  = tabs[2]
+        self._ANI_1     = tabs[4]
+        self._ANI_2     = tabs[5]
+        
+class genomeTreeParser(object):
+    def __init__(self,l):
+        self.readGT(l)
+    
+    def readGT(self,l):
+        """genome_tree_id  img_id  order   tax_string"""
+        tabs = l.rstrip().split("\t")
+        self._gt_id  = tabs[0]  
+        self._img_id = tabs[1]
 
-  # classes here
+class paired_data(object):
+    def __init__(self):
+        self.img_to_gt_dict = {} # dict to store img-> genome tree ids
+        self.img_metadata_dict = {}
+        self.ANI_with_gt = {}
+        
+    def addGT(self,l):
+        line = genomeTreeParser(l)
+        self.img_to_gt_dict[line._img_id] = line._gt_id
+        
+    def addMETA(self,l):
+        line = METAparser(l)
+        self.img_metadata_dict[line._img_id] = 
+    
+    def checkID(self,l,type): # check if it has genome tree id
+        if type == "ANI":
+            line =  ANIparser(l)
+            if line._img_id_1 in self.img_to_gt_dict and line._img_id_2 in self.img_to_gt_dict:
+                return True
+        if type == "META"
+            line = METAparser(l)
+            if line._img_id in self.img_to_gt_dict:
+                return True
+    
+    def 
+        
+        
+          
+    
 
 ###############################################################################
 ###############################################################################
@@ -77,8 +138,29 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    # objects
+    PD = paired_data() # call class
     
+    # read in genome tree file
+    with open(args.genome_tree_file,"r") as fh:
+        header = fh.readline()
+        for l in fh:
+            PD.addGT(l)
+    
+    # read in ANI file
+    with open(args.ANI_file,"r") as fh:
+        header = fh.readline()
+        for l in fh:
+            if PD.checkID(l, "ANI"): # ID in genome tree list
                 
+        
+    # read in IMG metadata
+    with open(args.img_metadata,"r") as fh:
+        header = fh.readline()
+        for l in fh:
+            if PD.checkID(l, "META"): # ID in genome tree list
+                
+                    
             
             
             
