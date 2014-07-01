@@ -114,7 +114,7 @@ class paired_data(object):
             line =  ANIparser(l)
             if line._img_id_1 in self.img_to_gt_dict and line._img_id_2 in self.img_to_gt_dict:
                 return True
-        if type == "META"
+        if type == "META":
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
