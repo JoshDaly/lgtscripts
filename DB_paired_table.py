@@ -64,10 +64,11 @@ class METAparser(object):
         
     def readMetadata(self,l):
         """ taxon  = 0, genome_name = 4"""
+        """/srv/db/img/07042014/metadata/img_metadata_07042014.tsv"""
         tabs = l.rstrip().split("\t")
         self._img_id        = tabs[0]
         self._genome_name   = tabs[4]
-        self._body_site     = tabs[27]
+        self._body_site     = tabs[56]
         
 class ANIparser(object):
     def __init__(self,l):
@@ -107,7 +108,11 @@ class paired_data(object):
         
     def addMETA(self,l):
         line = METAparser(l)
-        #self.img_metadata_dict[line._img_id] = 
+        self.img_metadata_dict[line._img_id] = [line._genome_name,line._body_site]
+    
+    def printMETA(self):
+        for key in self.img_metadata_dict.keys():
+            print "\t".join([key,self.img_metadata_dict[key][0],self.img_metadata_dict[key][1]])
         
     def addANI(self,l,pid):
         line = ANIparser(l)
@@ -167,16 +172,14 @@ def doWork( args ):
             TS += 1 
             if TS >= 10000:
                 break
-    PD.printANIs()
-                
-             
-    """    
+        
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
         header = fh.readline()
         for l in fh:
             if PD.checkID(l, "META"): # ID in genome tree list
-    """            
+                PD.addMETA(l)
+    PD.printMETA()
                     
             
             
