@@ -95,7 +95,7 @@ class paired_data(object):
     def __init__(self):
         self.img_to_gt_dict = {} # dict to store img-> genome tree ids
         self.img_metadata_dict = {}
-        self.ANI_with_gt = {}
+        self.ANI_scores = {}
         
     def addGT(self,l):
         line = genomeTreeParser(l)
@@ -108,6 +108,14 @@ class paired_data(object):
     def addMETA(self,l):
         line = METAparser(l)
         #self.img_metadata_dict[line._img_id] = 
+        
+    def addANI(self,l,pid):
+        line = ANIparser(l)
+        self.ANI_scores[pid] = [line._img_id_1,line._img_id_2,line._ANI_1,line._ANI_2] 
+        
+    def printANIs(self):
+        for key in self.ANI_scores.keys():
+            print "\t".join([key,self.ANI_scores[key][0],self.ANI_scores[key][1],self.ANI_scores[key][2],self.ANI_scores[key][3]])
     
     def checkID(self,l,type): # check if it has genome tree id
         if type == "ANI":
@@ -139,21 +147,26 @@ def doWork( args ):
     """ Main wrapper"""
     # objects
     PD = paired_data() # call class
+    pid = 1 # paired genome ID
     
     # read in genome tree file
     with open(args.genome_tree_file,"r") as fh:
         header = fh.readline()
         for l in fh:
             PD.addGT(l)
-    PD.printGTs()
-    """
+    
+    
     # read in ANI file
     with open(args.ANI_file,"r") as fh:
         header = fh.readline()
         for l in fh:
             if PD.checkID(l, "ANI"): # ID in genome tree list
+                PD.addANI(l, pid)
+                pid += 1
+    PD.printANIs()
                 
-        
+             
+    """    
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
         header = fh.readline()
@@ -240,6 +253,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-gt','--genome_tree_file', help="...")
+    parser.add_argument('-ani','--ANI_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
