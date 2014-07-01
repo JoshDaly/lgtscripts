@@ -80,7 +80,8 @@ def doWork( args ):
     # objects
     listing = glob.glob('%s/*/*[0-9].fna' % args.genomes_directory)
     
-    print listing
+    for i in listing:
+        print i
     
                 
             
