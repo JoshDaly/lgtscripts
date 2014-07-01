@@ -145,7 +145,7 @@ def doWork( args ):
         header = fh.readline()
         for l in fh:
             PD.addGT(l)
-    printGTs()
+    PD.printGTs()
     """
     # read in ANI file
     with open(args.ANI_file,"r") as fh:
