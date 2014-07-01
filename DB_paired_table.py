@@ -148,6 +148,7 @@ def doWork( args ):
     # objects
     PD = paired_data() # call class
     pid = 1 # paired genome ID
+    TS = 0
     
     # read in genome tree file
     with open(args.genome_tree_file,"r") as fh:
@@ -163,6 +164,9 @@ def doWork( args ):
             if PD.checkID(l, "ANI"): # ID in genome tree list
                 PD.addANI(l, pid)
                 pid += 1
+            TS += 1 
+            if TS >= 20:
+                break
     PD.printANIs()
                 
              
