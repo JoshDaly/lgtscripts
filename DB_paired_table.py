@@ -131,9 +131,9 @@ class paired_data(object):
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
-    def printPIDtable(self):
-        for key in  img_metadata_dict.keys():
-            print "\t".join([])
+    #def printPIDtable(self):
+    #    for key in  img_metadata_dict.keys():
+    #        print "\t".join([])
 
 ###############################################################################
 ###############################################################################
