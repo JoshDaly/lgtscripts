@@ -261,6 +261,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-gt','--genome_tree_file', help="...")
     parser.add_argument('-ani','--ANI_file', help="...")
+    parser.add_argument('-m','--img_metadata', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
