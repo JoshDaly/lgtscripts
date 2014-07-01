@@ -101,6 +101,10 @@ class paired_data(object):
         line = genomeTreeParser(l)
         self.img_to_gt_dict[line._img_id] = line._gt_id
         
+    def printGTs(self):
+        for key in self.img_to_gt_dict.keys():
+            print "\t".join([key,self.img_to_gt_dict[key]])
+        
     def addMETA(self,l):
         line = METAparser(l)
         self.img_metadata_dict[line._img_id] = 
@@ -114,12 +118,7 @@ class paired_data(object):
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
-    
-    def 
-        
-        
-          
-    
+
 
 ###############################################################################
 ###############################################################################
@@ -146,7 +145,8 @@ def doWork( args ):
         header = fh.readline()
         for l in fh:
             PD.addGT(l)
-    
+    printGTs()
+    """
     # read in ANI file
     with open(args.ANI_file,"r") as fh:
         header = fh.readline()
@@ -159,7 +159,7 @@ def doWork( args ):
         header = fh.readline()
         for l in fh:
             if PD.checkID(l, "META"): # ID in genome tree list
-                
+    """            
                     
             
             
