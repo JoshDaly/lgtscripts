@@ -165,7 +165,7 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            if TS >= 20:
+            if TS >= 10000:
                 break
     PD.printANIs()
                 
