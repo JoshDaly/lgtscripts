@@ -78,7 +78,7 @@ returns (stdout, stderr)
 def doWork( args ):
     """ Main wrapper"""
     # objects
-    listing = glob.glob('%s/*/[0-9]*.fna' % args.genomes_directory)
+    listing = glob.glob('%s/*/*[0-9].fna' % args.genomes_directory)
     
     print listing
     
