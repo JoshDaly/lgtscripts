@@ -107,7 +107,7 @@ class paired_data(object):
         
     def addMETA(self,l):
         line = METAparser(l)
-        self.img_metadata_dict[line._img_id] = 
+        #self.img_metadata_dict[line._img_id] = 
     
     def checkID(self,l,type): # check if it has genome tree id
         if type == "ANI":
