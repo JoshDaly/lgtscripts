@@ -115,7 +115,7 @@ class paired_data(object):
         
     def printANIs(self):
         for key in self.ANI_scores.keys():
-            print "\t".join([key,self.ANI_scores[key][0],self.ANI_scores[key][1],self.ANI_scores[key][2],self.ANI_scores[key][3]])
+            print "\t".join([str(key),self.ANI_scores[key][0],self.ANI_scores[key][1],self.ANI_scores[key][2],self.ANI_scores[key][3]])
     
     def checkID(self,l,type): # check if it has genome tree id
         if type == "ANI":
