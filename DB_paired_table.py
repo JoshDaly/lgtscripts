@@ -131,7 +131,9 @@ class paired_data(object):
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
-
+    def printPIDtable(self):
+        for key in  img_metadata_dict.keys():
+            print "\t".join([])
 
 ###############################################################################
 ###############################################################################
@@ -170,8 +172,8 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            if TS >= 10000:
-                break
+            #if TS >= 10000:
+            #    break
         
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
