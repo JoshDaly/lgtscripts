@@ -232,6 +232,9 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def printHEADER():
+    print "\t".join(["pid","genome_1","genome_2","ANI_1","ANI_2","batch"])
+
 def doWork( args ):
     """ Main wrapper"""
     # objects
@@ -263,7 +266,7 @@ def doWork( args ):
         for l in fh:
             if PD.checkID(l, "META"): # ID in genome tree list
                 PD.addMETA(l)
-    
+    printHEADER()
     PD.printPIDtable()            
             
             
