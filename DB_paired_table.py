@@ -98,6 +98,7 @@ class paired_data(object):
         self.img_metadata_dict = {}
         self.ANI_scores = {}
         self.path_to_genome = {} # genome_tree_id -> PATH_TO_FILE
+        self.body_site_dict = {} # genome_tree_id -> body_site
          
     def addGT(self,l):
         line = genomeTreeParser(l)
@@ -138,9 +139,6 @@ class paired_data(object):
             batch = 4
         if line._body_site == "Eye": # 10 genomes
             body_site = "eye"
-            batch = 4
-        if line._body_site == "Nose": # 30 genomes
-            body_site = "nose"
             batch = 4
         if line._body_site == "Gastrointestinal tract": # 1034
             body_site = "gastrointestinal tract"
@@ -193,6 +191,29 @@ class paired_data(object):
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
+            
+    def BodySiteDict(self):
+        for pid in  self.ANI_scores.keys():
+            try:
+                img_id_1            = self.ANI_scores[pid][0]
+                img_id_2            = self.ANI_scores[pid][1]
+                ANI_1               = str(self.ANI_scores[pid][2])
+                ANI_2               = str(self.ANI_scores[pid][3])
+                genome_tree_id_1    = self.img_to_gt_dict[img_id_1]
+                genome_tree_id_2    = self.img_to_gt_dict[img_id_2]
+                batch_a             = self.img_metadata_dict[img_id_1][2]
+                batch_b             = self.img_metadata_dict[img_id_2][2]
+                body_site_a         = self.img_metadata_dict[img_id_1][1]
+                body_site_b         = self.img_metadata_dict[img_id_2][1]
+                # add to dictoinary
+                self.body_site_dict[genome_tree_id_1] = body_site_a
+                self.body_site_dict[genome_tree_id_2] = body_site_b
+                
+    def printBodySiteDict(self):
+        for id in self.body_site_dict.keys():
+            print "\t".join([id,self.body_site_dict[id]])
+        
+            
     def printPIDtable(self):
         for pid in  self.ANI_scores.keys():
             try:
@@ -236,7 +257,7 @@ class paired_data(object):
         print "\t".join(["genome_tree_id","PATH_TO_FILE"])
         for id in self.path_to_genome.keys():
             print "\t".join([self.img_to_gt_dict[id], self.path_to_genome[id]])
-        
+                 
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -277,8 +298,8 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            #if TS >= 50000:
-            #    break
+            if TS >= 50000:
+                break
         
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
@@ -288,9 +309,10 @@ def doWork( args ):
                 PD.addMETA(l)
     #printHEADER()
     #PD.printPIDtable()            
-    PD.addPathToGenome()
-    PD.printPathToGenomes()    
-            
+    #PD.addPathToGenome()
+    #PD.printPathToGenomes()    
+    PD.BodySiteDict()
+    PD.printBodySiteDict()        
             
             
     """
