@@ -233,7 +233,7 @@ class paired_data(object):
                 pass
         
     def printPathToGenomes(self):
-        print "\t".join([genome_tree_id,PATH_TO_FILE])
+        print "\t".join(["genome_tree_id","PATH_TO_FILE"])
         for id in self.path_to_genome.keys():
             print "\t".join([self.img_to_gt_dict[id], self.path_to_genome[id]])
         
