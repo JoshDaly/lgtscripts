@@ -110,44 +110,56 @@ class paired_data(object):
         line = METAparser(l)
         # Simplify IMG bodysite metadata
         # Simplification not needed: Nose, Oral, Airways, Ear, Eye, Gastrointestinal tract, Urogenital tract
-        # Skin
         body_site = "NA"
-        if line._body_site == "Nose":
+        # other 11954 genomes 
+        batch = 8
+        if line._body_site == "Nose": # 30 genomes
             body_site = "nose"
-        if line._body_site == "Oral":
+            batch = 4
+        if line._body_site == "Oral": # 543 genomes
             body_site = "oral"
-        if line._body_site == "Airways":
+            batch = 2
+        if line._body_site == "Airways": # 352 genomes
             body_site = "airways"
-        if line._body_site == "Ear":
+            batch = 3
+        if line._body_site == "Ear": # 15 genomes 
             body_site = "ear"
-        if line._body_site == "Eye":
+            batch = 4
+        if line._body_site == "Eye": # 10 genomes
             body_site = "eye"
-        if line._body_site == "Nose":
+            batch = 4
+        if line._body_site == "Nose": # 30 genomes
             body_site = "nose"
-        if line._body_site == "Gastrointestinal tract":
+            batch = 4
+        if line._body_site == "Gastrointestinal tract": # 1034
             body_site = "gastrointestinal tract"
-        if line._body_site == "Urogenital tract":
+            batch = 1
+        if line._body_site == "Urogenital tract": # 256 
             body_site = "urogenital tract"
-        
+            batch = 4
+        # Skin # 221
         skin = ["skin","abdomen","ankle","limb","wound"]
         for skin_site in skin:
             if skin_site in line._body_site.lower():
                 body_site = "skin"
+                batch  = 5
                 break
-        # Internal organs
+        # Internal organs # 257 genomes
         internal_organs = ["spinal cord","heart","liver","lymph nodes","blood","bladder","bone","brain"]
         for organ in internal_organs:
             if organ in line._body_site.lower():
                 body_site = "internal organ"
+                batch  = 6
                 break
-        # Plant
+        # Plant # 176 genomes
         plant = ["plant","root"]
         for plant_site in plant:
             if plant_site in line._body_site.lower():
                 body_site = "plant"
+                batch  = 7
                 break
         # add to dictionary
-        self.img_metadata_dict[line._img_id] = [line._genome_name,body_site]
+        self.img_metadata_dict[line._img_id] = [line._genome_name,body_site,batch]
     
     def printMETA(self):
         for key in self.img_metadata_dict.keys():
@@ -178,9 +190,18 @@ class paired_data(object):
             ANI_2    = str(self.ANI_scores[pid][3])
             genome_tree_id_1 = self.img_to_gt_dict[img_id_1]
             genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
-            batch = None
-            print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2])
-
+            batch_a = self.img_metadata_dict[img_id_1][2]
+            batch_b = self.img_metadata_dict[img_id_2][2]
+            batch = 0
+            if batch_a == batch_b:
+                batch = batch_a
+                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,batch])
+            if batch_a > batch_b:
+                batch = batch_a
+                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,batch])
+            if batch_a < batch_b:
+                batch = batch_b
+                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,batch])
 ###############################################################################
 ###############################################################################
 ###############################################################################
