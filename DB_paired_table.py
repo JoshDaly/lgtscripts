@@ -208,7 +208,9 @@ class paired_data(object):
                 # add to dictoinary
                 self.body_site_dict[genome_tree_id_1] = body_site_a
                 self.body_site_dict[genome_tree_id_2] = body_site_b
-                
+            except KeyError:
+                pass
+            
     def printBodySiteDict(self):
         for id in self.body_site_dict.keys():
             print "\t".join([id,self.body_site_dict[id]])
