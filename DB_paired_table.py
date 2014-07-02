@@ -184,24 +184,27 @@ class paired_data(object):
                 return True
     def printPIDtable(self):
         for pid in  self.ANI_scores.keys():
-            img_id_1 = self.ANI_scores[pid][0]
-            img_id_2 = self.ANI_scores[pid][1]
-            ANI_1    = str(self.ANI_scores[pid][2])
-            ANI_2    = str(self.ANI_scores[pid][3])
-            genome_tree_id_1 = self.img_to_gt_dict[img_id_1]
-            genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
-            batch_a = self.img_metadata_dict[img_id_1][2]
-            batch_b = self.img_metadata_dict[img_id_2][2]
-            batch = 0
-            if batch_a == batch_b:
-                batch = batch_a
-                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
-            if batch_a > batch_b:
-                batch = batch_a
-                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
-            if batch_a < batch_b:
-                batch = batch_b
-                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+            try:
+                img_id_1 = self.ANI_scores[pid][0]
+                img_id_2 = self.ANI_scores[pid][1]
+                ANI_1    = str(self.ANI_scores[pid][2])
+                ANI_2    = str(self.ANI_scores[pid][3])
+                genome_tree_id_1 = self.img_to_gt_dict[img_id_1]
+                genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
+                batch_a = self.img_metadata_dict[img_id_1][2]
+                batch_b = self.img_metadata_dict[img_id_2][2]
+                batch = 0
+                if batch_a == batch_b:
+                    batch = batch_a
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+                if batch_a > batch_b:
+                    batch = batch_a
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+                if batch_a < batch_b:
+                    batch = batch_b
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+            except KeyError:
+                pass
 ###############################################################################
 ###############################################################################
 ###############################################################################
