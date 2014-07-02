@@ -170,9 +170,16 @@ class paired_data(object):
             line = METAparser(l)
             if line._img_id in self.img_to_gt_dict:
                 return True
-    #def printPIDtable(self):
-    #    for key in  img_metadata_dict.keys():
-    #        print "\t".join([])
+    def printPIDtable(self):
+        for pid in  self.ANI_scores.keys():
+            img_id_1 = self.ANI_scores[pid][0]
+            img_id_2 = self.ANI_scores[pid][1]
+            ANI_1    = str(self.ANI_scores[pid][2])
+            ANI_2    = str(self.ANI_scores[pid][3])
+            genome_tree_id_1 = self.img_to_gt_dict[img_id_1]
+            genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
+            batch = None
+            print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2])
 
 ###############################################################################
 ###############################################################################
@@ -220,8 +227,8 @@ def doWork( args ):
         for l in fh:
             if PD.checkID(l, "META"): # ID in genome tree list
                 PD.addMETA(l)
-    PD.printMETA()
-                    
+    
+    PD.printPIDtable()            
             
             
             
