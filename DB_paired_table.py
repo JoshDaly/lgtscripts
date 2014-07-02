@@ -193,16 +193,18 @@ class paired_data(object):
                 genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
                 batch_a = self.img_metadata_dict[img_id_1][2]
                 batch_b = self.img_metadata_dict[img_id_2][2]
+                body_site_a = self.img_metadata_dict[img_id_1][1]
+                body_site_b = self.img_metadata_dict[img_id_2][1]
                 batch = 0
                 if batch_a == batch_b:
                     batch = batch_a
-                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,body_site_a,body_site_b,str(batch)])
                 if batch_a > batch_b:
                     batch = batch_a
-                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,body_site_a,body_site_b,str(batch)])
                 if batch_a < batch_b:
                     batch = batch_b
-                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
+                    print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,body_site_a,body_site_b,str(batch)])
             except KeyError:
                 pass
 ###############################################################################
