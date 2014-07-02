@@ -195,10 +195,10 @@ class paired_data(object):
             batch = 0
             if batch_a == batch_b:
                 batch = batch_a
-                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,batch])
+                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
             if batch_a > batch_b:
                 batch = batch_a
-                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,batch])
+                print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
             if batch_a < batch_b:
                 batch = batch_b
                 print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
