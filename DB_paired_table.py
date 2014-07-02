@@ -113,21 +113,21 @@ class paired_data(object):
         # Skin
         body_site = "NA"
         if line._body_site == "Nose":
-            body = "nose"
+            body_site = "nose"
         if line._body_site == "Oral":
-            body = "oral"
+            body_site = "oral"
         if line._body_site == "Airways":
-            body = "airways"
+            body_site = "airways"
         if line._body_site == "Ear":
-            body = "ear"
+            body_site = "ear"
         if line._body_site == "Eye":
-            body = "eye"
+            body_site = "eye"
         if line._body_site == "Nose":
-            body = "nose"
+            body_site = "nose"
         if line._body_site == "Gastrointestinal tract":
-            body = "gastrointestinal tract"
+            body_site = "gastrointestinal tract"
         if line._body_site == "Urogenital tract":
-            body = "urogenital tract"
+            body_site = "urogenital tract"
         
         skin = ["skin","abdomen","ankle","limb","wound"]
         for skin_site in skin:
