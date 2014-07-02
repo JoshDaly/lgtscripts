@@ -277,8 +277,8 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            if TS >= 50000:
-                break
+            #if TS >= 50000:
+            #    break
         
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
