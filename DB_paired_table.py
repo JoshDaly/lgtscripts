@@ -108,7 +108,32 @@ class paired_data(object):
         
     def addMETA(self,l):
         line = METAparser(l)
-        self.img_metadata_dict[line._img_id] = [line._genome_name,line._body_site]
+        # Simplify IMG bodysite metadata
+        # Simplification not needed: Nose, Oral, Airways, Ear, Eye, Gastrointestinal tract, Urogenital tract
+        # Skin
+        body_site = "NA"
+        skin = ["skin","abdomen","ankle","limb","wound"]
+        for skin_site in skin:
+            if skin_site in line._body_site.lower():
+                body_site = "skin"
+                break
+        # Internal organs
+        internal_organs = ["spinal cord","heart","liver","lymph nodes","blood","bladder","bone","brain"]
+        for organ in internal_organs:
+            if organ in line._body_site.lower():
+                body_site = "internal_organ"
+                break
+        # Plant
+        plant = ["plant","root"]
+        for plant_site in plant:
+            if plant_site in line._body_site.lower():
+                body_site = "plant"
+                break
+        # add to dictionary
+        if body_site == "NA":
+            self.img_metadata_dict[line._img_id] = [line._genome_name,line._body_site]
+        else:
+            self.img_metadata_dict[line._img_id] = [line._genome_name,body_site]
     
     def printMETA(self):
         for key in self.img_metadata_dict.keys():
@@ -172,8 +197,8 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            #if TS >= 10000:
-            #    break
+            if TS >= 10000:
+                break
         
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
