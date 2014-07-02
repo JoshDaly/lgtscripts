@@ -112,21 +112,21 @@ class paired_data(object):
         # Simplification not needed: Nose, Oral, Airways, Ear, Eye, Gastrointestinal tract, Urogenital tract
         # Skin
         body_site = "NA"
-        if line._body_site.lower == "Nose":
+        if line._body_site == "Nose":
             body = "nose"
-        if line._body_site.lower == "Oral":
+        if line._body_site == "Oral":
             body = "oral"
-        if line._body_site.lower == "Airways":
+        if line._body_site == "Airways":
             body = "airways"
-        if line._body_site.lower == "Ear":
+        if line._body_site == "Ear":
             body = "ear"
-        if line._body_site.lower == "Eye":
+        if line._body_site == "Eye":
             body = "eye"
-        if line._body_site.lower == "Nose":
+        if line._body_site == "Nose":
             body = "nose"
-        if line._body_site.lower == "Gastrointestinal tract":
+        if line._body_site == "Gastrointestinal tract":
             body = "gastrointestinal tract"
-        if line._body_site.lower == "Urogenital tract":
+        if line._body_site == "Urogenital tract":
             body = "urogenital tract"
         
         skin = ["skin","abdomen","ankle","limb","wound"]
