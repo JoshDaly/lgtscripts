@@ -110,6 +110,16 @@ class paired_data(object):
         line = METAparser(l)
         # Simplify IMG bodysite metadata
         # Simplification not needed: Nose, Oral, Airways, Ear, Eye, Gastrointestinal tract, Urogenital tract
+        """batches"""
+        # 1 = gastrointestinal tract
+        # 2 = oral
+        # 3 = airways
+        # 4 = urogenital tract, nose, ear, eye, nose
+        # 5 = skin 
+        # 6 = internal organs
+        # 7 = plant
+        # 8 = other
+        
         body_site = "NA"
         # other 11954 genomes 
         batch = 8
@@ -244,8 +254,8 @@ def doWork( args ):
                 PD.addANI(l, pid)
                 pid += 1
             TS += 1 
-            if TS >= 50000:
-                break
+            #if TS >= 50000:
+            #    break
         
     # read in IMG metadata
     with open(args.img_metadata,"r") as fh:
