@@ -112,6 +112,23 @@ class paired_data(object):
         # Simplification not needed: Nose, Oral, Airways, Ear, Eye, Gastrointestinal tract, Urogenital tract
         # Skin
         body_site = "NA"
+        if line._body_site.lower == "Nose":
+            body = "nose"
+        if line._body_site.lower == "Oral":
+            body = "oral"
+        if line._body_site.lower == "Airways":
+            body = "airways"
+        if line._body_site.lower == "Ear":
+            body = "ear"
+        if line._body_site.lower == "Eye":
+            body = "eye"
+        if line._body_site.lower == "Nose":
+            body = "nose"
+        if line._body_site.lower == "Gastrointestinal tract":
+            body = "gastrointestinal tract"
+        if line._body_site.lower == "Urogenital tract":
+            body = "urogenital tract"
+        
         skin = ["skin","abdomen","ankle","limb","wound"]
         for skin_site in skin:
             if skin_site in line._body_site.lower():
@@ -121,7 +138,7 @@ class paired_data(object):
         internal_organs = ["spinal cord","heart","liver","lymph nodes","blood","bladder","bone","brain"]
         for organ in internal_organs:
             if organ in line._body_site.lower():
-                body_site = "internal_organ"
+                body_site = "internal organ"
                 break
         # Plant
         plant = ["plant","root"]
@@ -130,10 +147,7 @@ class paired_data(object):
                 body_site = "plant"
                 break
         # add to dictionary
-        if body_site == "NA":
-            self.img_metadata_dict[line._img_id] = [line._genome_name,line._body_site]
-        else:
-            self.img_metadata_dict[line._img_id] = [line._genome_name,body_site]
+        self.img_metadata_dict[line._img_id] = [line._genome_name,body_site]
     
     def printMETA(self):
         for key in self.img_metadata_dict.keys():
