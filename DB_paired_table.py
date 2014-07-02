@@ -97,7 +97,8 @@ class paired_data(object):
         self.img_to_gt_dict = {} # dict to store img-> genome tree ids
         self.img_metadata_dict = {}
         self.ANI_scores = {}
-        
+        self.path_to_genome = {} # genome_tree_id -> PATH_TO_FILE
+         
     def addGT(self,l):
         line = genomeTreeParser(l)
         self.img_to_gt_dict[line._img_id] = line._gt_id
@@ -195,16 +196,16 @@ class paired_data(object):
     def printPIDtable(self):
         for pid in  self.ANI_scores.keys():
             try:
-                img_id_1 = self.ANI_scores[pid][0]
-                img_id_2 = self.ANI_scores[pid][1]
-                ANI_1    = str(self.ANI_scores[pid][2])
-                ANI_2    = str(self.ANI_scores[pid][3])
-                genome_tree_id_1 = self.img_to_gt_dict[img_id_1]
-                genome_tree_id_2 = self.img_to_gt_dict[img_id_2]
-                batch_a = self.img_metadata_dict[img_id_1][2]
-                batch_b = self.img_metadata_dict[img_id_2][2]
-                body_site_a = self.img_metadata_dict[img_id_1][1]
-                body_site_b = self.img_metadata_dict[img_id_2][1]
+                img_id_1            = self.ANI_scores[pid][0]
+                img_id_2            = self.ANI_scores[pid][1]
+                ANI_1               = str(self.ANI_scores[pid][2])
+                ANI_2               = str(self.ANI_scores[pid][3])
+                genome_tree_id_1    = self.img_to_gt_dict[img_id_1]
+                genome_tree_id_2    = self.img_to_gt_dict[img_id_2]
+                batch_a             = self.img_metadata_dict[img_id_1][2]
+                batch_b             = self.img_metadata_dict[img_id_2][2]
+                body_site_a         = self.img_metadata_dict[img_id_1][1]
+                body_site_b         = self.img_metadata_dict[img_id_2][1]
                 batch = 0
                 if batch_a == batch_b:
                     batch = batch_a
@@ -217,6 +218,25 @@ class paired_data(object):
                     print "\t".join([str(pid),genome_tree_id_1,genome_tree_id_2,ANI_1,ANI_2,str(batch)])
             except KeyError:
                 pass
+            
+    def addPathToGenome(self):
+        """/srv/db/img/07042014/genomes/%s/%s.fna"""
+        for pid in self.ANI_scores.keys():
+            try:
+                img_id_1                        = self.ANI_scores[pid][0]
+                img_id_2                        = self.ANI_scores[pid][1]
+                path_to_file_1                  = "/srv/db/img/07042014/genomes/%s/%s.fna" % (self.ANI_scores[pid][0],self.ANI_scores[pid][0])
+                path_to_file_2                  = "/srv/db/img/07042014/genomes/%s/%s.fna" % (self.ANI_scores[pid][1],self.ANI_scores[pid][1])
+                self.path_to_genome[img_id_1]   = path_to_file_1
+                self.path_to_genome[img_id_2]   = path_to_file_2
+            except KeyError:
+                pass
+        
+    def printPathToGenomes(self):
+        print "\t".join([genome_tree_id,PATH_TO_FILE])
+        for id in self.path_to_genome.keys():
+            print "\t".join([self.img_to_gt_dict[id], self.path_to_genome[id]])
+        
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -266,9 +286,10 @@ def doWork( args ):
         for l in fh:
             if PD.checkID(l, "META"): # ID in genome tree list
                 PD.addMETA(l)
-    printHEADER()
-    PD.printPIDtable()            
-            
+    #printHEADER()
+    #PD.printPIDtable()            
+    PD.addPathToGenome()
+    PD.printPathToGenomes()    
             
             
             
