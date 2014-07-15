@@ -58,7 +58,27 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-  # classes here
+class ContigParser:
+    """Main class for reading in and parsing contigs"""
+    def __init__(self): pass
+
+    def readFasta(self, fp): # this is a generator function
+        header = None
+        seq = None
+        while True:
+            for l in fp:
+                if l[0] == '>': # fasta header line
+                    if header is not None:
+                        # we have reached a new sequence
+                        yield header, "".join(seq)
+                    header = l.rstrip()[1:].partition(" ")[0] # save the header we just saw
+                    seq = []
+                else:
+                    seq.append(l.rstrip())
+            # anything left in the barrel?
+            if header is not None:
+                yield header, "".join(seq)
+            break
 
 ###############################################################################
 ###############################################################################
@@ -77,8 +97,14 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    # objects 
+    CP = ContigParser() # call class
     
-                
+    # read in contig file
+    with open(args.contig_file,"r") as fh:
+        # read through file using generator
+        CP.readFasta(fh)
+    
             
             
             
@@ -157,7 +183,7 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-fasta_dir','--fasta_directory', help="...")
+    parser.add_argument('-contig_file','--contig_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
