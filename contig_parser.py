@@ -103,7 +103,9 @@ def doWork( args ):
     # read in contig file
     with open(args.contig_file,"r") as fh:
         # read through file using generator
-        print CP.readFasta(fh)
+        contigs = CP.readFasta(fh)
+        for contig in contigs:
+            print contig
     
             
             
