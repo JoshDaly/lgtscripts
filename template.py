@@ -58,27 +58,7 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-class ContigParser:
-    """Main class for reading in and parsing contigs"""
-    def __init__(self): pass
-
-    def readFasta(self, fp): # this is a generator function
-        header = None
-        seq = None
-        while True:
-            for l in fp:
-                if l[0] == '>': # fasta header line
-                    if header is not None:
-                        # we have reached a new sequence
-                        yield header, "".join(seq)
-                    header = l.rstrip()[1:].partition(" ")[0] # save the header we just saw
-                    seq = []
-                else:
-                    seq.append(l.rstrip())
-            # anything left in the barrel?
-            if header is not None:
-                yield header, "".join(seq)
-            break
+# put classes here 
 
 ###############################################################################
 ###############################################################################
@@ -96,17 +76,8 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""
-    # objects 
-    CP = ContigParser() # call class
+    """ Main wrapper"""  
     
-    # read in contig file
-    with open(args.contig_file,"r") as fh:
-        # read through file using generator
-        CP.readFasta(fh)
-    
-            
-            
             
             
     """
@@ -190,6 +161,7 @@ if __name__ == '__main__':
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
+    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()
