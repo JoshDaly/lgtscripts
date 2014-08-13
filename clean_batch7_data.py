@@ -98,6 +98,7 @@ def doWork( args ):
             sequencingCentre    = tabs[6]
             sequencingPlatform  = tabs[-1]
             status              = tabs[3]
+            print tabs[-1]
             metaData[gid] = [bodySite, genus,phylum, genomeLength, sequencingCentre, sequencingPlatform, status]
             
     # read in ani file 
