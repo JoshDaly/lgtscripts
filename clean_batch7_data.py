@@ -90,14 +90,14 @@ def doWork( args ):
         header = fh.readline() # capture header
         for l in fh:
             print l.strip()
-            tabs = l.rstrip().split("\t")
+            tabs = l.split("\t")
             gid                 = tabs[0] 
             bodySite            = tabs[57]
             genus               = tabs[11]
             phylum              = tabs[7]
             genomeLength        = tabs[71]
             sequencingCentre    = tabs[6]
-            sequencingPlatform  = tabs[-1]
+            sequencingPlatform  = tabs[-1].rstrip()
             status              = tabs[3]
             
             metaData[gid] = [bodySite, genus,phylum, genomeLength, sequencingCentre, sequencingPlatform, status]
