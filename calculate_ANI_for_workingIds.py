@@ -43,8 +43,8 @@ from Bio.Seq import Seq
 #import os
 #import errno
 
-#import numpy as np
-#np.seterr(all='raise')
+import numpy as np
+np.seterr(all='raise')
 
 #import matplotlib as mpl
 #import matplotlib.pyplot as plt
@@ -76,10 +76,43 @@ returns (stdout, stderr)
 
 def doWork( args ):
     """ Main wrapper"""
+    # create IMG id lookup
+    idLookup   = {}
+    workingIds = {} 
     
-                
+    # read in metadata table
+    with open(args.metadata, 'r') as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            tabs = l.rstrip().split("\t")
+            gid  = tabs[0] 
+            img  = tabs[1]
+            idLookup[img] = gid 
+    
+    # read in working Ids list
+    with open(args.workingIds, 'r') as fh:
+        for l in fh:
+            workingIds[l.rstrip()] = 1
             
-            
+    with open(args.ani, 'r') as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            tabs = l.rstrip().split("\t")
+            img1 = tabs[0]
+            img2 = tabs[2]
+            ani = np.mean(tabs[4],tabs[5])
+            try: 
+                gid1  = idLookup[img1]
+                gid2  = idLookup[img2]
+                # check to see if id in workingIds list
+                jimmy = workingIds[gid1] 
+                eddy  = workingIds[gid2]
+                print "\t".join([gid1,
+                                 gid2,
+                                 str(ani)
+                                 ])
+            except KeyError:
+                pass
             
             
     """
@@ -156,7 +189,9 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i','--input_file', help="...")
+    parser.add_argument('-m','--metadata', help="...")
+    parser.add_argument('-w','--workingIds', help="...")
+    parser.add_argument('-a','--ani', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
