@@ -108,6 +108,12 @@ def doWork( args ):
                 sequencingPlatform[seqplat1][1] += hitspost
             except KeyError:
                 sequencingPlatform[seqplat1] = [hitspre,hitspost]
+                
+            try:
+                sequencingPlatform[seqplat2][0] += hitspre
+                sequencingPlatform[seqplat2][1] += hitspost
+            except KeyError:
+                sequencingPlatform[seqplat2] = [hitspre,hitspost]
     
     for key in sequencingPlatform.keys():
         print "\t".join([key,
