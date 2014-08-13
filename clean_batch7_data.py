@@ -125,24 +125,24 @@ def doWork( args ):
                 cleanData[gid1][gid2] = hits
             except KeyError:
                 cleanData[gid1] = {gid2:hits}
-    print "\t".join([gid1,
-                     bodysite1,
-                     genus1,
-                     phylum1,
-                     genomelength1,
-                     sequencingcentre1,
-                     sequenceingplatform1,
-                     status1,
-                     gid2,
-                     bodysite2,
-                     genus2,
-                     phylum2,
-                     genomelength2,
-                     sequencingcentre2,
-                     sequenceingplatform2,
-                     status2,
-                     hits_pre,
-                     hits_post
+    print "\t".join(['gid1',
+                     'bodysite1',
+                     'genus1',
+                     'phylum1',
+                     'genomelength1',
+                     'sequencingcentre1',
+                     'sequenceingplatform1',
+                     'status1',
+                     'gid2',
+                     'bodysite2',
+                     'genus2',
+                     'phylum2',
+                     'genomelength2',
+                     'sequencingcentre2',
+                     'sequenceingplatform2',
+                     'status2',
+                     'hits_pre',
+                     'hits_post'
                      ])            
     # read in dirty hit data
     with open(args.totalHitData, 'r') as fh:
