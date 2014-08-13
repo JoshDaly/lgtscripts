@@ -104,21 +104,21 @@ def doWork( args ):
             hitspre   = int(tabs[16])
             hitspost  = int(tabs[17])
             try:
-                sequencingPlatform[seqplat1][0] += hitspre
-                sequencingPlatform[seqplat1][1] += hitspost
+                sequencingCentre[seqcent1][0] += hitspre
+                sequencingCentre[seqcent1][1] += hitspost
             except KeyError:
-                sequencingPlatform[seqplat1] = [hitspre,hitspost]
+                sequencingCentre[seqcent1] = [hitspre,hitspost]
                 
             try:
-                sequencingPlatform[seqplat2][0] += hitspre
-                sequencingPlatform[seqplat2][1] += hitspost
+                sequencingCentre[seqcent2][0] += hitspre
+                sequencingCentre[seqcent2][1] += hitspost
             except KeyError:
-                sequencingPlatform[seqplat2] = [hitspre,hitspost]
+                sequencingCentre[seqcent2] = [hitspre,hitspost]
     
-    for key in sequencingPlatform.keys():
+    for key in sequencingCentre.keys():
         print "\t".join([key,
-                         str(sequencingPlatform[key][0]),
-                         str(sequencingPlatform[key][1])])
+                         str(sequencingCentre[key][0]),
+                         str(sequencingCentre[key][1])])
             
     return 0
 
