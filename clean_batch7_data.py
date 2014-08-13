@@ -132,7 +132,7 @@ def doWork( args ):
             tabs = l.rstrip().split("\t")
             gid1 = tabs[0]
             gid2 = tabs[1]
-            hits = tabs[2]
+            hits = int(tabs[2])
             if hits>0:
                 try: 
                     print "\t".join([gid1,
