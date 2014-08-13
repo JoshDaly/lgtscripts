@@ -100,7 +100,7 @@ def doWork( args ):
             tabs = l.rstrip().split("\t")
             img1 = tabs[0]
             img2 = tabs[2]
-            ani = np.mean(float(tabs[4]),float(tabs[5]))
+            ani = tabs[4]
             try: 
                 gid1  = idLookup[img1]
                 gid2  = idLookup[img2]
