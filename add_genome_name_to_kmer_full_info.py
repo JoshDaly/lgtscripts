@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __add_genome_name_to_kmer_full_info__.py - Add genome species name to kmer_full_info.10.06.14.csv file
 #
 ###############################################################################
 # #
@@ -58,7 +58,63 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+class kmerFileParser(object):
+    # constants
+    _LGT        = 0
+    _IMG_ID_1   = 1
+    _IMG_ID_2   = 2
+    _KMER_SCORE = 3
+    _MEAN_DGG   = 4
+    _DG_1       = 5
+    _DG_2       = 6
+    
+    def __init__(self):
+        self.prepped = False
+    
+    def readKmerFile(self,fh):
+        line = None
+        while True:
+            if not self.prepped:
+                for l in fh:
+                    if l[0:3]=="lgt":
+                        self.prepped = True
+                        break
+            for l in fh:
+                fields = l.split("\t")
+                yield [fields[0],
+                       fields[1],
+                       fields[2],
+                       fields[3],
+                       fields[4],
+                       fields[5],
+                       fields[6]]
+            break # done! 
+        
+class kmerdata(object):
+    def __init__(self):
+        self.kmer_file_dict = {} # lgt id -> 
+        self.genome_db = {}
+        
+    def addGenome(self,img_id,genome_name):
+        self.genome_db[img_id] = genome_name
+        
+    def addLGTkmer(self,lgt_id,id_a,id_b,kmer_score,dgg,dg1,dg2):
+        self.kmer_file_dict[lgt_id] = [id_a,id_b,kmer_score,dgg,dg1,dg2]
+
+    def printHeader(self):
+        print "\t".join(["lgt","img_id_a","genome_a","img_id_b","genome_b","kmer_score","mean_dg","dg1","dg2"])
+        
+    def printINFO(self):
+        for lgt in self.kmer_file_dict.keys():
+            id_a        = self.kmer_file_dict[lgt][0].rstrip()
+            id_b        = self.kmer_file_dict[lgt][1].rstrip()
+            kmer_score  = self.kmer_file_dict[lgt][2].rstrip()
+            dgg         = self.kmer_file_dict[lgt][3].rstrip()
+            dg1         = self.kmer_file_dict[lgt][4].rstrip()
+            dg2         = self.kmer_file_dict[lgt][5].rstrip()
+            genome_1    = self.genome_db[id_a]
+            genome_2    = self.genome_db[id_b]
+            print "\t".join([lgt,id_a,genome_1,id_b,genome_2,kmer_score,dgg,dg1,dg2])
 
 ###############################################################################
 ###############################################################################
@@ -76,8 +132,33 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    KP = kmerFileParser()
+    KMER = kmerdata()
     
+    #-----
+    with open(args.metadata_file,"r") as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            tabs = l.split("\t")
+            img_id = tabs[0]
+            genome_name = tabs[4]
+            KMER.addGenome(img_id, genome_name)
+    
+    #-----
+    with open(args.kmer_file,"r") as fh:
+        for hit in KP.readKmerFile(fh):
+            lgt_id      = hit[KP._LGT]
+            id_a        = hit[KP._IMG_ID_1]
+            id_b        = hit[KP._IMG_ID_2]
+            kmer_score  = hit[KP._KMER_SCORE]
+            dgg         = hit[KP._MEAN_DGG]
+            dg1         = hit[KP._DG_1]
+            dg2         = hit[KP._DG_2]
+            KMER.addLGTkmer(lgt_id, id_a, id_b, kmer_score, dgg, dg1, dg2)
+    KMER.printHeader()
+    KMER.printINFO()
+            
             
             
     """
@@ -154,14 +235,14 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-metadata','--metadata_file', help="...")
+    parser.add_argument('-kmer','--kmer_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

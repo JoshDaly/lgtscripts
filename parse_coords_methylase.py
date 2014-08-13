@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __run_kmer_analysis__.py - Multiplex kmer_counter.rb
+# __parse_coords_methylase__.py - Parse nucmer output file, and grab information regarding methylase gene transfers!
 #
 ###############################################################################
 # #
@@ -33,7 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
-import glob 
+import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -58,72 +58,105 @@ from Bio.Seq import Seq
 ###############################################################################
 ###############################################################################
 
-class TransferParser(object):
-    """Wrapper class for parsing transfer files"""
-    """img_id_a        genome_tree_id_a        contig_a        contig_length_a start_a stop_a  length_a        img_id_b        genome_tree_id_b        contig_b        contig_length_b start_b stop_b  length_b"""
-    #constants to make the code readable
-    _UID_1          = 0
-    _IMG_ID_1       = 1
-    _GT_ID_1        = 2
-    _CONTIG_1       = 3
-    _CONTIG_LEN_1   = 4
-    _START_1        = 5
-    _STOP_1         = 6
-    _LEN_1          = 7
-    _UID_2          = 8 
-    _IMG_ID_2       = 9
-    _GT_ID_2        = 10
-    _CONTIG_2       = 11
-    _CONTIG_LEN_2   = 12
-    _START_2        = 13
-    _STOP_2         = 14
-    _LEN_2          = 15
-    
+class NucMerParser(object):
+    """Wrapper class for parsing nucmer output"""
+    # constants to make the code more readable
+    _START_1  = 0
+    _END_1    = 1
+    _START_2  = 2
+    _END_2    = 3
+    _LEN_1    = 4
+    _LEN_2    = 5
+    _IDENTITY = 6
+    _ID_1     = 7
+    _ID_2     = 8
+
     def __init__(self):
         self.prepped = False
-    
-    def readTrans(self,fh):
-        
+
+    def reset(self):
+        self.prepped = False
+
+    def readNuc(self, fp):
+        """Read through a nucmer coords file
+
+        this is a generator function
+        """
         line = None # this is a buffer keeping the last unprocessed line
         while True: # mimic closure; is it a bad idea?
             if not self.prepped:
                 # we still need to strip out the header
-                    for l in fh: # search for the first record
-                        if l[0:3] =="img": # next line is good
+                    for l in fp: # search for the first record
+                        if l[0] == '=': # next line is good
                             self.prepped = True
                             break
             # file should be prepped now
-            for l in fh:
-                fields = l.split("\t")
-                yield [fields[0],
-                       fields[1],
-                       fields[2],
-                       int(fields[3]),
-                       int(fields[4]),
-                       int(fields[5]),
-                       int(fields[6]),
-                       fields[7],
-                       fields[8],
-                       fields[9],
-                       int(fields[10]),
-                       int(fields[11]),
-                       int(fields[12]),
-                       int(fields[13])]
-            break # done!  
+            for l in fp:
+                fields = l.split('|')
+                yield ([int(i) for i in fields[0].split()] +
+                       [int(i) for i in fields[1].split()] +
+                       [int(i) for i in fields[2].split()] +
+                       [float(i) for i in fields[3].split()] +
+                       fields[4].split())
+            break # done!
 
-class lgtDB(object):
-    """wrapper class for producing an lgt dictionary"""
-    def __init__(self):
-        self.lgt_dict = {}
+class faaParser(object):
+    def __init__(self,accession):
+        self.readFAA(accession)
+    
+    def readFAA(self,accession):
+        dashes          = accession.rstrip().split("-")
+        self.uid        = dashes[-1]
+        self.img_id_a   = dashes[1].split(":")[-1]
+        self.img_id_b   = dashes[5].split(":")[-1]
+
+class IMGmetadata(object):
+    def __init__(self,l):
+        self.readMetadata(l)
         
-    def addLGT(self,uid,img1,img2):
-        self.lgt_dict[uid] = [img1,img2]
+    def readMetadata(self,l):
+        """ taxon  = 0, genome_name = 4"""
+        tabs = l.rstrip().split("\t")
+        self.img_id = tabs[0]
+        self.genome_name = tabs[4]
     
-    def returnGenomes(self,uid):
-        return self.lgt_dict[uid]
+class methylaseGenesDB(object):
+    def __init__(self):
+        self.methylase_dict = {}
+        self.lgt_dict       = {}
+        self.metadata_dict  = {}
+        
+    def addLGTdata(self,accession):
+        line = faaParser(accession)
+        self.lgt_dict[line.uid] = [line.img_id_a,line.img_id_b]
     
-    def returnUIDs(self):
-        return self.lgt_dict.keys()
+    def transfered_methylase_genes(self,lgt_id,rebase_id,id_per,rebase_len_1,lgt_len_2):
+        self.methylase_dict[lgt_id] = [rebase_id,id_per,rebase_len_1,lgt_len_2]
+       
+    def addMetadata(self,l):
+        line = IMGmetadata(l)
+        for lgt_id in self.lgt_dict.keys():
+            if self.lgt_dict[lgt_id][0] == line.img_id:
+                self.metadata_dict[self.lgt_dict[lgt_id][0]] = line.genome_name
+            if self.lgt_dict[lgt_id][1] == line.img_id:
+                self.metadata_dict[self.lgt_dict[lgt_id][1]] = line.genome_name          
+    
+    def writeToFile(self):
+        with open(args.output_file,'w') as fh:
+            fh.write("\t".join(["lgt_id","rebase_id","identity","img_id_a","genome_a","img_id_b","genome_b","lgt_len", "rebase_len"+"\n"]))# print header
+            for lgt in self.methylase_dict.keys():
+                try:
+                    rebase      = self.methylase_dict[lgt][0] 
+                    img_id_a    = self.lgt_dict[lgt][0]
+                    img_id_b    = self.lgt_dict[lgt][1] 
+                    genome_a    = self.metadata_dict[img_id_a]
+                    genome_b    = self.metadata_dict[img_id_b] 
+                    id_perc     = self.methylase_dict[lgt][1]
+                    rebase_len  = self.methylase_dict[lgt][2]
+                    lgt_len     = self.methylase_dict[lgt][3]
+                    fh.write("\t".join([lgt,rebase,str(id_perc),img_id_a,genome_a,img_id_b,genome_b,str(lgt_len),str(rebase_len)+"\n"]))
+                except KeyError:
+                    pass
 
 ###############################################################################
 ###############################################################################
@@ -137,70 +170,37 @@ expects 'cmd' to be a string like "foo -b ar"
 
 returns (stdout, stderr)
 """
-    print cmd
-    p = Popen(cmd, shell=True) # shell = True, bash commands ('>') will be recognised. 
+    p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
-
-def readAccession(accession):
-    dashes = accession.rstrip().split("-")
-    uid = dashes[0]
-    img_1 = dashes[2].split(":")[1]
-    img_2 = dashes[6].split(":")[1]
-    return (uid,img_1,img_2)
-
-def runGenomeKmer(lgt_dir,gen_id,lgt_id,gen_dir):
-    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s.fna > %s/%s/%s.kmer_counts.csv" % (gen_dir,gen_id,lgt_dir,lgt_id,gen_id))
-        
-def runLGTKmer( lgt_dir, lgt_id ):
-    return ("kmer_counter.rb -w 500 -W 504 -m 500 %s/%s/%s.fna > %s/%s/%s.kmer_counts.csv" % (lgt_dir,lgt_id,lgt_id,lgt_dir,lgt_id,lgt_id))
 
 def doWork( args ):
     """ Main wrapper"""
-    """
-    Runs these command for each lgt event
-    kmer_counter.rb -w 500 -W 504 -m 500 genome1.fasta >genome1.kmer_counts.csv
-    kmer_counter.rb -w 500 -W 504 -m 500 genome2.fasta >genome2.kmer_counts.csv
-    kmer_counter.rb -w 500 -W 504 -m 500 lgt.fasta >lgt.kmer_counts.csv
-    """
     # objects
-    genome_list = glob.glob('%s/*.fna' % args.genomes_directory)
-    UID_db = lgtDB()
-    uid_list = glob.glob('%s/*/*.fna' % args.lgt_directory)
-    cmds = [] # store command line strings
-    pool = Pool(args.num_threads) # set number of threads
-    counter = 0
+    NP = NucMerParser() # call class
+    METHYL = methylaseGenesDB()
     
-    # read in fasta file
+    # open .coords file
+    with open(args.coords_file,"r") as fh:
+        for hit in NP.readNuc(fh):
+            lgt_id      = hit[NP._ID_2].split("_")[0] 
+            rebase_id   = hit[NP._ID_1]
+            id_perc     = hit[NP._IDENTITY]
+            lgt_len     = hit[NP._LEN_2]
+            rebase_len  = hit[NP._LEN_1]
+            METHYL.transfered_methylase_genes(lgt_id, rebase_id,id_perc,rebase_len,lgt_len)
+    
+    # read in fasta file containing unique id information
+    # parse fasta file using biopython
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
-        (uid,img_1,img_2) = readAccession(accession)
-        UID_db.addLGT(uid, img_1, img_2)
-        
-    # list of genomes
-    for uid in UID_db.returnUIDs():
-        if counter < 5:
-            genome1 = UID_db.returnGenomes(uid)[0]
-            genome2 = UID_db.returnGenomes(uid)[1]
-            lgt_dir = args.lgt_directory
-            gen_dir = args.genomes_directory
-            gen_id = False
-            cmds.append(runLGTKmer(lgt_dir,uid))
-            for g_file in genome_list:
-                gen_id = g_file.split("/")[2].split(".")[0]
-                if gen_id==genome1: 
-                    cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-                elif gen_id==genome2:
-                    cmds.append(runGenomeKmer(lgt_dir,gen_id,uid,gen_dir))
-            #counter+=1
-    #print cmds
-    #print runCommand
-    print pool.map(runCommand, cmds) # run analysis
+        METHYL.addLGTdata(accession)
     
-      
-            
-            
-            
-            
-            
+    # read in metadata file
+    with open(args.metadata,"r") as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            METHYL.addMetadata(l)    
+    METHYL.writeToFile()      
+    
     
     
 
@@ -267,10 +267,10 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('-c','--coords_file', help="...")
     parser.add_argument('-f','--fasta_file', help="...")
-    parser.add_argument('-g','--genomes_directory', help="...")
-    parser.add_argument('-lgt','--lgt_directory', help="...")
-    parser.add_argument('-num_threads', '--num_threads',type=int, default=6, help="Number of threads for multiplexing")
+    parser.add_argument('-m','--metadata', help="...")
+    parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __collate_fasta_file__.py - Collate multiple fasta files into a single file. 
 #
 ###############################################################################
 # #
@@ -38,8 +38,8 @@ import glob
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#from Bio import SeqIO
-#from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 #import os
 #import errno
@@ -58,7 +58,40 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+class metadataParser(object):
+    def __init__(self,l):
+        self.readMETA(l)
+        
+    def readMETA(self,l):
+        tabs        = l.rstrip().split("\t")
+        self.img_id      = tabs[0]
+        self.genome_name = tabs[4]
+    
+class metadataDB(object):
+    def __init__(self):
+        self.plasmid_db = {}
+        self.virus_db   = {}
+    
+    def addPlasmid(self, l):
+        line = metadataParser(l)
+        self.plasmid_db[line.img_id] =  line.genome_name
+        
+    def addVirus(self, l):
+        line = metadataParser(l) 
+        self.virus_db[line.img_id] =  line.genome_name
+        
+    def checkIDvirus(self, id):
+        if id in self.virus_db:
+            return True
+    
+    def checkIDplasmid(self, id):
+        if id in self.plasmid_db:
+            return True
+    
+    def printDict(self):
+        for id in self.virus_db.keys():
+            print id
+    
 
 ###############################################################################
 ###############################################################################
@@ -76,20 +109,37 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    # objects
+    listing = glob.glob('%s/*/*[0-9].fna' % args.genomes_directory)
+    META    = metadataDB() # call class
     
-            
-            
-    """
-# parse fasta file using biopython
-for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-if accession in genomes_dict:
-pass
-else:
-#print accession
-genomes_dict[accession] = [len(sequence),img_id, sequence.seq
-"""  
-    
+    # read in viral/plasmid metadata files
+    with open(args.plasmid_metadata,"r") as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            META.addPlasmid(l)
+        
+    with open(args.virus_metadata,"r") as fh:
+        header = fh.readline() # capture header
+        for l in fh:
+            META.addVirus(l)
+    p = open(args.output_plasmid, 'w')
+    v = open(args.output_virus, 'w')
+
+    for c_file in listing:
+        img_id = c_file.split("/")[-1].split(".")[0]
+        if META.checkIDplasmid(img_id):
+            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+                p.write(">"+accession+"_"+img_id+"\n")
+                p.write(str(sequence.seq)+"\n")
+        if META.checkIDvirus(img_id):
+            for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
+                v.write(">"+accession+"_"+img_id+"\n")
+                v.write(str(sequence.seq)+"\n")
+                    
+    p.close()
+    v.close()
 
     """
 # run somethign external in threads
@@ -154,14 +204,17 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-g','--genomes_directory', help="...")
+    parser.add_argument('-p','--plasmid_metadata', help="...")
+    parser.add_argument('-v','--virus_metadata', help="...")
+    parser.add_argument('-op','--output_plasmid', help="...")
+    parser.add_argument('-ov','--output_virus', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

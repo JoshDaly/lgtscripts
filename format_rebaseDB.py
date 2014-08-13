@@ -38,8 +38,8 @@ import glob
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#from Bio import SeqIO
-#from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 #import os
 #import errno
@@ -58,7 +58,7 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+  # classes here
 
 ###############################################################################
 ###############################################################################
@@ -76,19 +76,14 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
     
-            
-            
-    """
-# parse fasta file using biopython
-for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-if accession in genomes_dict:
-pass
-else:
-#print accession
-genomes_dict[accession] = [len(sequence),img_id, sequence.seq
-"""  
+    # parse fasta file using biopython
+    with open(args.output_file,'w') as fh:
+        for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+            fh.write(">"+accession+"\n")
+            fh.write(str(sequence.seq)+"\n")
+ 
     
 
     """
@@ -154,14 +149,14 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-f','--fasta_file', help="...")
+    parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

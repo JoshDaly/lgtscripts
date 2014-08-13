@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __Make_data_structure__.py - Practice script for producing pyramid data structure!
 #
 ###############################################################################
 # #
@@ -34,6 +34,7 @@ __status__ = "Development"
 import argparse
 import sys
 import glob
+import string
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -58,7 +59,22 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+class dataStructure(object):
+    def __init__(self):
+        self.dict_genome = {}
+        
+    def addGenome(self,genome):
+        self.dict_genome[genome] = None   
+    def addLevel(self,gen_id,level):
+        try:
+            self.dict_genome[gen_id]= self.dict_genome[gen_id] + level
+        except TypeError:
+            self.dict_genome[gen_id] = level
+            
+    def printDict(self):
+        for genome in self.dict_genome.keys():
+            #print genome
+            print "\t".join([genome,self.dict_genome[genome]])
 
 ###############################################################################
 ###############################################################################
@@ -76,8 +92,32 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    #objects
+    fasta_directories = glob.glob('%s/*' % args.fasta_directory)
+    alpha = string.ascii_uppercase # array containing alphabet
+    genomes = {} # dict to store genome -> data structure array
+    count = 0 
+    i = 0
+    data_structure = dataStructure()
     
+    for g_file in fasta_directories:
+        genome  = g_file.rstrip().split("/")[-1].split(".")[0]
+        data_structure.addGenome(genome)
+        #data_structure.addLevel(genome, "A")
+    
+      
+    for genome in genomes.keys():
+        if count == 500:
+            i = i + 1 
+            count = 0
+        data_structure.addLevel(genome, alpha[i])
+        #print genome +"\t"+alpha[i]
+        count+=1
+        
+    data_structure.printDict()         
+            
+            
             
             
     """
@@ -154,14 +194,13 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-fasta_dir','--fasta_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

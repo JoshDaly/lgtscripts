@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __split-josh_1_per_line.tsv-sep-fasta-files__.py - Split file Sam produced containing multiple 16S sequences into multiple fasta files!
 #
 ###############################################################################
 # #
@@ -33,16 +33,15 @@ __status__ = "Development"
 
 import argparse
 import sys
-import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#from Bio import SeqIO
-#from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
 
-#import os
-#import errno
+import os
+import errno
 
 #import numpy as np
 #np.seterr(all='raise')
@@ -56,9 +55,48 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 ###############################################################################
-###############################################################################
+###############################################################################     
 
-# put classes here 
+class capture16S( object ):
+    def __init__(self):
+        self.dict_16S = {}
+        
+    def addGenome16S( self,img_id,seq_16S ):
+        self.dict_16S[img_id] = seq_16S
+        
+    def checkSeqSize(self,seq_16S):
+        if len(seq_16S) > 400:
+            return True
+    def printDict(self):
+        for img_id in self.dict_16S.keys():
+            print "\t".join([img_id,self.dict_16S[img_id]])
+            
+    def printToFile(self,):
+        for img_id in self.dict_16S.keys():
+            output_file = "%s_16S.fna" % img_id
+            output_dir = os.path.join(args.output_directory,"%s" % img_id)
+            FULL_PATH = os.path.join(output_dir,output_file)
+            
+            if not os.path.exists(output_dir):
+                os.system("mkdir %s" % (output_dir))
+                
+            with open(FULL_PATH,"w") as fh:
+                fh.write(">"+img_id+"\n")
+                fh.write(self.dict_16S[img_id])
+        
+        
+        
+class genomeInfo(object):
+    def __init__(self):
+        self.dict_genome_tree = {}
+        self.dict_genome_name = {}
+        
+    def addGenomeTree(self,img_id,genome_id):
+        self.dict_genome_tree[img_id] = genome_id
+    
+    def addGenomeName(self, img_id, genome_name):
+        self.dict_genome_name[img_id] = genome_name
+        
 
 ###############################################################################
 ###############################################################################
@@ -76,8 +114,36 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    """genome_id    img_id    Genome_name    16Sseq1    seq2    seqn"""
+    # objects
+    dict_16S = capture16S() # hold 16S sequence
+    dict_info = genomeInfo() # hold additional info
+    count = 0
     
+    # read in file
+    with open(args.tsv_file,"r") as fh:
+        for l in fh:
+            tabs = l.split("\t")
+            genome_id = tabs[0]
+            img_id = tabs[1]
+            genome_name = tabs[2]
+            seq_16S = tabs[3:]
+            if count < 10:
+                if len(seq_16S) > 1:
+                    for seq in seq_16S:
+                        seq = seq.rstrip()
+                        if dict_16S.checkSeqSize(seq):
+                            dict_16S.addGenome16S(img_id, seq)
+                            break 
+            dict_info.addGenomeTree(img_id, genome_id)
+            dict_info.addGenomeName(img_id, genome_name)
+            #count+=1 
+    dict_16S.printToFile() # print out to separate fna files
+                
+                
+            
+            
             
             
     """
@@ -154,14 +220,14 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-tsv','--tsv_file', help="...")
+    parser.add_argument('-o','--output_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

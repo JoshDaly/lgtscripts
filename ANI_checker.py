@@ -58,7 +58,54 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+class ANIparser(object):
+    # constants to make code readable
+    _IMG_1          = 0
+    _SPECIES_1      = 1
+    _IMG_2          = 2
+    _SPECIES_2      = 3
+    _ANI_1          = 4
+    _ANI_2          = 5
+    _AF_1           = 6
+    _AF_2           = 7
+    
+    def __init__(self):
+        self.prepped = False
+    
+    def readANI(self,fh):
+        """Read through ANI file
+        This is a generator function """
+        line = None # this is a buffer keeping the last unprocessed line
+        while True: # mimic closure; is it a bad idea?
+            if not self.prepped:
+                # we still need to strip out the header
+                    for l in fp: # search for the first record
+                        if l[0:3] == 'IMG': # next line is good
+                            self.prepped = True
+                            break
+            # file should be prepped now
+            for l in fp:
+                fields = l.split("\t")
+                yield (fields[0],
+                       fields[1],
+                       fields[2],
+                       fields[3],
+                       float(fields[4]),
+                       float(fields[5]),
+                       float(fields[6]),
+                       float(fields[7]))
+            break # done! 
+        
+class ANIvsGO(object):
+    def __init__(self):
+        self.ANI_dict = {}
+        
+    def addGenomes(self,genome1,genome2):
+        self.ANI_dict[genome1] = None
+        self.ANI_dict[genome2] = None
+        
+    def addANI(self,genome1,ANI):
+                
 
 ###############################################################################
 ###############################################################################
@@ -76,8 +123,11 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
     
+                
+            
+            
             
             
     """
@@ -154,14 +204,13 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-fasta_dir','--fasta_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

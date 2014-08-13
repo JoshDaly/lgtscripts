@@ -33,6 +33,7 @@ __status__ = "Development"
 
 import argparse
 import sys
+import glob
 
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
@@ -65,18 +66,18 @@ class TransferParser(object):
     _IMG_ID_1       = 0
     _GT_ID_1        = 1
     _CONTIG_1       = 2
-    _CONTIG_LEN_1   = 3
-    _START_1        = 4
-    _STOP_1         = 5
-    _LEN_1          = 6
+    #_CONTIG_LEN_1   = #
+    _START_1        = 3
+    _STOP_1         = 4
+    _LEN_1          = 5
     # _UID_2        = # 
-    _IMG_ID_2       = 7
-    _GT_ID_2        = 8
-    _CONTIG_2       = 9
-    _CONTIG_LEN_2   = 10
-    _START_2        = 11
-    _STOP_2         = 12
-    _LEN_2          = 13
+    _IMG_ID_2       = 6
+    _GT_ID_2        = 7
+    _CONTIG_2       = 8
+    #_CONTIG_LEN_2   = #
+    _START_2        = 9
+    _STOP_2         = 10
+    _LEN_2          = 11
     
     def __init__(self):
         self.prepped = False
@@ -100,14 +101,12 @@ class TransferParser(object):
                        int(fields[3]),
                        int(fields[4]),
                        int(fields[5]),
-                       int(fields[6]),
+                       fields[6],
                        fields[7],
                        fields[8],
-                       fields[9],
+                       int(fields[9]),
                        int(fields[10]),
-                       int(fields[11]),
-                       int(fields[12]),
-                       int(fields[13])]
+                       int(fields[11])]
             break # done!  
     
 
@@ -119,14 +118,15 @@ class uidInfo(object):
     def parseFastaAccession(self, accession):
         # constants to make code readable
         dashes = accession.rstrip().split("-")
-        self.uid        =dashes[0]
-        self.contig     =dashes[1]
-        self.img_id_1   =dashes[2].split(":")[1]
-        self.gt_id_1    =dashes[3].split(":")[1]
-        self.start      =dashes[4].split(":")[1]
-        self.stop       =dashes[5].split(":")[1]
-        self.img_id_2   =dashes[6].split(":")[1]
-        self.gt_id_2    =dashes[7].split(":")[1]   
+        self.contig     =dashes[0]
+        self.img_id_1   =dashes[1].split(":")[1]
+        self.gt_id_1    =dashes[2].split(":")[1]
+        self.start      =dashes[3].split(":")[1]
+        self.stop       =dashes[4].split(":")[1]
+        self.img_id_2   =dashes[5].split(":")[1]
+        self.gt_id_2    =dashes[6].split(":")[1]
+        self.uid        =dashes[7]
+
 
 class uidInfoDatabase(object):
     """wrapper class for storing fasta file information"""
@@ -219,24 +219,24 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
-def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2):
+def printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2,contig_len_1,contig_length_2):
     print "\t".join([uid_1,
                      line[0],
                      line[1],
                      line[2],
+                     str(contig_len_1),
                      str(line[3]),
                      str(line[4]),
                      str(line[5]),
-                     str(line[6]),
                      platform_1,
                      uid_2,
+                     line[6],
                      line[7],
                      line[8],
-                     line[9],
+                     str(contig_length_2),
+                     str(line[9]),
                      str(line[10]),
                      str(line[11]),
-                     str(line[12]),
-                     str(line[13]),
                      platform_2,
                      id_perc
                      ])
@@ -272,6 +272,8 @@ def doWork( args ):
     UID_db = uidInfoDatabase() # creates object db
     ID_perc= sixteenSDB()
     seq_method = seqMethodDB() 
+    genomes_dict = {}
+    listing = glob.glob('%s/*.fna' % args.genomes_dir)
     #-----
     # read in sequencing platform metadata
     with open(args.metadata,"r") as fh:
@@ -289,6 +291,15 @@ def doWork( args ):
     for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
         UID_db.addAccession(accession)
     #-----
+    # read in genomes directory
+    for g_file in listing:
+        img_id = g_file.split("/")[2].split(".")[0]
+        genome_length = 0 
+        for accession,sequence in SeqIO.to_dict(SeqIO.parse(g_file,"fasta")).items():
+            genomes_dict[accession] = len(sequence)
+    
+    #-----
+    
     printHeader() # print header containing uid
     #-----
     # read in transfers file
@@ -299,8 +310,10 @@ def doWork( args ):
             id_perc = ID_perc.getGenomeDist(line[TP._IMG_ID_1],line[TP._IMG_ID_2])
             platform_1 = seq_method.getPlatform(line[TP._IMG_ID_1])
             platform_2 = seq_method.getPlatform(line[TP._IMG_ID_2])
+            contig_length_1 = genomes_dict[line[TP._CONTIG_1]]
+            contig_length_2 = genomes_dict[line[TP._CONTIG_2]]
             if uid_1 and uid_2:
-                printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2)
+                printTrans(line,uid_1,uid_2,id_perc,platform_1,platform_2,contig_length_1,contig_length_2)
             
             
             
@@ -376,6 +389,7 @@ if __name__ == '__main__':
     parser.add_argument('-transfers_file','--transfers_file', help="...")
     parser.add_argument('-ID_file','--ID_file', help="...")
     parser.add_argument('-metadata','--metadata', help="...")
+    parser.add_argument('-genomes','--genomes_dir', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")

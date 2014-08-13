@@ -134,7 +134,7 @@ def doWork( args ):
     """ Main wrapper"""
     NP = NucMerParser()
         
-    print "ID_1", "\t", "ID_2", "\t" ,"%IDENTITY"
+    print "\t".join(["ID_1","ID_2","%IDENTITY"])
     #coords_files = args.coords
     #print len(args.coords)
     
@@ -143,8 +143,8 @@ def doWork( args ):
     for c_file in listing:
         with open(c_file, "r") as fh:
             for hit in NP.readNuc(fh):
-                if hit[NP._IDENTITY] < 97:
-                    print hit[NP._ID_1], "\t", hit[NP._ID_2], "\t", hit[NP._IDENTITY]
+                if hit[NP._IDENTITY] < args.identity_cutoff:
+                    print "\t".join([hit[NP._ID_1],hit[NP._ID_2],str(hit[NP._IDENTITY])]) 
             # required for NucMer parser. Needs to reset otherwise it doesn't know there is a new file
             NP.reset()
 
@@ -231,7 +231,8 @@ def revComp(seq):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('coordsdir', help="directory containing nucmer coords files")
+    parser.add_argument('-c','--coordsdir', help="directory containing nucmer coords files")
+    parser.add_argument('-i','--identity_cutoff',type=int,default=97,help="Set 16S identity cutoff default: 97%")
     #parser.add_argument('contigs', nargs='+', help="contigs mapped using nucmer")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __run_checkm_multi_fasta_files__.py - Run checkm on all genomes, from multiple different directories. 
 #
 ###############################################################################
 # #
@@ -58,7 +58,7 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+  # classes here
 
 ###############################################################################
 ###############################################################################
@@ -76,8 +76,16 @@ returns (stdout, stderr)
     return p.communicate()
 
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    # objects
+    listing = glob.glob('%s/*/*[0-9].fna' % args.genomes_directory)
     
+    for i in listing:
+        print i
+    
+                
+            
+            
             
             
     """
@@ -154,14 +162,13 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-g','--genomes_directory', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()

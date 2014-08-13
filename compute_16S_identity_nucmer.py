@@ -34,12 +34,13 @@ __status__ = "Development"
 import argparse
 import sys
 import datetime
+import glob 
 
 from multiprocessing import Pool
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call,STDOUT
 
-#import os
-#import errno
+import os
+import errno
 
 #import numpy as np
 #np.seterr(all='raise')
@@ -71,23 +72,65 @@ returns (stdout, stderr)
 """
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
+def returnGenomeName(fasta_file):
+    """../../img_4.1_all_lgt/16S_fasta_files/651285000/651285000_16S.fna"""
+    slashes = fasta_file.rstrip().split("/")
+    genome_name = slashes[-1].split(".")[0]
+    return genome_name
+
+def doesDirectoryExist(output_dir):
+    if not os.path.exists(output_dir):
+        os.system("mkdir %s" % (output_dir))
+
+def runJobs((output_directory,fasta_1,fasta_2,genome_1,genome_2)):
+    doesDirectoryExist(output_directory)
+    os.chdir(output_directory)
+    fnull = open(os.devnull,"w")
+    call(["nucmer", fasta_1, fasta_2, "--mum", "--coords", "-p", "%s_v_%s" %(genome_1,genome_2)],stdout=fnull, stderr=STDOUT)
+    
 
 def doWork( args ):
     """ Main wrapper"""
     
     # run something external in threads
-    count = 0   # set up a counter
-    pool = Pool(6)                              # 6 threads
+    counter = 0   # set up a counter
+    pool = Pool(args.num_threads, maxtasksperchild=1)                              # 6 threads
     cmds = []
-    fasta_urls = args.fasta_files
-    for i in range(len(fasta_urls)-1):                    # Mikes example commands for running the script
-        for j in range(i+1, len(fasta_urls)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared. 
-            cmds.append("nucmer %s %s --mum --coords -p %s" % (fasta_urls[i], fasta_urls[j], "%s_v_%s" %(fasta_urls[i],fasta_urls[j])))
-        #if count == 1 or 2 or 3 or 4 or 5: # print current time after checkpoint
-         #   print datetime.datetime.now()
-        #count += 1 
-    print cmds
-    #print pool.map(runCommand, cmds)            # list of tuples [(stdout, stderr)]
+    fasta_files = glob.glob('%s/*/*.fna' % args.fasta_directory)
+    jobs = []
+    stdouts = []
+    subgrp = 1000
+    count = 0
+
+    # set stdout to file
+    #sys.stderr = open('nucmer.log',"w")
+    
+    for i in range(len(fasta_files)-1):                    # Mikes example commands for running the script
+        for j in range(i+1, len(fasta_files)): # +1 and -1 to the for loops, means that only the bottom half of the triangle will be compared.
+            genome_1 = returnGenomeName(fasta_files[i])
+            genome_2 = returnGenomeName(fasta_files[j])
+            output_directory = "/srv/projects/lgt/img_4.1_all_lgt/16S_nucmer_97/%s_v_%s" % (genome_1,genome_2)              
+            fasta_1 = "../../16S_fasta_files/%s/%s.fna" % (genome_1.split("_")[0],genome_1)
+            fasta_2 = "../../16S_fasta_files/%s/%s.fna" % (genome_2.split("_")[0],genome_2)
+            jobs.append((output_directory,fasta_1,fasta_2,genome_1,genome_2))
+            counter += 1
+            count +=1
+            if counter >= subgrp:
+                jobs.append(())
+                counter = 0
+            if count >=10:
+                break
+        if count >=10:
+                break
+    
+    print "Start", datetime.datetime.now()
+    pool.map(runJobs,jobs)
+    print "%d done" % subgrp, datetime.datetime.now()
+    print "finish", datetime.datetime.now()
+    #run commands
+    #pool.map(runJobs,jobs)
+    #pool.close()
+    #pool.join()
     
     
     """
@@ -146,9 +189,11 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('-f','--fasta_directory', help="Directory containing 16S fasta file directories")
+    parser.add_argument('-so','--std_out_dir', help="Standard out directory")
+    parser.add_argument('-num_threads','--num_threads', type=int, default=6, help="Set the number of threads for multiplexing")
     #parser.add_argument('positional_arg', help="")
     #parser.add_argument('positional_arg2', nargs='+' help="")
-    parser.add_argument('fasta_files', nargs='+', help="Multiple fasta values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
 
     # parse the arguments

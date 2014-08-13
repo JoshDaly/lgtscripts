@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ###############################################################################
 #
-# __template__.py - Description!
+# __parse_methylase_genes__.py - Description!
 #
 ###############################################################################
 # #
@@ -38,8 +38,8 @@ import glob
 from multiprocessing import Pool
 from subprocess import Popen, PIPE
 
-#from Bio import SeqIO
-#from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 #import os
 #import errno
@@ -58,7 +58,52 @@ from subprocess import Popen, PIPE
 ###############################################################################
 ###############################################################################
 
-# put classes here 
+class annotationParser(object):
+    def __init__(self,l):
+        self.readAnnotationFile(l)
+    
+    def readAnnotationFile(self,l):
+        tabs = l.rstrip().split("\t")
+        self.uid            = tabs[0].split("-")[-1] 
+        self.cog_id         = tabs[5]
+        self.cog_annotation = tabs[6]
+        self.annotation     = tabs[8]
+        
+class faaParser(object):
+    def __init__(self,accession):
+        self.readFAA(accession)
+    
+    def readFAA(self,accession):
+        dashes      = accession.rstrip().split("-")
+        self.uid    = dashes[-1]
+        
+class methylaseDB(object):
+    def __init__(self):
+        self.anno_db = {}
+        self.faa_seqs = {}
+    
+    def addFAA(self,accession,seq):
+        line = faaParser(accession)
+        self.faa_seqs[line.uid] = seq
+    
+    def addMethylaseGene(self,l):
+        line = annotationParser(l)
+        self.anno_db[line.uid] = [line.annotation,line.cog_annotation] # add uid to dictionary
+    
+    def returnUIDs(self):
+        for uid in self.anno_db.keys():
+            print "\t".join([uid,self.anno_db[uid][0],self.anno_db[uid][1]])
+            
+    def checkKEY(self,accession):
+        line = faaParser(accession)
+        if line.uid in self.anno_db:
+            return True
+        
+    def outFILE(self):
+        with open(args.output_file,"w") as fh:
+            for uid in self.faa_seqs.keys():
+                fh.write(">"+uid+"\n")
+                fh.write(str(self.faa_seqs[uid])+"\n")
 
 ###############################################################################
 ###############################################################################
@@ -75,21 +120,31 @@ returns (stdout, stderr)
     p = Popen(cmd.split(' '), stdout=PIPE)
     return p.communicate()
 
+def check_key(dict,key):
+    if key in dict:
+        return True
+
 def doWork( args ):
-    """ Main wrapper"""  
+    """ Main wrapper"""
+    # 1. read in prodigalled.annoated file
+    # 2. Capture methylase gene unique names
+    # 3. read in prodigalled file and grab fastaa seqs
+    # 4. Run promer/blast of gut_oral_methylase genes vs methylase gene DB
     
-            
-            
-    """
-# parse fasta file using biopython
-for accession,sequence in SeqIO.to_dict(SeqIO.parse(c_file,"fasta")).items():
-if accession in genomes_dict:
-pass
-else:
-#print accession
-genomes_dict[accession] = [len(sequence),img_id, sequence.seq
-"""  
+    # objects
+    METHYLASE = methylaseDB()
     
+    # read in annotation file
+    with open(args.anno_file,"r") as fh:
+        for l in fh:
+            METHYLASE.addMethylaseGene(l)
+    
+    # parse fasta file using biopython
+    for accession,sequence in SeqIO.to_dict(SeqIO.parse(args.fasta_file,"fasta")).items():
+        if METHYLASE.checkKEY(accession):
+            METHYLASE.addFAA(accession, sequence.seq)
+            
+    METHYLASE.outFILE()
 
     """
 # run somethign external in threads
@@ -154,14 +209,15 @@ del fig
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-contig_file','--contig_file', help="...")
+    parser.add_argument('-a','--anno_file', help="...")
+    parser.add_argument('-f','--fasta_file', help="...")
+    parser.add_argument('-o','--output_file', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
     #parser.add_argument('input_file3', help="oral_img_ids")
     #parser.add_argument('input_file4', help="ids_present_gut_and_oral.csv")
     #parser.add_argument('output_file', help="output file")
     #parser.add_argument('positional_arg3', nargs='+', help="Multiple values")
     #parser.add_argument('-X', '--optional_X', action="store_true", default=False, help="flag")
-    #parser.add_argument('-X', '--optional_X', action="store_true", type=int,default=False, help="flag")
 
     # parse the arguments
     args = parser.parse_args()
