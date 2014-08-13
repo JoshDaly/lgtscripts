@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--ani', help="...")
-    parser.add_argument('-h','--hitData', help="...")
+    parser.add_argument('-hit','--hitData', help="...")
     parser.add_argument('-m','--metadata', help="...")
     parser.add_argument('-t','--totalHitData', help="...")
     #parser.add_argument('input_file2', help="gut_img_ids")
