@@ -104,21 +104,21 @@ def doWork( args ):
             hitspre   = int(tabs[16])
             hitspost  = int(tabs[17])
             try:
-                status[status1][0] += hitspre
-                status[status1][1] += hitspost
+                bodysite[bodysite1][0] += hitspre
+                bodysite[bodysite1][1] += hitspost
             except KeyError:
-                status[status1] = [hitspre,hitspost]
+                bodysite[bodysite1] = [hitspre,hitspost]
                 
             try:
-                status[status2][0] += hitspre
-                status[status2][1] += hitspost
+                bodysite[bodysite2][0] += hitspre
+                bodysite[bodysite2][1] += hitspost
             except KeyError:
-                status[status2] = [hitspre,hitspost]
+                bodysite[bodysite2] = [hitspre,hitspost]
     
-    for key in status.keys():
+    for key in bodysite.keys():
         print "\t".join([key,
-                         str(status[key][0]),
-                         str(status[key][1])])
+                         str(bodysite[key][0]),
+                         str(bodysite[key][1])])
             
     return 0
 
