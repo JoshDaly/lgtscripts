@@ -89,7 +89,7 @@ def doWork( args ):
     with open(args.metadata, 'r') as fh:
         header = fh.readline() # capture header
         for l in fh:
-            print l.strip()
+            
             tabs = l.split("\t")
             gid                 = tabs[0] 
             bodySite            = tabs[57]
