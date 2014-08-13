@@ -111,8 +111,8 @@ def doWork( args ):
     
     for key in sequencingPlatform.keys():
         print "\t".join([key,
-                         sequencingPlatform[key][0],
-                         sequencingPlatform[key][1]])
+                         str(sequencingPlatform[key][0]),
+                         str(sequencingPlatform[key][1])])
             
     return 0
 
