@@ -104,21 +104,21 @@ def doWork( args ):
             hitspre   = int(tabs[16])
             hitspost  = int(tabs[17])
             try:
-                sequencingCentre[seqcent1][0] += hitspre
-                sequencingCentre[seqcent1][1] += hitspost
+                status[status1][0] += hitspre
+                status[status1][1] += hitspost
             except KeyError:
-                sequencingCentre[seqcent1] = [hitspre,hitspost]
+                status[status1] = [hitspre,hitspost]
                 
             try:
-                sequencingCentre[seqcent2][0] += hitspre
-                sequencingCentre[seqcent2][1] += hitspost
+                status[status2][0] += hitspre
+                status[status2][1] += hitspost
             except KeyError:
-                sequencingCentre[seqcent2] = [hitspre,hitspost]
+                status[status2] = [hitspre,hitspost]
     
-    for key in sequencingCentre.keys():
+    for key in status.keys():
         print "\t".join([key,
-                         str(sequencingCentre[key][0]),
-                         str(sequencingCentre[key][1])])
+                         str(status[key][0]),
+                         str(status[key][1])])
             
     return 0
 
